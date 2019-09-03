@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-hd">{{header}}</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal mt-5 ml-5 mr-5">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">OC Number</label>
+              <div class="col-sm-8">
+                <input type="text" name="num" [(ngModel)]="ocObj.OCNumber" (keypress)="numberOnly($event)"
+                  class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Priority</label>
+              <div class="col-sm-8">
+                <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
+                  (change)="onPriorityChange()">
+                  <option value="">Select Priority</option>
+                  <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Name</label>
+              <div class="col-sm-8">
+                <input type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Address</label>
+              <div class="col-sm-8">
+                <textarea type="text" name="address" [(ngModel)]="ocObj.Customer.city" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Notes</label>
+              <div class="col-sm-8">
+                <textarea type="text" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">OC Date</label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
+                  data-trigger="hover" data-placement="top" data-title="Date Opened">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Phone</label>
+              <div class="col-sm-8">
+                <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
+                  (keypress)="numberOnly($event)" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Type</label>
+              <div class="col-sm-8">
+                <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
+                  (change)="onCustomerTypeChange()">
+                  <option value="">Select Customer Type</option>
+                  <option *ngFor="let customer_type of customerTypeList" [value]="customer_type._id">
+                    {{customer_type.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Branch Name</label>
+              <div class="col-sm-8">
+                <select name="ocBranch" class="form-control" [(ngModel)]="ocObj.BranchID._id"
+                  (change)="onBranchChange()">
+                  <option value="">Select Branch</option>
+                  <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Product</label>
+              <div class="col-sm-8">
+                <select name="ocProduct" class="form-control" [(ngModel)]="ocObj.ProductID._id"
+                  (change)="onProductChange()">
+                  <option value="">Select Product</option>
+                  <option *ngFor="let product of productList" [value]="product._id">{{product.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6" *ngFor="let qr of scanList">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">{{qr.name}}</label>
+              <div class="col-sm-8">
+                <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row float-right">
+          <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onCancel()">Cancel
+          </button>
+          <button type="button" class="btn btn-primary btn-asset ml-3 mb-5" (click)="onPrint()">Print Labels
+          </button>
+        </div>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>

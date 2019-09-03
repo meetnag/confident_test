@@ -1,0 +1,227 @@
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-hd">{{header}}</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal mt-5 ml-5 mr-5" #form="ngForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Number</label>
+              <div class="col-sm-8">
+                <input type="text" (keypress)="numberOnly($event)" name="num" [(ngModel)]="ocObj.OCNumber"
+                  class="form-control" required #ocnum="ngModel">
+                <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
+                  <div *ngIf="ocnum.errors && ocnum.errors.required">
+                    OC Number is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Priority</label>
+              <div class="col-sm-8">
+                <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
+                  (change)="onPriorityChange()">
+                  <option value="">Select Priority</option>
+                  <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Name</label>
+              <div class="col-sm-8">
+                <input type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Address</label>
+              <div class="col-sm-8">
+                <textarea type="text" name="address" [(ngModel)]="ocObj.Customer.city" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Customer Phone</label>
+              <div class="col-sm-8">
+                <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
+                  (keypress)="numberOnly($event)" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Notes</label>
+              <div class="col-sm-8">
+                <textarea type="text" maxlength="2000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                  #ocnotes="ngModel"></textarea>
+                <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
+                  <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
+                    Notes can be of max length 200.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Installation Date</label>
+              <div class="col-sm-8">
+                <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
+                  name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
+                  data-title="Date Opened" [min]="ocObj.OCDate">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="(currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team') ">
+              <label class="col-sm-4 control-label">Installation Complete</label>
+              <div class="col-sm-8">
+                <input type="checkbox" name="complete" [(ngModel)]="installationObj.installationComplete"
+                  class="form-control">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Invoice Date</label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
+                  data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened">
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Date</label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
+                  data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
+                  <div *ngIf="ocdate.errors && ocdate.errors.required">
+                    OC Date is required.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Customer Type</label>
+              <div class="col-sm-8">
+                <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
+                  (change)="onCustomerTypeChange()" required #type="ngModel">
+                  <option value="">Select Customer Type</option>
+                  <option *ngFor="let customer_type of customerTypeList" [value]="customer_type._id">
+                    {{customer_type.name}}</option>
+                </select>
+                <div *ngIf="type.invalid && (type.dirty || type.touched)" class="errors">
+                  <div *ngIf="type.errors && type.errors.required">
+                    Customer Type is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Branch Name</label>
+              <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
+                <select name="ocBranch" class="form-control" [(ngModel)]="ocObj.BranchID._id"
+                  (change)="onBranchChange()">
+                  <option value="">Select Branch</option>
+                  <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+                </select>
+              </div>
+              <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                {{ocObj.BranchID.name}}
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Installation Technician</label>
+              <div class="col-sm-8">
+                <input type="text" name="installationTech" [(ngModel)]="installationObj.installationTechnician"
+                  class="form-control">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Technician Contact</label>
+              <div class="col-sm-8">
+                <input type="text" name="technicianContact" [(ngModel)]="installationObj.technicianContact"
+                  class="form-control">
+
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Transport</label>
+              <div class="col-sm-8">
+                <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control">
+
+              </div>
+            </div>
+            <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Invoice Number</label>
+              <div class="col-sm-8">
+                <input type="text" name="Invoicenumber" [(ngModel)]="installationObj.invoiceNumber"
+                  class="form-control">
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Product</label>
+              <div class="col-sm-8">
+                <select name="ocProduct" class="form-control" [(ngModel)]="ocObj.ProductID._id"
+                  (change)="onProductChange()" required #product="ngModel">
+                  <option value="">Select Product</option>
+                  <option *ngFor="let product of productList" [value]="product._id">{{product.name}}</option>
+                </select>
+                <div *ngIf="product.invalid && (product.dirty || product.touched)" class="errors">
+                  <div *ngIf="product.errors && product.errors.required">
+                    Product is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Sub-Assembly</label>
+              <div class="col-sm-8">
+                <ng-select name="ocSubAssemblyy" [items]="subAssemblyList" [multiple]="true" bindLabel="name"
+                  [closeOnSelect]="false" bindValue="_id" [(ngModel)]="selectedSubAssembly" required
+                  #subAssembly="ngModel">
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [checked]="selectedSubAssembly.indexOf(item._id) > -1" />
+                    {{item.name}}
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="subAssembly.invalid && (subAssembly.dirty || subAssembly.touched)" class="errors">
+                  <div *ngIf="subAssembly.errors && subAssembly.errors.required">
+                    Sub-Assembly is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Spare</label>
+              <div class="col-sm-8">
+                <ng-select name="spare" [items]="spareList" [multiple]="true" bindLabel="name" [closeOnSelect]="false"
+                  bindValue="_id" [(ngModel)]="selectedSpare" #spareId="ngModel" required>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [checked]="selectedSpare.indexOf(item._id) > -1" />
+                    {{item.name}}
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="spareId.invalid && (spareId.dirty || spareId.touched)" class="errors">
+                  <div *ngIf="spareId.errors && spareId.errors.required">
+                    Spare is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row float-right">
+          <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onCancel()">Cancel
+          </button>
+          <button *ngIf="!isUpdate" [disabled]="form.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
+            (click)="onNext()">Next
+          </button>
+          <button *ngIf="isUpdate" [disabled]="form.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
+            (click)="onNext()">Update
+          </button>
+        </div>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>

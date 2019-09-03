@@ -1,0 +1,60 @@
+import { Injectable } from '@angular/core';
+import { ApiService } from './api.service';
+import { BehaviorSubject } from 'rxjs';
+import { OcModel } from '../_models/oc-model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DashboardService {
+
+  currentOcObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
+  selectedObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
+  constructor(private apiService: ApiService) { }
+  getSubAssemblyList() {
+    return this.apiService.apiCaller('get', 'subAssembly/');
+  }
+  getProductList() {
+    return this.apiService.apiCaller('get', 'products/');
+  }
+  getSpareList() {
+    return this.apiService.apiCaller('get', 'spare/');
+  }
+  getBranchList() {
+    return this.apiService.apiCaller('get', 'branch/');
+  }
+  getPriorityList() {
+    return this.apiService.apiCaller('get', 'priority/');
+  }
+  getCustomerTypeList() {
+    return this.apiService.apiCaller('get', 'customerType/');
+  }
+  addOc(ocObj) {
+    return this.apiService.apiCaller('post', 'ocList/create', ocObj);
+  }
+  updateOc(ocObj) {
+    return this.apiService.apiCaller('post', 'ocList/updateByOCId', ocObj);
+  }
+  getOcList(obj) {
+    return this.apiService.apiCaller('post', 'ocList/', obj);
+  }
+  getOcArchives(obj) {
+    return this.apiService.apiCaller('post', 'ocList/getOCArchieves', obj);
+  }
+  getOcByNumber(obj) {
+    return this.apiService.apiCaller('post', 'ocList/getByOCNumber', obj);
+  }
+  uploadDocument(doc) {
+    return this.apiService.apiCaller('post', 'ocDocument/save', doc);
+  }
+  getDocument(id) {
+    return this.apiService.apiCaller('post', 'ocDocument/getByOcId', id);
+  }
+  onStatusChange(obj) {
+    return this.apiService.apiCaller('post', 'ocList/updateStatus', obj);
+  }
+
+  downloadDocument(obj) {
+    return this.apiService.apiCaller('get', 'ocDocument/downlaod/' + obj, '', true);
+  }
+}
