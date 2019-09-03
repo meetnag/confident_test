@@ -26,6 +26,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
   scanList = [];
   currentUser$: Subscription;
   currentUser: any;
+  isPrinting = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
     private toasterService: ToastrService, private authenticationService: AuthenticationService,
@@ -49,7 +50,6 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
             this.scanList.push(obj);
           })
         }
-        console.log('this.scanList', this.scanList)
       }
     })
   }
@@ -71,7 +71,6 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/pages/dashboard']);
   }
   onPrint() {
-    console.log('this.ocObj._id', this.ocObj)
     this.ocObj.userName = this.currentUser.user.name;
     this.ocObj.roleName = this.currentUser.userRole;
     delete this.ocObj.StatusLog;
@@ -81,6 +80,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
       this.dashboardService.addOc(this.ocObj).subscribe(res => {
         if (res.status === 'success') {
           this.toasterService.success(res.message);
+          window.print();
           this.router.navigate(['/pages/dashboard']);
         } else {
           this.toasterService.error(res.message);
@@ -95,6 +95,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
       this.dashboardService.updateOc(this.ocObj).subscribe(res => {
         if (res.status === 'success') {
           this.toasterService.success(res.message);
+          window.print();
           this.router.navigate(['/pages/dashboard']);
         } else {
           this.toasterService.error(res.message);

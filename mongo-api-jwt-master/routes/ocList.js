@@ -21,7 +21,7 @@ router.get('/getOcNumber', ocListController.getOcNumber);
         *}
         *
         */
-router.post('/getOCArchieves', ocListController.getClosedOCs);
+router.post('/getOCArchieves',ocListController.getClosedOCs);
 /**
         * @api {post} ocList/getOCArchieves get Closed OC List
         * @apiVersion 0.0.1
@@ -104,7 +104,7 @@ router.post('/getOCArchieves', ocListController.getClosedOCs);
         }
         */
 
-router.post('/updateStatus', ocListController.updateStatus);
+router.post('/updateStatus',ocListController.updateStatus);
 /**
         * @api {post} ocList/updateStatus update OC status
         * @apiVersion 0.0.1
@@ -263,7 +263,7 @@ router.post('/getByOCNumber', ocListController.getByOCNumber);
         "data": null
         }
         */
-router.post('/', ocListController.getByRoleName);
+router.post('/',ocListController.getByRoleName);
 /**
         * @api {post} ocList/ get OC List
         * @apiVersion 0.0.1
@@ -346,7 +346,7 @@ router.post('/', ocListController.getByRoleName);
         }
         */
 
-router.post('/updateByOCId', ocListController.updateOC);
+router.post('/updateByOCId',ocListController.updateOC);
 /**
         * @api {post} ocList/updateByOCId update oc List by OC ID
         * @apiVersion 0.0.1

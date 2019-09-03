@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://api.testautotech.xyz/',
-  domainUrl: 'http://testautotech.xyz/'
+  //apiUrl: 'http://api.testautotech.xyz/',
+   //apiUrl :'http://localhost:3000/',
+  apiUrl: 'http://cdapi.lambdablocks.com/',
+  //domainUrl: 'http://testautotech.xyz/'
+   domainUrl: 'http://cd.lambdablocks.com/'
+
 }
 
 /*

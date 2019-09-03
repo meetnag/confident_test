@@ -1,8 +1,5 @@
 const ocListModel = require('../models/ocList');
-const counterModel = require('../models/masterDatabase/counter');
 
-
-   
 module.exports = {
    
    modbusHMI: function(req, res, next) {
@@ -59,10 +56,19 @@ module.exports = {
       else
          res.json({status:"error", message: "Invalid Transfer", data:null});
    },
+   getScanOcNumber: function(req, res, next) {
+         ocListModel.find({ "OCNumber":req.body.OCNumber},function(err,result){
+            if(result)
+               res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
+            else
+               res.json({status:"error",message:"No Oc List found!!!",data:err})  
+         });
+   },
+
    getByOCNumber: function(req, res, next) {
 
       let roleName = req.body.roleName;
-      console.log("function callaed")
+      // console.log("function callaed")
       console.log(req.body)
       if (roleName == "Admin" || roleName == "QA Team" || roleName == "Sales Team" ) {
          ocListModel.find({ "OCNumber":req.body.OCNumber},function(err,result){

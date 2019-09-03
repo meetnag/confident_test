@@ -9,10 +9,10 @@ module.exports = {
       let documentId =req.params.documentId;
       // console.log(path)
       ocDocumentModel.find( {_id:documentId},function(err,result){
-         console.log(result)
+         // console.log(result)
          if (result.length){
             path = result[0].filePath +".";
-            console.log("path",path)
+            // console.log("path",path)
             res.download(path); 
             // res.json({status:"success",message:"!!!",data:path})
      

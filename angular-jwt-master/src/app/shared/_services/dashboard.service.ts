@@ -35,6 +35,9 @@ export class DashboardService {
   updateOc(ocObj) {
     return this.apiService.apiCaller('post', 'ocList/updateByOCId', ocObj);
   }
+  getOcNumber() {
+    return this.apiService.apiCaller('get', 'ocList/getOcNumber');
+  }
   getOcList(obj) {
     return this.apiService.apiCaller('post', 'ocList/', obj);
   }
@@ -42,10 +45,16 @@ export class DashboardService {
     return this.apiService.apiCaller('post', 'ocList/getOCArchieves', obj);
   }
   getOcByNumber(obj) {
-    return this.apiService.apiCaller('post', 'ocList/getByOCNumber', obj);
+    if (obj.qrCode)
+      return this.apiService.apiCaller('post', 'scanOcList/getByOCNumber', obj);
+    else
+      return this.apiService.apiCaller('post', 'ocList/getByOCNumber', obj);
   }
   uploadDocument(doc) {
     return this.apiService.apiCaller('post', 'ocDocument/save', doc);
+  }
+  deleteDocument(id) {
+    return this.apiService.apiCaller('get', 'ocDocument/deleteDocument/' + id);
   }
   getDocument(id) {
     return this.apiService.apiCaller('post', 'ocDocument/getByOcId', id);

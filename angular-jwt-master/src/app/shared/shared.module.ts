@@ -7,6 +7,7 @@ import { SidebarComponent } from './_components/sidebar/sidebar.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { QRCodeModule } from 'angularx-qrcode';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   declarations: [
@@ -21,13 +22,15 @@ import { QRCodeModule } from 'angularx-qrcode';
     ReactiveFormsModule,
     Ng2SmartTableModule,
     QRCodeModule,
-    NgSelectModule
+    NgSelectModule,
+    DeviceDetectorModule.forRoot()
   ],
   exports: [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
     Ng2SmartTableModule,
+    DeviceDetectorModule,
     QRCodeModule,
     NgSelectModule,
     HeaderComponent,

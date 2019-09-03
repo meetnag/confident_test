@@ -5,11 +5,13 @@ import { OcModel, Customer } from '@app/shared/_models/oc-model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-scan',
   templateUrl: './scan.component.html',
-  styleUrls: ['./scan.component.css']
+  styleUrls: ['./scan.component.css'],
+  providers: [DatePipe] 
 })
 export class ScanComponent implements OnInit, OnDestroy {
 
@@ -28,7 +30,7 @@ export class ScanComponent implements OnInit, OnDestroy {
   customerObj = {};
   qrCodeString = '';
   qrCodeFlag = false;
-  constructor(private authenticationService: AuthenticationService, private dashboardService: DashboardService,
+  constructor(private authenticationService: AuthenticationService, private dashboardService: DashboardService,private datePipe: DatePipe,
     private route: ActivatedRoute, private router: Router, private toasterService: ToastrService
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -45,6 +47,7 @@ export class ScanComponent implements OnInit, OnDestroy {
 
     if (this.id == 0) {
       this.searchOcNo = '';
+      this.qrCodeFlag = false;
     } else {
       if (this.currentUser) {
         this.qrCodeFlag = false;
@@ -74,26 +77,30 @@ export class ScanComponent implements OnInit, OnDestroy {
     if (this.qrCodeFlag) {
       body = {
         OCNumber: this.searchOcNo,
-        roleName: "Admin"
+        roleName: "Admin",
+        qrCode : true 
       };
     } else {
       body = {
         OCNumber: this.searchOcNo,
-        roleName: this.currentUser.userRole
+        roleName: this.currentUser.userRole,
+        qrCode : false 
       };
     }
-    // console.log("calling",body)
     if (this.currentUser) {
       if (this.currentUser.userRole == 'Branch/Dealer') {
         body['branchId'] = this.currentUser.user.branchId;
       }
     }
     this.dashboardService.getOcByNumber(body).subscribe(data => {
-      console.log(data)
+      // console.log(data)
+      
       if (data.status === 'success') {
         // console.log(data.data);
         if (data.data && data.data.ocList.length) {
+
           this.ocObj = new OcModel();
+          // console.log(this.ocObj)
           this.ocObj.Customer = new Customer();
           this.qaTeamObj = {};
           this.salesTeamObj = {};
@@ -102,6 +109,11 @@ export class ScanComponent implements OnInit, OnDestroy {
           this.ocObj.SerialNumbers = [];
           this.ocObj.StatusLog = [];
           this.ocObj = data.data.ocList[0];
+
+          var raw = new Date(this.ocObj.OCDate);
+           
+          this.ocObj.OCDate = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          // console.log(this.ocObj)
           if (this.ocObj.Customer && this.ocObj.Customer.name != '') {
             this.customerName = this.ocObj.Customer.name;
           }
@@ -115,10 +127,22 @@ export class ScanComponent implements OnInit, OnDestroy {
             this.ocObj.StatusLog.forEach(ele => {
               if (ele.ChangedStatus === 'In Progress - Sales') {
                 this.qaTeamObj = ele;
-              } else if (ele.ChangedStatus === 'In Progress - Branch/Dealer' || ele.ChangedStatus === 'Installation Complete') {
+                raw = new Date(this.qaTeamObj['Date']);
+                
+                this.qaTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+
+              } else if (ele.ChangedStatus === 'In Progress - Branch/Dealer' || ele.ChangedStatus === 'Installation Scheduled') {
                 this.salesTeamObj = ele;
-              } else if (ele.ChangedStatus === 'Closed' || ele.ChangedStatus === 'Installation Scheduled') {
+                raw = new Date(this.salesTeamObj['Date']);
+                
+                this.salesTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+
+              } else if (ele.ChangedStatus === 'Closed' || ele.ChangedStatus === 'Installation Complete') {
                 this.branchTeamObj = ele;
+                raw = new Date(this.branchTeamObj['Date']);
+                
+                this.branchTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+
               }
             });
             this.customerObj['installedBy'] = this.ocObj.Installation ? (this.ocObj.Installation.installationTechnician) : '';

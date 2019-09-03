@@ -7,8 +7,9 @@ import { Subscription } from 'rxjs';
 import { Priority, OcModel } from '@app/shared/_models/oc-model';
 import { ToastrService } from 'ngx-toastr';
 import { filter } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
-@Component({ templateUrl: 'dashboard.component.html' })
+@Component({ templateUrl: 'dashboard.component.html' , providers: [DatePipe] })
 export class DashboardComponent implements OnInit, OnDestroy {
     ocList: OcModel[] = [];
     source: LocalDataSource = new LocalDataSource();
@@ -30,7 +31,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             OCDate: {
                 title: 'OC Date',
-                filter: false
+                filter: false,
+                valuePrepareFunction: (OCDate) => {
+                    var raw = new Date(OCDate);
+                    if (raw) {
+                    return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+                    }
+                }
             },
             ProductID: {
                 title: 'Product ID',
@@ -57,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     priorityList: Priority[] = [];
     userRole = '';
     navigationSubscription;
-    constructor(private router: Router, private dashboardService: DashboardService,
+    constructor(private router: Router, private dashboardService: DashboardService,private datePipe: DatePipe,
         private authenticationService: AuthenticationService) {
         this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
             if (data != null) {
@@ -129,13 +136,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 @Component({
     selector: 'app-custom-renderer',
     template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue" (click)="editOC()">Edit</span>
-    <span *ngIf="isStatusNew" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Transfer</span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Transfer</span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
     <span class="font-medium-1 mr-2" style="cursor:pointer;" (click)="onUploadDocuments()">Supporting Documents</span>`
 })
 export class CustomRendererComponent implements OnInit, OnDestroy {
     currentUser$: Subscription;
     currentUser: any;
     isStatusNew = true;
+    isStatusComplete = false;
     // @Output() retry: EventEmitter<any> = new EventEmitter()
     constructor(private router: Router, private dashboardService: DashboardService,
         private toasterService: ToastrService, private authenticationService: AuthenticationService) {
@@ -151,6 +160,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     ngOnInit() {
         if (this.currentUser.userRole === 'QA Team' || this.currentUser.userRole === 'Admin')
             this.isStatusNew = this.rowData.Status.name === 'New' ? true : false;
+        if (this.rowData.Status.name == 'Installation Complete') {
+            this.isStatusComplete = true;
+        }
     }
     ngOnDestroy() {
         this.currentUser$.unsubscribe();
@@ -159,7 +171,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         this.router.navigate(['/pages/dashboard/edit-oc/' + this.rowData.OCNumber]);
     }
     onCloseOC() {
-        console.log('raw', this.rowData);
+        // console.log('raw', this.rowData);
         let body;
         let installationComplete = '';
         body = {
@@ -177,7 +189,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
             body['installationComplete'] = this.rowData.Installation.installationComplete;
         }
 
-        console.log('on close', body);
+        // console.log('on close', body);
         this.dashboardService.onStatusChange(body).subscribe(res => {
             if (res.status === 'success') {
                 // this.retry.emit(this.rowData);

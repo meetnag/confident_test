@@ -11,7 +11,7 @@
               <label class="col-sm-4 control-label">OC Number</label>
               <div class="col-sm-8">
                 <input type="text" (keypress)="numberOnly($event)" name="num" [(ngModel)]="ocObj.OCNumber"
-                  class="form-control" required #ocnum="ngModel">
+                  class="form-control" required #ocnum="ngModel" disabled>
                 <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
                   <div *ngIf="ocnum.errors && ocnum.errors.required">
                     OC Number is required.
@@ -65,7 +65,7 @@
               <div class="col-sm-8">
                 <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
                   name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                  data-title="Date Opened" [min]="ocObj.OCDate">
+                  data-title="Date Opened" [min]="ocObj.minInstallationDate">
               </div>
             </div>
             <div class="form-group" *ngIf="(currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team') ">
@@ -79,7 +79,7 @@
               <label class="col-sm-4 control-label">Invoice Date</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
-                  data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened">
+                  data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" [min]="ocObj.OCDate">
               </div>
             </div>
 

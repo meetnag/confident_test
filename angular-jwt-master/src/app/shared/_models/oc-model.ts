@@ -19,6 +19,7 @@ export class OcModel {
     Customer: Customer;
     userName: any;
     roleName: any;
+    minInstallationDate :any;
     StatusLog: StatusLog[];
     constructor() {
         this.SerialNumbers = [];

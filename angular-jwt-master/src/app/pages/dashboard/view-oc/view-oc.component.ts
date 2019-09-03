@@ -6,11 +6,15 @@ import { AuthenticationService } from '@app/shared/_services';
 import { OcModel, Customer } from '@app/shared/_models/oc-model';
 import { Subscription } from 'rxjs';
 import { environment } from '@environments/environment';
+import { LocalDataSource } from 'ng2-smart-table';
+import { CustomRendererFileComponent } from '../upload-documents/upload-documents.component';
 
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-view-oc',
   templateUrl: './view-oc.component.html',
-  styleUrls: ['./view-oc.component.css']
+  styleUrls: ['./view-oc.component.css'],
+  providers: [DatePipe] 
 })
 export class ViewOcComponent implements OnInit, OnDestroy {
   header = 'View OC';
@@ -20,8 +24,45 @@ export class ViewOcComponent implements OnInit, OnDestroy {
   currentUser$: Subscription;
   currentUser: any;
   id: any;
+  source: LocalDataSource = new LocalDataSource();
 
-  constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
+  settings = {
+    actions: false,
+    columns: {
+      srNo: {
+        title: 'Sr No',
+        filter: false,
+        valuePrepareFunction: (cell, row) => {
+          return cell
+        }
+      },
+      documentname: {
+        title: 'Document Name',
+        filter: false,
+        type: 'custom',
+        renderComponent: CustomRendererFileComponent
+      },
+      notes: {
+        title: 'Notes',
+        filter: false
+      },
+      uploadedby: {
+        title: 'Uploaded By',
+        filter: false
+      },
+      uploadeddate: {
+        title: 'Uploaded Date',
+        filter: false,
+        valuePrepareFunction: (OCDate) => {
+          var raw = new Date(OCDate);
+          if (raw) {
+          return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          }
+      }
+      }
+    },
+  };
+  constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService, private datePipe: DatePipe,
     private toasterService: ToastrService, private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -32,7 +73,6 @@ export class ViewOcComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getOcByNumber();
-
   }
   getOcByNumber() {
     let body = {
@@ -44,12 +84,21 @@ export class ViewOcComponent implements OnInit, OnDestroy {
     }
     this.dashboardService.getOcByNumber(body).subscribe(data => {
       if (data.status === 'success' && data.data != null) {
-        console.log(data);
+        // console.log(data);
         if (data.data) {
           this.ocObj = new OcModel();
           this.ocObj.Customer = new Customer();
           this.ocObj.SerialNumbers = [];
           this.ocObj = data.data.ocList[0];
+          // var raw = new Date(this.ocObj.OCDate);
+           
+          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy hh:mm a');
+          if(this.ocObj.Installation){
+              this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy hh:mm a');
+              this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy hh:mm a');
+            
+          }
+          this.getDocuments();
           if (!this.ocObj.Customer) {
             this.ocObj.Customer = new Customer();
             this.ocObj.Customer.city = '';
@@ -69,6 +118,18 @@ export class ViewOcComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+  getDocuments() {
+    const body = {
+      ocid: this.ocObj._id
+    }
+    this.dashboardService.getDocument(body).subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.source.load(res.data.ocDocument);
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
   }
   ngOnDestroy() {
     this.currentUser$.unsubscribe();

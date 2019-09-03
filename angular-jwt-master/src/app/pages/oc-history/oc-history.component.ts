@@ -5,11 +5,13 @@ import { Priority } from '@app/shared/_models/oc-model';
 import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { AuthenticationService } from '@app/shared/_services/authentication.service';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-oc-history',
   templateUrl: './oc-history.component.html',
-  styleUrls: ['./oc-history.component.css']
+  styleUrls: ['./oc-history.component.css'],
+  providers: [DatePipe]
 })
 export class OcHistoryComponent implements OnInit, OnDestroy {
 
@@ -26,12 +28,28 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
       },
       OCDate: {
         title: 'OC Date',
-        filter: false
+        filter: false,
+        valuePrepareFunction: (OCDate) => {
+            var raw = new Date(OCDate);
+            if (raw) {
+            return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+            }
+        }
       },
       ProductID: {
         title: 'Product ID',
         filter: false,
         valuePrepareFunction: (value) => { return value.name }
+      },
+      UpdatedDate: {
+        title: 'Installation Complete Date',
+        filter: false,
+        valuePrepareFunction: (UpdatedDate) => {
+            var raw = new Date(UpdatedDate);
+            if (raw) {
+            return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+            }
+        }
       },
       _id: {
         title: 'Actions',
@@ -48,7 +66,7 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
   currentUser: any;
   userRole = '';
 
-  constructor(private router: Router, private dashboardService: DashboardService,
+  constructor(private router: Router, private dashboardService: DashboardService,private datePipe: DatePipe,
     private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {

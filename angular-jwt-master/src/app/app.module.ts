@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './shared/_guards';
 import { CookieService, CookieOptions } from 'angular2-cookie/core';
+import { JwtInterceptor } from './shared/_helpers';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { CookieService, CookieOptions } from 'angular2-cookie/core';
         BrowserAnimationsModule, // required animations module
         ToastrModule.forRoot({
             timeOut: 2000,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-top-center',
             preventDuplicates: true
         }) // ToastrModule added
     ],
@@ -37,8 +38,8 @@ import { CookieService, CookieOptions } from 'angular2-cookie/core';
     providers: [
         AuthGuard,
         CookieService,
-        { provide: CookieOptions, useValue: false }
-        // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: CookieOptions, useValue: false },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     ],
     bootstrap: [AppComponent]
 })

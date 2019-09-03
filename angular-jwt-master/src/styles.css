@@ -21,3 +21,9 @@ th {
   content: "*";
   color: red;
 }
+
+@media print {
+  .isPrinting>* {
+    display: none;
+  }
+}

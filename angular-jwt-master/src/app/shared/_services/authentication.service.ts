@@ -5,19 +5,24 @@ import 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
 import { DashboardService } from './dashboard.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     public currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     public currentUser: Observable<any>;
-
-    constructor(private http: HttpClient, private router: Router, private api: ApiService, private dashboardService: DashboardService) {
+    ipAddress: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    constructor(private deviceService: DeviceDetectorService, private router: Router, private api: ApiService, private dashboardService: DashboardService) {
+        this.getIpInfo();
     }
 
     public get currentUserValue(): any {
         return this.currentUserSubject.value;
     }
-
+    getIpInfo() {
+        let info = this.deviceService.getDeviceInfo();
+        this.ipAddress.next(info.userAgent);
+    }
     login(username: string, password: string) {
         username = username.trim();
         const body = {

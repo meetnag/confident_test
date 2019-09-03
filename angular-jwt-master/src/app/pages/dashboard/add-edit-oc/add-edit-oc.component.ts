@@ -68,9 +68,18 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     if (this.id) {
       this.header = 'Edit OC'
       this.getOcByNumber();
+    } else {
+      this.getOcNumber();
     }
   }
 
+  getOcNumber() {
+    this.dashboardService.getOcNumber().subscribe(data => {
+      if (data.status === 'success' && data.data != null) {
+        this.ocObj.OCNumber = data.data.OCNumber;
+      }
+    })
+  }
   getOcByNumber() {
     let body = {
       OCNumber: this.id,
@@ -85,6 +94,12 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         this.ocObj = data.data.ocList[0];
         this.installationObj = new Installation();
         this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
+        var minInsDate = new Date(this.ocObj.OCDate);
+        var date = new Date( minInsDate.setDate(minInsDate.getDate() + 1));
+
+// add a day
+        this.ocObj.minInstallationDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+        // console.log("sadsa",this.ocObj);
         if (this.currentUser.userRole !== 'Admin' && this.currentUser.userRole !== 'QA Team' && this.ocObj.Installation) {
           this.installationObj = this.ocObj.Installation;
           this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'yyyy-MM-dd');

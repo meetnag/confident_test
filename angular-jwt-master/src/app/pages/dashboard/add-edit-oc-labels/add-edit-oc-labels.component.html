@@ -14,7 +14,7 @@
                   class="form-control">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Priority</label>
               <div class="col-sm-8">
                 <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
@@ -24,19 +24,19 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Customer Name</label>
               <div class="col-sm-8">
                 <input type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Customer Address</label>
               <div class="col-sm-8">
                 <textarea type="text" name="address" [(ngModel)]="ocObj.Customer.city" class="form-control"></textarea>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Notes</label>
               <div class="col-sm-8">
                 <textarea type="text" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"></textarea>
@@ -51,14 +51,14 @@
                   data-trigger="hover" data-placement="top" data-title="Date Opened">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Customer Phone</label>
               <div class="col-sm-8">
                 <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
                   (keypress)="numberOnly($event)" class="form-control">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Customer Type</label>
               <div class="col-sm-8">
                 <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
@@ -69,7 +69,7 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Branch Name</label>
               <div class="col-sm-8">
                 <select name="ocBranch" class="form-control" [(ngModel)]="ocObj.BranchID._id"
@@ -79,7 +79,7 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Product</label>
               <div class="col-sm-8">
                 <select name="ocProduct" class="form-control" [(ngModel)]="ocObj.ProductID._id"
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div class="row float-right">
+        <div class="row float-right" [class.isPrinting]="!isPrinting">
           <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onCancel()">Cancel
           </button>
           <button type="button" class="btn btn-primary btn-asset ml-3 mb-5" (click)="onPrint()">Print Labels

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { AuthenticationService } from '@app/shared/_services/authentication.service';
 import { Subscription } from 'rxjs';
@@ -8,10 +8,13 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { OcModel } from '@app/shared/_models/oc-model';
 import { environment } from '@environments/environment.prod';
 
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-upload-documents',
   templateUrl: './upload-documents.component.html',
-  styleUrls: ['./upload-documents.component.css']
+  styleUrls: ['./upload-documents.component.css'],
+
+  providers: [DatePipe] 
 })
 export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
@@ -22,12 +25,13 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
   id: any;
   ocObj = new OcModel();
   ocObj$: Subscription;
+  fileNote = '';
   source: LocalDataSource = new LocalDataSource();
 
   settings = {
     actions: false,
     columns: {
-      _id: {
+      srNo: {
         title: 'Sr No',
         filter: false,
         valuePrepareFunction: (cell, row) => { return cell }
@@ -38,17 +42,41 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         type: 'custom',
         renderComponent: CustomRendererFileComponent
       },
+      notes: {
+        title: 'Notes',
+        filter: false
+      },
       uploadedby: {
         title: 'Uploaded By',
         filter: false
       },
       uploadeddate: {
         title: 'Uploaded Date',
-        filter: false
+        filter: false,
+        valuePrepareFunction: (OCDate) => {
+          var raw = new Date(OCDate);
+          if (raw) {
+          return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          }
+      }
+      },
+      _id: {
+        title: 'Action',
+        filter: false,
+        type: 'custom',
+        renderComponent: CustomRendererFileDeleteComponent,
+        onComponentInitFunction: (instance) => {
+          instance.save.subscribe(data => {
+            if (data) {
+              this.ngOnInit();
+            }
+          });
+        }
       }
     },
   };
-  constructor(private dashboardService: DashboardService, private router: Router,
+
+  constructor(private dashboardService: DashboardService, private router: Router,private datePipe: DatePipe,
     private authenticationService: AuthenticationService, private route: ActivatedRoute, private toasterService: ToastrService,
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -56,6 +84,11 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         this.currentUser = data;
       }
     });
+    this.ocObj$ = this.dashboardService.selectedObj.subscribe(data => {
+      if (data) {
+        this.ocObj = data;
+      }
+    })
   }
 
   ngOnInit() {
@@ -97,13 +130,14 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         documentname: this.fileToUpload.name,
         uploadedby: this.currentUser.user.name,
         uploadeddate: new Date(),
+        notes: this.fileNote
       }));
       formData.append('file', new File([this.fileToUpload], `${this.fileToUpload.name}.`));
-
       console.log('body', formData);
       this.dashboardService.uploadDocument(formData).subscribe(res => {
         if (res.status === 'success') {
           this.toasterService.success(res.message);
+          this.fileNote = '';
           this.getDocuments();
         } else {
           this.toasterService.error(res.message);
@@ -119,21 +153,41 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
 }
 @Component({
   selector: 'app-custom-renderer-file',
-  template: `<a href="{{url}}" download target="_blank" class="font-medium-1 mr-2" style="cursor:pointer;color:blue" >{{value}}</a>`
+  template: `<a href="{{url}}" download target="_top" class="font-medium-1 mr-2" style="cursor:pointer;color:blue" >{{value}}</a>`
 })
-// (click) ="downloadDocument()"
 export class CustomRendererFileComponent implements OnInit {
-
+  url = '';
   constructor() {
   }
   renderValue: string;
   @Input() value: string | number;
   @Input() rowData: any;
-  url = '';
   ngOnInit() {
     this.url = environment.apiUrl + 'ocDocument/download/' + this.rowData._id;
   }
+}
+@Component({
+  selector: 'app-custom-renderer-file-delete',
+  template: `<span (click)="onDelete()" class="font-medium-1 mr-2" style="cursor:pointer;color:red">X</span>`
+})
+export class CustomRendererFileDeleteComponent implements OnInit {
 
-  downloadDocument() {
+  constructor(private dashboardService: DashboardService, private toasterService: ToastrService, private router: Router) {
+  }
+  @Output() save: EventEmitter<any> = new EventEmitter();
+  renderValue: string;
+  @Input() value: string | number;
+  @Input() rowData: any;
+  ngOnInit() {
+  }
+  onDelete() {
+    this.dashboardService.deleteDocument(this.value).subscribe(res => {
+      if (res.status === 'success') {
+        this.toasterService.success(res.message);
+        this.save.emit(true);
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
   }
 }

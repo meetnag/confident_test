@@ -5,7 +5,7 @@ import { DashboardComponent, CustomRendererComponent, CustomRendererViewComponen
 import { DashboarRoutingdModule } from './dashboard-routing.module';
 import { AddEditOcComponent } from './add-edit-oc/add-edit-oc.component';
 import { ViewOcComponent } from './view-oc/view-oc.component';
-import { UploadDocumentsComponent, CustomRendererFileComponent } from './upload-documents/upload-documents.component';
+import { UploadDocumentsComponent, CustomRendererFileComponent, CustomRendererFileDeleteComponent } from './upload-documents/upload-documents.component';
 import { AddEditOcSrnoComponent, CustomRendererSrNoComponent } from './add-edit-oc-srno/add-edit-oc-srno.component';
 import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-labels.component';
 
@@ -20,13 +20,14 @@ import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-label
     CustomRendererComponent,
     CustomRendererSrNoComponent,
     CustomRendererViewComponent,
-    CustomRendererFileComponent
+    CustomRendererFileComponent,
+    CustomRendererFileDeleteComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     DashboarRoutingdModule
   ],
-  entryComponents: [CustomRendererComponent, CustomRendererSrNoComponent, CustomRendererViewComponent, CustomRendererFileComponent]
+  entryComponents: [CustomRendererComponent, CustomRendererSrNoComponent, CustomRendererViewComponent, CustomRendererFileComponent, CustomRendererFileDeleteComponent]
 })
 export class DashboardModule { }

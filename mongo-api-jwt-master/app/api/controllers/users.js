@@ -1,7 +1,7 @@
 const userModel = require('../models/users');
 const userRoleModel = require('../models/userRole');
-const branchModel = require('../models/masterDatabase/branch');
 
+const userLoggedModel = require('..//models/userLogged');
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken');
 module.exports = {
@@ -14,13 +14,29 @@ module.exports = {
       
     });
  },
+
 login: function(req, res, next) {
-         userModel.findOne({email:req.body.email}, function(err, userInfo){
+
+         let userEmail = req.body.email
+         userModel.findOne({email:userEmail}, function(err, userInfo){
             if (err) {
             next(err);
             } else if(userInfo) {
               
                if(bcrypt.compareSync(req.body.password, userInfo.password)) {
+                  console.log("headers",req.headers['user-agent'])
+                  userLoggedModel.remove({userEmail:userEmail },function(err,result){
+                     let userLogged = new userLoggedModel ({
+                        userEmail: userEmail ,
+                        deviceId : req.headers['user-agent'],
+                        loggedInTime:Date()
+                     });
+                     userLogged.save(function(err,result) {
+                        if (err)
+                           res.json({status:"error",message:"something looks wrong!!!",data:err});
+                     }); 
+                  })
+
                   const token = jwt.sign({id: userInfo._id}, req.app.get('secretKey'), { expiresIn: '1h' });
                   delete userInfo["password"]
                   let userI = userInfo;
@@ -33,22 +49,9 @@ login: function(req, res, next) {
                      if(result){
                         roleName=result.RoleName;
                         res.json({status:"success", message: "Login Successfully!!!", data:{user: userInfo, token:token,userRole :roleName,branchName:branchName}});
-                        //       
-                        // if (userInfo.branchId){
-                        //    branchModel.findOne({_id:userInfo.branchId},function(err,result){
-                        //       if(result){
-                        //          branchName = result.name;
-                        //          res.json({status:"success", message: "Login Successfully!!!", data:{user: userInfo, token:token,userRole :roleName,branchName:branchName}});
-                        //       }
-                        //       else
-                        //          res.json({status:"error", message: "Something went wrong!!!", data:err}); 
-                        //    });
-                        // }else
-                        //    res.json({status:"success", message: "Login Successfully!!!", data:{user: userInfo, token:token,userRole :roleName}});  
                      }
                      else
                         res.json({status:"error", message: "Login Successfully!!!", data:err});
-                        //      
                   }); 
                }else
                   res.json({status:"error", message: "Invalid email/password!!!", data:null});
