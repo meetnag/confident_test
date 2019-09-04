@@ -26,11 +26,13 @@ export class JwtInterceptor implements HttpInterceptor {
     currentUserToken: any;
     ipAddress: any = '';
     currentUser :any;
+    currentUserName :any;
     constructor(private authenticationService: AuthenticationService, private router: Router) {
         this.authenticationService.currentUserSubject.subscribe(data => {
             if (data != null) {
                 this.currentUserToken = data.token;
                 this.currentUser = data.user.email;
+                this.currentUserName = data.user.name;
 
             }
         })
@@ -47,7 +49,8 @@ export class JwtInterceptor implements HttpInterceptor {
                 setHeaders: {
                     'x-access-token': `${this.currentUserToken ? this.currentUserToken : ''}`,
                     'x-auth-useragent': this.ipAddress,
-                    'x-auth-user':this.currentUser
+                    'x-auth-user':this.currentUser,
+                    'x-auth-username':this.currentUserName
                 }
             });
         }

@@ -37,6 +37,7 @@ export class StatusLog {
     _id: any;
     Date: any;
     ChangedStatus: any;
+    PreviousStatus:any;
 }
 export class Installation {
     installationDate: any;
