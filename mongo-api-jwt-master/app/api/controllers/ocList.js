@@ -1,5 +1,7 @@
 const ocListModel = require('../models/ocList');
-
+const userModel = require('../models/users');
+const modbusModel = require('../models/modbus');
+const userRoleModel = require('../models/userRole');
 module.exports = {
    
    modbusHMI: function(req, res, next) {
@@ -9,6 +11,31 @@ module.exports = {
     //   }
      // });
      },
+
+   modbusAddd: function(req, res,next) {
+      console.log(req.body)
+      const d = new Date();
+         var ocList = new modbusModel ({
+              test:req.body.output
+          });
+         // ocList.StatusLog = {
+         //    "UserName": 
+         //    "PreviousStatus": "New",
+         //    "ChangedStatus":"New",
+         //    "Date":d
+         // }
+          // Saving the model to the database //                   
+          ocList.save(function(err,result) {
+                     
+            if (err)
+              res.json({status:"success",message:"something looks wrong!!!",data:err})
+
+                 //next(error)
+            // If successfuly saved //
+            else 
+                res.json({status:"success",message:" Added successfully!!!",data:result})
+        });
+   },
    updateStatus:function(req,res,next){
 
       let roleName = req.body.roleName;
@@ -18,18 +45,65 @@ module.exports = {
       let branchName = req.body.branchName;
       let updateStatus;
       let userName = req.body.userName;
-      
+      let AssignTo ;
       let changeStatusFlag =true;
       if (status == "Installation Complete" )
          updateStatus = "Closed";
-      else if ((roleName == "Admin" || roleName == "QA Team") && status=="New") 
+      else if ((roleName == "Admin" || roleName == "QA Team") && status=="New") {
          updateStatus = "In Progress - Sales";
-      else if(roleName=="Sales Team" && branchName)
+         userRoleModel.find({"RoleName":"Sales Team"},function(err,result){
+            // console.log("b",result)
+            if(result){
+               userModel.find({"RoleId":result[0]._id},function(err,result){
+                  console.log("a",result)
+                  if(result){
+                     AssignTo = result[0].name;
+                     console.log("assign to" ,AssignTo)
+                  }
+               })
+            }
+         
+         })
+        
+      }
+      else if(roleName=="Sales Team" && branchName ){//&& status != "In Progress - Branch/Dealer"){
+         // console.log("in if")
          updateStatus="In Progress - Branch/Dealer";
+         // console.log(req.body.branchId)
+         userModel.find({"branchId":req.body.branchId},function(err,result){
+            if (err) {
+               console.log(err)
+            }
+            else{
+               AssignTo = result[0].name
+               // console.log("asdas",result)
+            }
+         }
+
+         
+         )
+         // userModel.aggregate([
+         //    {
+         //      $lookup:
+         //        {
+         //          from: "userRole",
+         //          localField: "_id",
+         //          foreignField: "RoleId",
+         //          as: "inventory_docs"
+         //        }
+         //   }
+         // ]).exec(function(err,result){
+         //    if (result ) console.log("dsa",result)
+         //    else console.log(err)
+         // })
+         // userModel.find().populate('../models/userRole').exec(function(err, users) {
+         //       console.log("sa",users)
+         // });
+      }
       else
          changeStatusFlag = false;
-         
-      if (changeStatusFlag){
+      // console.log("dad",changeStatusFlag)  
+      setTimeout(function(){if (changeStatusFlag){
          let d = new Date()
          query={
             "$push": {
@@ -37,7 +111,9 @@ module.exports = {
                      "UserName": userName,
                      "PreviousStatus": status,
                      "ChangedStatus":updateStatus,
-                     "Date":d
+                     "Date":d,
+                     "AssignTo":AssignTo
+
                }
             },
             "Status":{
@@ -55,6 +131,9 @@ module.exports = {
       }
       else
          res.json({status:"error", message: "Invalid Transfer", data:null});
+
+            
+         }, 1000);
    },
    getScanOcNumber: function(req, res, next) {
          ocListModel.find({ "OCNumber":req.body.OCNumber},function(err,result){
@@ -69,7 +148,7 @@ module.exports = {
 
       let roleName = req.body.roleName;
       // console.log("function callaed")
-      console.log(req.body)
+      // console.log(req.body)
       if (roleName == "Admin" || roleName == "QA Team" || roleName == "Sales Team" ) {
          ocListModel.find({ "OCNumber":req.body.OCNumber},function(err,result){
             if(result)
@@ -174,6 +253,7 @@ module.exports = {
    },
    create: function(req, res,next) {
 
+      const d = new Date();
          var ocList = new ocListModel ({
               OCDate: req.body.OCDate,
               OCNotes: req.body.OCNotes,
@@ -191,7 +271,20 @@ module.exports = {
               CreatedDate : req.body.CreatedDate,
               UpdatedDate : req.body.UpdatedDate,
               SerialNumbers : req.body.SerialNumbers,
+              StatusLog : {
+                 UserName :req.headers['x-auth-username'],
+                 PreviousStatus : "New",
+                 ChangedStatus:"New",
+                 Date: d,
+                 AssignTo : req.headers['x-auth-username'],
+              }
           });
+         // ocList.StatusLog = {
+         //    "UserName": 
+         //    "PreviousStatus": "New",
+         //    "ChangedStatus":"New",
+         //    "Date":d
+         // }
 
           ocListModel.findOne({
               'OCNumber': req.body.OCNumber
@@ -318,21 +411,21 @@ module.exports = {
                }
             
 
-            if (changeStatusFlag){
-               ocList.Status={};
-               ocList.Status.name = updateStatus;
-               ChangeStausLog={
-                  "$push": {
-                     "StatusLog": {
-                           "UserName": userName,
-                           "PreviousStatus": PreviousStatus,
-                           "ChangedStatus":updateStatus,
-                           "Date":d
-                     }
-                  },
-               }
-               update = Object.assign(ocList, ChangeStausLog);
-            }
+            // if (changeStatusFlag){
+            //    ocList.Status={};
+            //    ocList.Status.name = updateStatus;
+            //    ChangeStausLog={
+            //       "$push": {
+            //          "StatusLog": {
+            //                "UserName": userName,
+            //                "PreviousStatus": PreviousStatus,
+            //                "ChangedStatus":updateStatus,
+            //                "Date":d
+            //          }
+            //       },
+            //    }
+            //    update = Object.assign(ocList, ChangeStausLog);
+            // }
          }
          
          ocListModel.findOneAndUpdate({

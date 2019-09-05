@@ -72,7 +72,7 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
           });
         }
         this.source.load(this.data);
-        console.log('this.sr', this.ocObj)
+        // console.log('this.sr', this.ocObj)
       }
     })
   }
@@ -146,7 +146,7 @@ export class CustomRendererSrNoComponent implements OnInit, OnDestroy {
     } else {
       this.ocObj.SerialNumbers = [];
       this.ocObj.SerialNumbers.push(obj);
-      console.log('this.ser', this.ocObj.SerialNumbers);
+      // console.log('this.ser', this.ocObj.SerialNumbers);
     }
     this.dashboardService.currentOcObj.next(this.ocObj);
   }

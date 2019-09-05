@@ -183,6 +183,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         if (this.currentUser.userRole !== 'Branch/Dealer') {
             if (this.rowData.BranchID._id !== '') {
                 body['branchName'] = this.rowData.BranchID.name;
+                body['branchId'] = this.rowData.BranchID._id;
             }
         }
         if (this.rowData.Installation && this.rowData.Installation.installationComplete) {

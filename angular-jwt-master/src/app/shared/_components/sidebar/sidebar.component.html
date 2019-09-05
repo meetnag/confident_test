@@ -1,4 +1,4 @@
-<div class="app-sidebar">
+<!-- <div class="app-sidebar">
   <div class="sidebar-header">
     <div class="logo clearfix">
       <a style="display: none !important;" id="sidebarToggle" href="#"
@@ -25,6 +25,45 @@
       </ul>
     </div>
   </div>
-  <!-- main menu content-->
   <div class="sidebar-background"></div>
-</div>
+</div> -->
+<header class="header" id="nav">
+  <div class="container" id="container-fullwidth">
+    <nav class="navbar navbar-default">
+      <!-- <div class="container-fluid"> -->
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><img src="assets/logo.png" alt="logo"></a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+
+          <li>
+            <a routerLink="/pages"><i class="btn btn-icon fa fa-building-o" aria-hidden="true"></i>
+              OC List</a>
+          </li>
+          <li>
+            <a routerLink="/pages/oc-history"><i class="btn btn-icon fa fa-share-alt-square" aria-hidden="true"></i>
+              OC Archives</a>
+          </li>
+          <li>
+            <a routerLink="/scan/0"><i class="btn btn-icon fa fa-tasks" aria-hidden="true"></i>
+              OC Track</a>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+
+      <!-- </div> -->
+      <!-- /.container-fluid -->
+    </nav>
+  </div>
+</header>

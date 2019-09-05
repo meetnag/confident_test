@@ -5,16 +5,18 @@
         <h3 class="panel-hd">OC Archives</h3>
       </div>
       <div class="panel-body" id="panel-list">
-        <div class="btn-group content_btn">
-          <label class="col-sm-3 control-label">OC Number</label>
-          <div class="col-sm-4">
+        <!-- class="btn-group content_btn" -->
+        <div class="row">
+          <label class="col-sm-2 control-label">OC Number</label>
+          <div class="col-sm-3">
             <input type="text" name="numb" (change)="onOcNumberChange()" placeholder="OC Number"
               [(ngModel)]="searchOcNo" class="form-control">
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-2 col-sm-2">
             <label for="all">
-              <input id="all" value='all' type="radio" name="alle" (change)="onPriorityChange()"
-                [(ngModel)]="priority">
+              <input id="all" value='all' type="radio" name="alle" (change)="onPriorityChange()" [(ngModel)]="priority">
               All
             </label>
           </div>

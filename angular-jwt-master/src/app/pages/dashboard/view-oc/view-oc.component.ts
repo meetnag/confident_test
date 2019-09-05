@@ -114,7 +114,7 @@ export class ViewOcComponent implements OnInit, OnDestroy {
               this.scanList.push(obj);
             })
           }
-          console.log('this.scanList', this.scanList)
+          // console.log('this.scanList', this.scanList)
         }
       }
     });

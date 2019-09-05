@@ -3,7 +3,6 @@ const router = express.Router();
 const ocListController = require('../app/api/controllers/ocList');
 
 
-router.get('/modbusHMI', ocListController.modbusHMI);
 
 router.get('/getOcNumber', ocListController.getOcNumber);
 /**

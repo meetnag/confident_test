@@ -87,6 +87,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
     this.ocObj$ = this.dashboardService.selectedObj.subscribe(data => {
       if (data) {
         this.ocObj = data;
+        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy hh:mm a');
       }
     })
   }

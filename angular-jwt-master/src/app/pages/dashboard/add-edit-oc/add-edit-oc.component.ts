@@ -141,8 +141,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     this.ocObj.SpareIDs = [];
     this.ocObj.SubAssemblyIDs = [];
     this.ocObj.Installation = this.installationObj;
-    console.log('onj', this.installationObj.installationComplete)
-    console.log('onj', this.ocObj)
+    // console.log('onj', this.installationObj.installationComplete)
+    // console.log('onj', this.ocObj)
     if (this.selectedSubAssembly.length) {
       this.selectedSubAssembly.forEach(ele => {
         let i = this.subAssemblyList.findIndex(v => v._id == ele);
@@ -184,7 +184,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     if (!this.id) {
       this.ocObj.Status = { '_id': 1, 'name': 'New' };
     }
-    console.log('this.ocObj.SerialNumbers', this.ocObj.SerialNumbers)
+    // console.log('this.ocObj.SerialNumbers', this.ocObj.SerialNumbers)
     this.dashboardService.currentOcObj.next(this.ocObj);
     localStorage.setItem('ocObj', JSON.stringify(this.ocObj));
     if (this.currentUser.userRole === 'Admin' || this.currentUser.userRole === 'QA Team') {

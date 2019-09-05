@@ -166,6 +166,9 @@ StatusLog:[
         },
         Date:{
             type:Date
+        },
+        AssignTo :{
+            type:String
         }
     }
 ]

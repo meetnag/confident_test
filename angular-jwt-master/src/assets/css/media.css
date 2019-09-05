@@ -1,6 +1,4 @@
-@import '~ngx-toastr/toastr';
- 
-@media only screen and (min-width: 980px) and (max-width: 1199px) {
+ @media only screen and (min-width: 980px) and (max-width: 1199px) {
 
   .table>tbody>tr>td,
   .table>tbody>tr>th,

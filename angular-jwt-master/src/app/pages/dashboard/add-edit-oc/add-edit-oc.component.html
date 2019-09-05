@@ -32,13 +32,14 @@
             <div class="form-group">
               <label class="col-sm-4 control-label">Customer Name</label>
               <div class="col-sm-8">
-                <input type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
+                <input maxlength="100" type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-4 control-label">Customer Address</label>
               <div class="col-sm-8">
-                <textarea type="text" name="address" [(ngModel)]="ocObj.Customer.city" class="form-control"></textarea>
+                <textarea maxlength="200" type="text" name="address" [(ngModel)]="ocObj.Customer.city"
+                  class="form-control"></textarea>
               </div>
             </div>
             <div class="form-group">
@@ -51,11 +52,11 @@
             <div class="form-group">
               <label class="col-sm-4 control-label">Notes</label>
               <div class="col-sm-8">
-                <textarea type="text" maxlength="2000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                <textarea type="text" maxlength="1000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
                   #ocnotes="ngModel"></textarea>
                 <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
                   <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
-                    Notes can be of max length 200.
+                    Notes can be of max length 1000.
                   </div>
                 </div>
               </div>
@@ -65,7 +66,7 @@
               <div class="col-sm-8">
                 <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
                   name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                  data-title="Date Opened" [min]="ocObj.minInstallationDate">
+                  data-title="Date Opened" [min]="ocObj.minInstallationDate" onkeydown="return false">
               </div>
             </div>
             <div class="form-group" *ngIf="(currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team') ">
@@ -79,7 +80,8 @@
               <label class="col-sm-4 control-label">Invoice Date</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
-                  data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" [min]="ocObj.OCDate">
+                  data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened"
+                  [min]="ocObj.OCDate" onkeydown="return false">
               </div>
             </div>
 
@@ -90,7 +92,7 @@
               <div class="col-sm-8">
                 <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
                   data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
-                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
                 <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
                   <div *ngIf="ocdate.errors && ocdate.errors.required">
                     OC Date is required.
