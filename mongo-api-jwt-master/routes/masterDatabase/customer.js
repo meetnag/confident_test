@@ -6,7 +6,7 @@ router.get('/', customerController.getAll);
         * @api {get} customer/ get customer list
         * @apiVersion 0.0.1
         * @apiGroup masterDatabase
-        *
+        * 
         * @apiSuccessExample {json} Success-Response:
         *{
         "status": "success",

@@ -8,10 +8,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 
 const ocDocumentController = require('../app/api/controllers/ocDocument');
-// var month_name = function(dt){
-//   mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-//     return mlist[dt.getMonth()];
-//   };
+
 var storage = multer.diskStorage({
   
     destination: (req, file, cb) => {

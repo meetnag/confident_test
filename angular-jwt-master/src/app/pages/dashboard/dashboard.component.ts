@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 valuePrepareFunction: (OCDate) => {
                     var raw = new Date(OCDate);
                     if (raw) {
-                    return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+                    return this.datePipe.transform(raw, 'dd/MM/yyyy ');
                     }
                 }
             },

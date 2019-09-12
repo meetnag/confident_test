@@ -1,29 +1,87 @@
 const ocListModel = require('../models/ocList');
 const userModel = require('../models/users');
 const modbusModel = require('../models/modbus');
+const modbusConsolidatedModel = require('../models/modbusConsoldated');
 const userRoleModel = require('../models/userRole');
 module.exports = {
    
+   modbusConsolidatedGetAll: function(req, res, next) {
+      let modbusConsoldated = {
+         seqNumber : req.body.output[0],
+         HMINo : req.body.output[1]
+      };
+      console.log("output",req.body.output)
+      let resultModbus=[];
+      modbusConsolidatedModel.find(modbusConsoldated, function(err, result){
+        if (err){
+         res.json({status:"error", message: "Invalid Oc Number or !!!", data:{OCNumber: OCNumber}});
+        } else{
+            resultModbus.push(result[0].seqNumber,result[0].HMINo, result[0].lotNo,result[0].colorSeq,result[0].quantity,result[0].timeDuration);
+            // console.log("result",resultModbus)
+            res.json(resultModbus);
+        }
+      });
+     },
+   addModbusConsolidated: function(req, res, next) {
+   var modbusConsoldated = new modbusConsolidatedModel ({
+      seqNumber: req.body.seqNumber,
+      HMINo : req.body.HMINo,
+      lotNo: req.body.lotNo,
+      colorSeq:req.body.colorSeq,
+      quantity: req.body.quantity,
+      timeDuration: req.body.timeDuration,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+   });
+   modbusConsoldated.save( function(err, result){
+      if (err)
+         next(err);
+      else
+         res.json(result);
+   });
+   },
+   updateModbusConsolidated: function(req, res, next) {
+   // let modbusConsoldated = [];
+   let reqModbusConsoldated = {
+      seqNumber : req.body.output[0],
+      HMINo : req.body.output[1]
+   };
+   console.log("update",req.body.output)
+   var modbusConsoldated =  {
+      seqNumber: req.body.output[0],
+      HMINo : req.body.output[1],
+      lotNo: req.body.output[2],
+      startTime: req.body.output[3],
+      endTime: req.body.output[4],
+   };
+   modbusConsolidatedModel.findOneAndUpdate(reqModbusConsoldated,modbusConsoldated, function(err, result){
+      if (err){
+         next(err);
+      } else{
+         // modbusConsoldated.push({lotNo: movies[0], colorSeq: movies[1], quantity: movies[2],timeDuration:movies[3],endTime: movies[4]});
+         res.json(result);
+      }
+   });
+   },
    modbusHMI: function(req, res, next) {
      // movieModel.findByIdAndUpdate(req.params.movieId,{name:req.body.name}, function(err, movieInfo){
        let jsonData =[1,22,3232,5,6];
         res.json(jsonData);
     //   }
      // });
-     },
-
+   },
    modbusAddd: function(req, res,next) {
-      console.log(req.body)
+      // console.log(req.body)
       const d = new Date();
+
+
+      var data = JSON.stringify(req.body.output)
+
          var ocList = new modbusModel ({
-              test:req.body.output
+              test:data,
+              HMINo : req.body.HMINo
           });
-         // ocList.StatusLog = {
-         //    "UserName": 
-         //    "PreviousStatus": "New",
-         //    "ChangedStatus":"New",
-         //    "Date":d
-         // }
+
           // Saving the model to the database //                   
           ocList.save(function(err,result) {
                      
@@ -40,7 +98,6 @@ module.exports = {
 
       let roleName = req.body.roleName;
       let status = req.body.status;
-      let installationComplete = req.body.installationComplete;
       let ocId = req.body.ocId;
       let branchName = req.body.branchName;
       let updateStatus;
@@ -52,13 +109,10 @@ module.exports = {
       else if ((roleName == "Admin" || roleName == "QA Team") && status=="New") {
          updateStatus = "In Progress - Sales";
          userRoleModel.find({"RoleName":"Sales Team"},function(err,result){
-            // console.log("b",result)
             if(result){
                userModel.find({"RoleId":result[0]._id},function(err,result){
-                  console.log("a",result)
                   if(result){
                      AssignTo = result[0].name;
-                     console.log("assign to" ,AssignTo)
                   }
                })
             }
@@ -66,43 +120,20 @@ module.exports = {
          })
         
       }
-      else if(roleName=="Sales Team" && branchName ){//&& status != "In Progress - Branch/Dealer"){
-         // console.log("in if")
+      else if(roleName=="Sales Team" && branchName && status != "In Progress - Branch/Dealer"){
          updateStatus="In Progress - Branch/Dealer";
-         // console.log(req.body.branchId)
          userModel.find({"branchId":req.body.branchId},function(err,result){
             if (err) {
                console.log(err)
             }
             else{
                AssignTo = result[0].name
-               // console.log("asdas",result)
             }
          }
-
-         
-         )
-         // userModel.aggregate([
-         //    {
-         //      $lookup:
-         //        {
-         //          from: "userRole",
-         //          localField: "_id",
-         //          foreignField: "RoleId",
-         //          as: "inventory_docs"
-         //        }
-         //   }
-         // ]).exec(function(err,result){
-         //    if (result ) console.log("dsa",result)
-         //    else console.log(err)
-         // })
-         // userModel.find().populate('../models/userRole').exec(function(err, users) {
-         //       console.log("sa",users)
-         // });
-      }
+         )}
       else
          changeStatusFlag = false;
-      // console.log("dad",changeStatusFlag)  
+        
       setTimeout(function(){if (changeStatusFlag){
          let d = new Date()
          query={
@@ -143,7 +174,6 @@ module.exports = {
                res.json({status:"error",message:"No Oc List found!!!",data:err})  
          });
    },
-
    getByOCNumber: function(req, res, next) {
 
       let roleName = req.body.roleName;
@@ -176,22 +206,6 @@ module.exports = {
    },
    getByRoleName: function(req, res, next) {
       let roleName = req.body.roleName;
-      // console.log(roleName)
-      let Status =null;
-      let query = {}
-      // if(roleName !== "Admin" && roleName !== "QA Team") {
-      //    // console.log("fsdf")
-      //    if(roleName == "Sales Team")
-      //       Status = "In Progress - Sales"
-      //    else if (roleName == "Branch/Dealer")
-      //       Status = "In Progress - Branch/Dealer";
-      //       query= {
-      //          "Status":{
-      //             "name":Status,
-      //          }
-      //       }
-      // }
-      
       if (req.body.Priority) {
          if (roleName == "Admin" || roleName == "QA Team" ) {
             ocListModel.find({"Priority.name":req.body.Priority , "Status.name" :{ $ne:"Closed" } },function(err,result){
@@ -388,44 +402,21 @@ module.exports = {
    updateOC:function(req, res,next) {
 
          let d = new Date()
-         let roleName = req.body.roleName;
-         let updateStatus;
          let ocList = req.body;
-         let PreviousStatus  = req.body.Status.name
-         let userName = req.body.userName
-         let ChangeStausLog;
-         let changeStatusFlag =false ;
          let update;
          update = ocList;
                   
          if(req.body.Installation){
-
+            
             let installationDate = req.body.Installation.installationDate;
             if(req.body.Installation.installationComplete){
                updateStatus="Installation Complete";
-               changeStatusFlag = true ;
+               ocList.Status.name = updateStatus;
             }
             else if(installationDate){
-                  changeStatusFlag = true ;
+                  ocList.Status.name = updateStatus;
                   updateStatus="Installation Scheduled";
                }
-            
-
-            // if (changeStatusFlag){
-            //    ocList.Status={};
-            //    ocList.Status.name = updateStatus;
-            //    ChangeStausLog={
-            //       "$push": {
-            //          "StatusLog": {
-            //                "UserName": userName,
-            //                "PreviousStatus": PreviousStatus,
-            //                "ChangedStatus":updateStatus,
-            //                "Date":d
-            //          }
-            //       },
-            //    }
-            //    update = Object.assign(ocList, ChangeStausLog);
-            // }
          }
          
          ocListModel.findOneAndUpdate({

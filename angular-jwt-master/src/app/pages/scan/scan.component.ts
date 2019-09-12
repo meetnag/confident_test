@@ -112,7 +112,7 @@ export class ScanComponent implements OnInit, OnDestroy {
 
           var raw = new Date(this.ocObj.OCDate);
 
-          this.ocObj.OCDate = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          this.ocObj.OCDate = this.datePipe.transform(raw, 'dd/MM/yyyy ');
           // console.log(this.ocObj)
           if (this.ocObj.Customer && this.ocObj.Customer.name != '') {
             this.customerName = this.ocObj.Customer.name;
@@ -128,17 +128,17 @@ export class ScanComponent implements OnInit, OnDestroy {
               if (ele.PreviousStatus === 'New' && ele.ChangedStatus === 'New') {
                 this.qaTeamObj = ele;
                 raw = new Date(this.qaTeamObj['Date']);
-                this.qaTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+                this.qaTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy ');
 
               } else if (ele.PreviousStatus === 'New' && ele.ChangedStatus === 'In Progress - Sales') {
                 this.salesTeamObj = ele;
                 raw = new Date(this.salesTeamObj['Date']);
 
-                this.salesTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+                this.salesTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy ');
               } else if (ele.PreviousStatus === 'In Progress - Sales' && ele.ChangedStatus === 'In Progress - Branch/Dealer') {
                 this.branchTeamObj = ele;
                 raw = new Date(this.branchTeamObj['Date']);
-                this.branchTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+                this.branchTeamObj['Date'] = this.datePipe.transform(raw, 'dd/MM/yyyy ');
 
               }
             });

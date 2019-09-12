@@ -27,7 +27,7 @@ router.post('/getOCArchieves',ocListController.getClosedOCs);
         * @apiGroup OC List
         *
         * @apiParam {String} roleName to get OC List. (Should pass as a body parameter.- required)
-        * @apiParam {String} branchId for branch group user. (Should pass as a body parameter. - optional)
+        * @apiParam {String} branchId for branch group user. (Should pass as a body parameter. - if branch then required otherwise optional)
         * @apiParam {String} Priority for Oc List. (Should pass as a body parameter. - optional)
         
         * @apiSuccessExample {json} Success-Response:
@@ -113,7 +113,6 @@ router.post('/updateStatus',ocListController.updateStatus);
         * @apiParam {String} userName Name of user.(User Name should be pass as a body parameter -required)       
         * @apiParam {String} roleName roleName should be pass as a body parameter-required.
         * @apiParam {String} status status of current OC. Status should be pass as a body parameter - required.
-        * @apiParam {Boolean} installationComplete installation Complete should pass as a body parameter.
         * @apiParam {String} branchName branch Name  should pass as a body parameter.
         * 
         * @apiSuccessExample {json} Success-Response:
@@ -146,15 +145,15 @@ router.post('/create', ocListController.create);
         * @apiParam {String} ProductID product Ids is an object ( Field - _id:String ,name :String.)
         * @apiParam {String} SubAssemblyIDs branch Ids is an array of objects ( Field -_id:String , name :String.)
         * @apiParam {String} SpareIDs spare Ids is an object ( Field - _id:String ,name :String.)
-        * @apiParam {String} Installation installtion is an object.(Field - installationDate:Date,installationComplete:boolean,installationCompleteDate,invoiceDate:Date,InstallationTechnician:String,technicianContact:String,transport:String,invoiceNumber:String)
+        * @apiParam {String} Installation installtion is an object.(Field - installationDate:Date,installationComplete:boolean,installationCompleteDate:Date,invoiceDate:Date,installationTechnician:String,technicianContact:String,transport:String,invoiceNumber:String)
         * @apiParam {String} Status Status is an object ( Field - name :String.)
         * @apiParam {String} CreatedBy created by (person who created the list)
         * @apiParam {String} UpdatedBy updated by ( person name who updated the list)
         * @apiParam {Date} CreatedDate creation date
         * @apiParam {Date} UpdatedDate updated date
-        * 
         * @apiParam {String} SerialNumbers serial numbers is an array of objects ( Field - ID:Number ,name : String, srno : String)
-        * 
+        * @apiParam {String} StatusLog StatusLog of OC .(Field - UserName:String,PreviousStatus:String,ChangedStatus:String,Date:Date,AssignTo:String)
+        *
         * @apiSuccessExample {json} Success-Response:
         *{
         "status": "success",
@@ -177,8 +176,8 @@ router.post('/getByOCNumber', ocListController.getByOCNumber);
         * @apiGroup OC List
         *
         * @apiParam {Number} OCNumber to get OC. (Should pass as a body parameter. - required)
-        * @apiParam {String} roleName to get OC List. (Should pass as a body parameter. - required)
-        * @apiParam {String} branchId to get OC List. (Should pass as a body parameter. - required only if branch user)
+        * @apiParam {String} roleName role Name to get OC. (Should pass as a body parameter. - required)
+        * @apiParam {String} branchId branch Id to get OC. (Should pass as a body parameter. - required only if branch user)
         
         * @apiSuccessExample {json} Success-Response:
         *{
@@ -270,7 +269,7 @@ router.post('/',ocListController.getByRoleName);
         *
         * @apiParam {String} roleName to get OC List. (Should pass as a body parameter.- required)
         * @apiParam {String} Priority to filter OC List. (Should pass as a body parameter. - optional)
-        * @apiParam {String} branchId for branch group user. (Should pass as a body parameter. - optional)
+        * @apiParam {String} branchId for branch group user. (Should pass as a body parameter. - if branch user then required otherwise optional)
         * 
         * @apiSuccessExample {json} Success-Response:
         *{
@@ -324,6 +323,16 @@ router.post('/',ocListController.getByRoleName);
                     "code":"String",
                     "name":"String"
                 },
+                Installation:{
+                    "installationDate":"Date",
+                    "installationComplete":"Boolean"
+                    "installationCompleteDate":"Date"
+                    "invoiceDate":"Date",
+                    "installationTechnician":"String",
+                    "technicianContact":"String",
+                    "transport":"String",
+                    "invoiceNumber":"String",
+                },
                 "Status":{
                     "_id":"String",
                     "name":"String"
@@ -332,6 +341,14 @@ router.post('/',ocListController.getByRoleName);
                 "CreatedDate":"Date",
                 "UpdatedBy":"String",
                 "UpdatedDate":"Date",
+                "StatusLog":{
+                    "_id":"String",
+                    "UserName":"String",
+                    "PreviousStatus":"String",
+                    "ChangedStatus":"String",
+                    "Date":"Date"
+                    "AssignTo":"String"
+                }
                 "__v": 0
             },
         *}

@@ -6,6 +6,10 @@ const modbusSchema = new Schema({
   type: String,
   trim: true,  
   required: true,
+ },
+ HMINo:{
+     type:Number
  }
 });
+
 module.exports = mongoose.model('modbus', modbusSchema)

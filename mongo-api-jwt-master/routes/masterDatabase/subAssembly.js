@@ -3,9 +3,12 @@ const router = express.Router();
 const subAssemblyController = require('../../app/api/controllers/masterDatabase/subAssembly');
 router.post('/create', subAssemblyController.create);
 /**
-        * @api {get} subAssembly/create create subAssembly
+        * @api {post} subAssembly/create create subAssembly
         * @apiVersion 0.0.1
         * @apiGroup masterDatabase
+        *
+        * @apiParam {String} name name of sub Assembly .(name should be pass as a body Parameter - required)
+        * @apiParam {String} code code of sub Assembly .(code should be pass as a body Parameter - required)
         *
         * @apiSuccessExample {json} Success-Response:
         *{
@@ -36,7 +39,8 @@ router.get('/', subAssemblyController.getAll);
                 "subAssemblyList":[
                         {
                                 "_id":"string",
-                                "name":"string"
+                                "name":"string",
+                                "code":"string"
                         }
                 ]
         }

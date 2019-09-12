@@ -56,7 +56,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         valuePrepareFunction: (OCDate) => {
           var raw = new Date(OCDate);
           if (raw) {
-          return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          return this.datePipe.transform(raw, 'dd/MM/yyyy ');
           }
       }
       },
@@ -87,7 +87,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
     this.ocObj$ = this.dashboardService.selectedObj.subscribe(data => {
       if (data) {
         this.ocObj = data;
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy hh:mm a');
+        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy ');
       }
     })
   }

@@ -56,7 +56,7 @@ export class ViewOcComponent implements OnInit, OnDestroy {
         valuePrepareFunction: (OCDate) => {
           var raw = new Date(OCDate);
           if (raw) {
-          return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
+          return this.datePipe.transform(raw, 'dd/MM/yyyy ');
           }
       }
       }
@@ -92,10 +92,10 @@ export class ViewOcComponent implements OnInit, OnDestroy {
           this.ocObj = data.data.ocList[0];
           // var raw = new Date(this.ocObj.OCDate);
            
-          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy hh:mm a');
+          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy ');
           if(this.ocObj.Installation){
-              this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy hh:mm a');
-              this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy hh:mm a');
+              this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy ');
+              this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
             
           }
           this.getDocuments();

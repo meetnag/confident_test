@@ -12,17 +12,17 @@ module.exports = {
  },
 getAll: function(req, res, next) {
   let moviesList = [];
-movieModel.find({}, function(err, movies){
-   if (err){
-    next(err);
-   } else{
-    for (let movie of movies) {
-     moviesList.push({id: movie._id, name: movie.name, released_on: movie.released_on});
+  movieModel.find({}, function(err, movies){
+    if (err){
+      next(err);
+    } else{
+      for (let movie of movies) {
+      moviesList.push({id: movie._id, name: movie.name, released_on: movie.released_on});
+      }
+      res.json({status:"success", message: "Movies list found!!!", data:{movies: moviesList}});
+        
     }
-    res.json({status:"success", message: "Movies list found!!!", data:{movies: moviesList}});
-       
-   }
-});
+  });
  },
 updateById: function(req, res, next) {
   movieModel.findByIdAndUpdate(req.params.movieId,{name:req.body.name}, function(err, movieInfo){

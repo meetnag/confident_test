@@ -23,7 +23,6 @@ global.mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
 const app = express();
 
-// app.use(morgan('combined', { stream: winston.stream }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -74,7 +73,6 @@ app.get('/favicon.ico', function(req, res) {
 
 function validateUser(req, res, next) {
   jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function(err, decoded) {
-    // console.log(err)
     if (err) {
       res.status(401).send([{
         success:false,
@@ -97,7 +95,6 @@ function validateUser(req, res, next) {
     }
   });
 }
-
 
 // express doesn't consider not found 404 as an error so we need to handle 404 explicitly
 // handle 404 error

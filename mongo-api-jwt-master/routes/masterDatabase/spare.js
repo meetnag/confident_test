@@ -3,9 +3,12 @@ const router = express.Router();
 const spareController = require('../../app/api/controllers/masterDatabase/spare');
 router.post('/create', spareController.create);
 /**
-        * @api {get} spare/create create spare
+        * @api {post} spare/create create spare
         * @apiVersion 0.0.1
         * @apiGroup masterDatabase
+        *
+        * @apiParam {String} name name of spare .(name should be pass as a body Parameter - required)
+        * @apiParam {String} code code of spare .(code should be pass as a body Parameter - required)
         *
         * @apiSuccessExample {json} Success-Response:
         *{
@@ -36,7 +39,8 @@ router.get('/', spareController.getAll);
                 "spareList":[
                         {
                                 "_id":"string",
-                                "name":"string"
+                                "name":"string",
+                                "code":"string"
                         }
                 ]
         }
