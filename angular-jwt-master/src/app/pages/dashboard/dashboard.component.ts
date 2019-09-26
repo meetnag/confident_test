@@ -9,9 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { filter } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
-@Component({ templateUrl: 'dashboard.component.html' , providers: [DatePipe] })
+@Component({ templateUrl: 'dashboard.component.html', providers: [DatePipe] })
 export class DashboardComponent implements OnInit, OnDestroy {
     ocList: OcModel[] = [];
+    dateFormat = 'yyyy-MM-dd';
     source: LocalDataSource = new LocalDataSource();
     settings = {
         actions: false,
@@ -20,22 +21,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 title: 'OC Number',
                 type: 'custom',
                 renderComponent: CustomRendererViewComponent,
-                // onComponentInitFunction: (instance: any) => {
-                //     // if (instance.retry) {
-                //     instance.retry.on(row => {
-                //         this.getOcList();
-                //     });
-                //     // }
-                // },
                 filter: false
             },
             OCDate: {
                 title: 'OC Date',
                 filter: false,
                 valuePrepareFunction: (OCDate) => {
-                    var raw = new Date(OCDate);
-                    if (raw) {
-                    return this.datePipe.transform(raw, 'dd/MM/yyyy ');
+                    // console.log('date', OCDate)
+                    if (OCDate) {
+                        var raw = new Date(OCDate);
+                        if (raw) {
+                            return this.datePipe.transform(raw, this.dateFormat);
+                        }
                     }
                 }
             },
@@ -53,6 +50,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 title: 'Actions',
                 type: 'custom',
                 renderComponent: CustomRendererComponent,
+                onComponentInitFunction: (instance) => {
+                    instance.save.subscribe(data => {
+                        if (data) {
+                            this.getOcList();
+                        }
+                    });
+                },
                 filter: false,
             },
         },
@@ -64,7 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     priorityList: Priority[] = [];
     userRole = '';
     navigationSubscription;
-    constructor(private router: Router, private dashboardService: DashboardService,private datePipe: DatePipe,
+    constructor(private router: Router, private dashboardService: DashboardService, private datePipe: DatePipe,
         private authenticationService: AuthenticationService) {
         this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
             if (data != null) {
@@ -81,8 +85,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
+        if (isIEOrEdge) {
+            this.loadScript('../assets/jquery-swap.js');
+            this.dateFormat = 'dd/MM/yyyy'
+        }
         this.getOcList();
         this.getPriority();
+    }
+    public loadScript(url: string) {
+        this.dateFormat = 'dd/MM/yyyy'
+        const body = <HTMLDivElement>document.body;
+        const script = document.createElement('script');
+        script.innerHTML = '';
+        script.src = url;
+        script.async = false;
+        script.defer = true;
+        body.appendChild(script);
     }
     onOcNumberChange() {
         if (this.searchOcNo != '') {
@@ -132,20 +151,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onAddOc() {
         this.router.navigate(['/pages/dashboard/add-oc']);
     }
+    // onSearch(query: string) {
+    //     if (query != '') {
+    //         this.source.setFilter([
+    //             {
+    //                 field: 'OC Number',
+    //                 search: query
+    //             },
+    //             {
+    //                 field: 'OC Date',
+    //                 search: query
+    //             },
+    //             {
+    //                 field: 'Product ID',
+    //                 search: query
+    //             },
+    //             {
+    //                 field: 'Status',
+    //                 search: query
+    //             }
+    //         ], false);
+    //     } else {
+    //         this.source = new LocalDataSource(this.ocList);
+    //     }
+    // }
 }
+//@Component({
+//    selector: 'app-custom-renderer',
+//    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()">Edit</span>
+//    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()">Transfer</span>
+//    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
+//    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()">Supporting Documents</span>`
+//})
 @Component({
     selector: 'app-custom-renderer',
-    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue" (click)="editOC()">Edit</span>
-    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Transfer</span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;" (click)="onUploadDocuments()">Supporting Documents</span>`
+    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="editOC()"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onCloseOC()"><i class="fa fa-exchange" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onCloseOC()"><i class="fa fa-times" aria-hidden="true"></i></span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;font-size:16px" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
 })
 export class CustomRendererComponent implements OnInit, OnDestroy {
     currentUser$: Subscription;
     currentUser: any;
     isStatusNew = true;
     isStatusComplete = false;
-    // @Output() retry: EventEmitter<any> = new EventEmitter()
+    @Output() save: EventEmitter<any> = new EventEmitter();
     constructor(private router: Router, private dashboardService: DashboardService,
         private toasterService: ToastrService, private authenticationService: AuthenticationService) {
         this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -171,7 +221,6 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         this.router.navigate(['/pages/dashboard/edit-oc/' + this.rowData.OCNumber]);
     }
     onCloseOC() {
-        // console.log('raw', this.rowData);
         let body;
         let installationComplete = '';
         body = {
@@ -190,11 +239,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
             body['installationComplete'] = this.rowData.Installation.installationComplete;
         }
 
-        // console.log('on close', body);
         this.dashboardService.onStatusChange(body).subscribe(res => {
             if (res.status === 'success') {
-                // this.retry.emit(this.rowData);
-                this.router.navigate(['/pages/dashboard'], { queryParams: { page: new Date() } });
+                this.save.emit(true);
                 this.toasterService.success(res.message);
             } else {
                 this.toasterService.error(res.message);

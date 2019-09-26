@@ -13,8 +13,6 @@ getAll: function(req, res, next) {
 });
  },
  create: function(req, res, next) {
-  // let moviesList = [];
-  // console.log(req.body)
   let priorityData = req.body
   priorityModel.create( priorityData, function (err, result) {
     if (err)

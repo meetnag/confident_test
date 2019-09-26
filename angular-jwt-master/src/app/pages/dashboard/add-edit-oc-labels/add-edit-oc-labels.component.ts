@@ -27,7 +27,9 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
   currentUser$: Subscription;
   currentUser: any;
   isPrinting = false;
-
+  dateFormat = 'yyyy-MM-dd';
+  stateList: any = [];
+  countryList = [];
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
     private toasterService: ToastrService, private authenticationService: AuthenticationService,
     private datePipe: DatePipe) {
@@ -41,7 +43,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
         this.ocObj = new OcModel();
         this.ocObj.SerialNumbers = [];
         this.ocObj = data;
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
+        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, this.dateFormat);
         if (this.ocObj.SerialNumbers.length) {
           this.scanList = [];
           this.ocObj.SerialNumbers.forEach(ele => {
@@ -55,11 +57,31 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
+    if (isIEOrEdge) {
+      this.loadScript('../assets/jquery-swap.js');
+      this.dateFormat = 'dd/MM/yyyy'
+    }
     this.getPriority();
     this.getCustomerType();
     this.getProduct();
     this.getBranch();
+    this.getStateList();
+    this.getCountry();
     this.myAngularxQrCode = 'Your QR code data string';
+  }
+  ngAfterViewInIt() {
+
+  }
+  public loadScript(url: string) {
+    this.dateFormat = 'dd/MM/yyyy'
+    const body = <HTMLDivElement>document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
   }
   ngOnDestroy() {
     this.ocObj$.unsubscribe();
@@ -70,7 +92,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ocObj');
     this.router.navigate(['/pages/dashboard']);
   }
-  onPrint() {
+  onSave() {
     this.ocObj.userName = this.currentUser.user.name;
     this.ocObj.roleName = this.currentUser.userRole;
     delete this.ocObj.StatusLog;
@@ -80,7 +102,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
       this.dashboardService.addOc(this.ocObj).subscribe(res => {
         if (res.status === 'success') {
           this.toasterService.success(res.message);
-          window.print();
+          // window.print();
           this.router.navigate(['/pages/dashboard']);
         } else {
           this.toasterService.error(res.message);
@@ -107,7 +129,28 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
     }
 
   }
-
+  onPrint() {
+    window.print();
+    // this.router.navigate(['/pages/dashboard']);
+  }
+  getStateList() {
+    this.dashboardService.getStateList().subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.stateList = res.data['stateList'];
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
+  }
+  getCountry() {
+    this.dashboardService.getCountryList().subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.countryList = res.data['countryList'];
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
+  }
   getProduct() {
     this.dashboardService.getProductList().subscribe(res => {
       if (res.status === 'success' && res.data) {

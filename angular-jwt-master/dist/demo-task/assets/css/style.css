@@ -895,6 +895,7 @@ button.btn.btn-asset {
     padding: 8px 15px;
     text-transform: capitalize;
     border-radius: 4px;
+    margin-right: 10px;
 }
 .content>h3 {
     padding: 5px 0;
@@ -1026,4 +1027,8 @@ input.form-control.search_drug_input {
 .content_timeline>h3 {
     margin: 0 0 15px;
 }
+span.font-medium-1.mr-2 {
+    margin-right: 10px;
+}
+
 /*timeline css ends*/

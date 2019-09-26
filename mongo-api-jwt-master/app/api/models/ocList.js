@@ -88,12 +88,45 @@ Customer :{
         name:{
             type:String,
         },
+        address:{
+            type:String,
+        },
         city:{
             type:String,
         },
-        contactNumber:{
-            type:String
-        }
+        contactNumber :{
+            type:String,
+        },
+        state:{
+            type:String,
+        },
+        zip:{
+            type:String,
+        },
+        country:{
+            type:String,
+        },
+    },
+    typeOfSale: {
+        type: String,
+    },
+    CustAddrByBranch: {
+        type: String,
+    },
+    NotesByBranch: {
+        type: String,
+    },
+    CustPhoneByBranch: {
+        type: Number,
+    },
+    TransportByBranch: {
+        type: String,
+    },
+    BrinvNum: {
+        type: Number,
+    },
+    BrinvDocAttached:{
+        type: Boolean,
     },
 Status:{
     name:{

@@ -39,6 +39,7 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
   ocObj = new OcModel();
   ocObj$: Subscription;
   data = [];
+  dateFormat = 'yyyy-MM-dd';
 
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
     private datePipe: DatePipe) {
@@ -47,7 +48,7 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
         this.ocObj = new OcModel();
         this.ocObj.SerialNumbers = [];
         this.ocObj = data;
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
+        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, this.dateFormat);
         this.data = [];
         if (this.ocObj.SerialNumbers && this.ocObj.SerialNumbers.length) {
           this.ocObj.SerialNumbers.forEach(ele => {
@@ -78,8 +79,25 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
+    if (isIEOrEdge) {
+      this.loadScript('../assets/jquery-swap.js');
+      this.dateFormat = 'dd/MM/yyyy'
+    }
     this.id = this.route.snapshot.paramMap.get('id');
     this.source.load(this.data);
+  }
+  ngAfterViewInIt() {
+
+  }
+  public loadScript(url: string) {
+    const body = <HTMLDivElement>document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
   }
 
   ngOnDestroy() {

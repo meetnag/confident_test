@@ -30,6 +30,10 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   currentUser: any;
   installationObj = new Installation();
   isUpdate = true;
+  dateFormat = 'yyyy-MM-dd';
+  statuses = ['Direct Sale', 'Branch Sale'];
+  stateList = [];
+  countryList = [];
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
     private toasterService: ToastrService, private authenticationService: AuthenticationService,
     private datePipe: DatePipe) {
@@ -49,12 +53,19 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
+    if (isIEOrEdge) {
+      this.loadScript('../assets/jquery-swap.js');
+      this.dateFormat = 'dd/MM/yyyy'
+    }
     this.getPriority();
     this.getCustomerType();
     this.getSubAssembly();
     this.getProduct();
     this.getSpare();
     this.getBranch();
+    this.getStateList();
+    this.getCountry();
     this.ocObj = new OcModel();
     this.ocObj.Priority = new Priority();
     this.ocObj.SubAssemblyIDs = [];
@@ -72,7 +83,19 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       this.getOcNumber();
     }
   }
+  ngAfterViewInIt() {
 
+  }
+  public loadScript(url: string) {
+    this.dateFormat = 'dd/MM/yyyy'
+    const body = <HTMLDivElement>document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
+  }
   getOcNumber() {
     this.dashboardService.getOcNumber().subscribe(data => {
       if (data.status === 'success' && data.data != null) {
@@ -93,17 +116,17 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         this.ocObj = new OcModel();
         this.ocObj = data.data.ocList[0];
         this.installationObj = new Installation();
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
+        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, this.dateFormat);
         var minInsDate = new Date(this.ocObj.OCDate);
-        var date = new Date( minInsDate.setDate(minInsDate.getDate() + 1));
+        var date = new Date(minInsDate.setDate(minInsDate.getDate() + 1));
 
-// add a day
-        this.ocObj.minInstallationDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+        // add a day
+        this.ocObj.minInstallationDate = this.datePipe.transform(date, this.dateFormat);
         // console.log("sadsa",this.ocObj);
         if (this.currentUser.userRole !== 'Admin' && this.currentUser.userRole !== 'QA Team' && this.ocObj.Installation) {
           this.installationObj = this.ocObj.Installation;
-          this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'yyyy-MM-dd');
-          this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'yyyy-MM-dd');
+          this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, this.dateFormat);
+          this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, this.dateFormat);
         }
         if (this.ocObj.SpareIDs.length) {
           this.selectedSpare = [];
@@ -159,7 +182,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         }
       })
     }
-    console.log('this.ocObj.SerialNumbers', this.ocObj.SerialNumbers)
+    // console.log('this.ocObj.SerialNumbers', this.ocObj.SerialNumbers)
 
     if (this.ocObj.SerialNumbers.length) {
       let copySerialNumber = [];
@@ -177,7 +200,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         }
       });
       this.ocObj.SerialNumbers = [];
-      console.log('copySerialNumber', copySerialNumber)
+      // console.log('copySerialNumber', copySerialNumber)
 
       this.ocObj.SerialNumbers = copySerialNumber;
     };
@@ -239,6 +262,24 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     this.dashboardService.getBranchList().subscribe(res => {
       if (res.status === 'success' && res.data) {
         this.branchList = res.data['branchList'];
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
+  }
+  getStateList() {
+    this.dashboardService.getStateList().subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.stateList = res.data['stateList'];
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
+  }
+  getCountry() {
+    this.dashboardService.getCountryList().subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.countryList = res.data['countryList'];
       } else {
         this.toasterService.error(res.message);
       }

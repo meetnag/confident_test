@@ -19,8 +19,15 @@ export class OcModel {
     Customer: Customer;
     userName: any;
     roleName: any;
-    minInstallationDate :any;
+    minInstallationDate: any;
     StatusLog: StatusLog[];
+    typeOfSale: any;
+    CustAddrByBranch: any;
+    NotesByBranch: any;
+    CustPhoneByBranch: any;
+    TransportByBranch: any;
+    BrinvNum: any;
+    BrinvDocAttached: any;
     constructor() {
         this.SerialNumbers = [];
         this.Priority = new Priority();
@@ -31,13 +38,14 @@ export class OcModel {
         this.BranchID = new Branch();
         this.Installation = new Installation();
         this.StatusLog = [];
+        this.typeOfSale = 'Direct Sale';
     }
 }
 export class StatusLog {
     _id: any;
     Date: any;
     ChangedStatus: any;
-    PreviousStatus:any;
+    PreviousStatus: any;
 }
 export class Installation {
     installationDate: any;
@@ -55,11 +63,19 @@ export class Customer {
     _id: any;
     name: any;
     city: any;
+    state: any;
+    zip: any;
+    country: any;
+    address: any;
     contactNumber: any;
     constructor() {
         this.name = '';
         this.city = '';
         this.contactNumber = '';
+        this.state = '';
+        this.zip = '';
+        this.address = '';
+        this.country = '';
     }
 }
 export class SerialNumber {

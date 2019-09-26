@@ -6,6 +6,7 @@ import { AddEditOcSrnoComponent } from './add-edit-oc-srno/add-edit-oc-srno.comp
 import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-labels.component';
 import { ViewOcComponent } from './view-oc/view-oc.component';
 import { UploadDocumentsComponent } from './upload-documents/upload-documents.component';
+import { ScanOcComponent } from './scan-oc/scan-oc.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'upload/:id',
     component: UploadDocumentsComponent
+  },
+  {
+    path: 'scan-oc',
+    component: ScanOcComponent
   }
 ];
 

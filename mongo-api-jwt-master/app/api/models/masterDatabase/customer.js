@@ -6,7 +6,6 @@ const customerSchema = new Schema({
  name: {
   type: String,  
   required: true,
-  unique:true,
  },
  address:{
      type:String,
@@ -17,6 +16,7 @@ const customerSchema = new Schema({
  },
  contactNumber :{
      type:String,
+     unique:true ,
  },
  state:{
      type:String,

@@ -129,7 +129,7 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
 }
 @Component({
   selector: 'app-custom-renderer',
-  template: `  <span class="font-medium-1 mr-2" style="cursor:pointer;" (click)="onUploadDocuments()">Supporting Documents</span>`
+  template: `  <span class="font-medium-1 mr-2" style="cursor:pointer;" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
 })
 export class CustomRendererComponent implements OnInit {
 

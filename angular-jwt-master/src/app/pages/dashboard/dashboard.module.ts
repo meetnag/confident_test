@@ -8,6 +8,7 @@ import { ViewOcComponent } from './view-oc/view-oc.component';
 import { UploadDocumentsComponent, CustomRendererFileComponent, CustomRendererFileDeleteComponent } from './upload-documents/upload-documents.component';
 import { AddEditOcSrnoComponent, CustomRendererSrNoComponent } from './add-edit-oc-srno/add-edit-oc-srno.component';
 import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-labels.component';
+import { ScanOcComponent } from './scan-oc/scan-oc.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-label
     CustomRendererSrNoComponent,
     CustomRendererViewComponent,
     CustomRendererFileComponent,
-    CustomRendererFileDeleteComponent
+    CustomRendererFileDeleteComponent,
+    ScanOcComponent
   ],
   imports: [
     CommonModule,

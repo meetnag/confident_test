@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { AuthenticationService } from '@app/shared/_services/authentication.service';
 import { Subscription } from 'rxjs';
@@ -7,14 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { LocalDataSource } from 'ng2-smart-table';
 import { OcModel } from '@app/shared/_models/oc-model';
 import { environment } from '@environments/environment.prod';
-
+import { ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-upload-documents',
   templateUrl: './upload-documents.component.html',
   styleUrls: ['./upload-documents.component.css'],
 
-  providers: [DatePipe] 
+  providers: [DatePipe]
 })
 export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
@@ -27,6 +27,8 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
   ocObj$: Subscription;
   fileNote = '';
   source: LocalDataSource = new LocalDataSource();
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
 
   settings = {
     actions: false,
@@ -56,9 +58,9 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         valuePrepareFunction: (OCDate) => {
           var raw = new Date(OCDate);
           if (raw) {
-          return this.datePipe.transform(raw, 'dd/MM/yyyy ');
+            return this.datePipe.transform(raw, 'dd/MM/yyyy ');
           }
-      }
+        }
       },
       _id: {
         title: 'Action',
@@ -76,7 +78,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
     },
   };
 
-  constructor(private dashboardService: DashboardService, private router: Router,private datePipe: DatePipe,
+  constructor(private dashboardService: DashboardService, private router: Router, private datePipe: DatePipe,
     private authenticationService: AuthenticationService, private route: ActivatedRoute, private toasterService: ToastrService,
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -139,6 +141,8 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         if (res.status === 'success') {
           this.toasterService.success(res.message);
           this.fileNote = '';
+          this.fileToUpload = null;
+          this.myInputVariable.nativeElement.value = "";
           this.getDocuments();
         } else {
           this.toasterService.error(res.message);

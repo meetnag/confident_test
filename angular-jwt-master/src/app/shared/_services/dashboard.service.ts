@@ -23,6 +23,12 @@ export class DashboardService {
   getBranchList() {
     return this.apiService.apiCaller('get', 'branch/');
   }
+  getStateList() {
+    return this.apiService.apiCaller('get', 'state/');
+  }
+  getCountryList() {
+    return this.apiService.apiCaller('get', 'country/');
+  }
   getPriorityList() {
     return this.apiService.apiCaller('get', 'priority/');
   }
