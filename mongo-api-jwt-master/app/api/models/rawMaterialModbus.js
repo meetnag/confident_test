@@ -16,10 +16,10 @@ const rawMaterialSchema = new Schema({
     type:Number,
  },
  startTime:{
-     type:Number,
+     type:Date,
  },
  stopTime:{
-     type:Number,
+     type:Date,
  },
  status:{
      type:Number,

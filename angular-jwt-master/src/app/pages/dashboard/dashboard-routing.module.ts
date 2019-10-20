@@ -7,6 +7,7 @@ import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-label
 import { ViewOcComponent } from './view-oc/view-oc.component';
 import { UploadDocumentsComponent } from './upload-documents/upload-documents.component';
 import { ScanOcComponent } from './scan-oc/scan-oc.component';
+import { InstallationReportComponent } from './installation-report/installation-report.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'scan-oc',
     component: ScanOcComponent
+  },
+  {
+    path: 'report/:id',
+    component: InstallationReportComponent
   }
 ];
 

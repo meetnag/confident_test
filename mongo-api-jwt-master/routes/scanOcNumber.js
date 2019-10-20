@@ -12,6 +12,7 @@ router.post('/addLocalModbus', ocListController.addLocalModbus);
 router.post('/updateLocalModbus', ocListController.updateLocalModbus);
 router.get('/getLocalModbus', ocListController.getLocalModbus);
 router.get('/getRawMaterial', ocListController.getRawMaterial);
+router.get('/getHMIRawMaterial', ocListController.getHMIRawMaterial);
 router.post('/addRawMaterial', ocListController.addRawMaterial);
 router.post('/updateRawMaterial', ocListController.updateStatusOfRawMaterial);
 router.get('/getProgramStatus', ocListController.getStatus);

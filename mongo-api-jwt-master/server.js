@@ -25,7 +25,7 @@ global.mongoose = require('./config/database'); //database configuration
 
 var jwt = require('jsonwebtoken');
 const app = express();
-
+app.use(bodyParser({limit: '50mb'}));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -45,6 +45,16 @@ app.get('/', function(req, res){
   res.json({"tutorial" : "Build REST API with node.js"});
 });
 
+//CORS middleware
+var corsMiddleware = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*'); //replace localhost with actual host
+  res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, PATCH, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
+
+  next();
+}
+
+app.use(corsMiddleware);
 // for cross origin
 var cors = require('cors')
 app.use(cors())
@@ -59,7 +69,7 @@ app.use('/users', users);
 // private route
 app.use('/movies', movies);
 app.use('/userRole',userRole);
-app.use('/ocList',validateUser, ocList);
+app.use('/ocList', ocList);
 app.use('/scanOcList',scanOcNumber);
 app.use('/branch',branchList);
 app.use('/customer',customerList);

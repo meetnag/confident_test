@@ -120,9 +120,9 @@ export class ScanComponent implements OnInit, OnDestroy {
           if (this.ocObj.Customer && this.ocObj.Customer.city != '') {
             this.location = this.ocObj.Customer.city;
           }
-          if (this.ocObj.ProductID && this.ocObj.ProductID._id != '') {
-            this.product = this.ocObj.ProductID.name;
-          }
+          // if (this.ocObj.ProductID && this.ocObj.ProductID._id != '') {
+          //   this.product = this.ocObj.ProductID.name;
+          // }
           if (this.ocObj.StatusLog && this.ocObj.StatusLog.length) {
             this.ocObj.StatusLog.forEach(ele => {
               if (ele.PreviousStatus === 'New' && ele.ChangedStatus === 'New') {

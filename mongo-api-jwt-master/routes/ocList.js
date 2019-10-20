@@ -2,8 +2,64 @@ const express = require('express');
 const router = express.Router();
 const ocListController = require('../app/api/controllers/ocList');
 
+router.get('/checkOCNumber/:OCNumber', ocListController.checkForOcNumber);
+/**
+        * @api {post} ocList/checkOCNumber check for duplicate oc Number
+        * @apiVersion 0.0.1
+        * @apiGroup OC List
+        *
+        * @apiParam {String} OcNumber to check for duplicate Oc Number. (Should pass as a URL parameter.- required)
+        *
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "Unique OC Number",
+        "data": "OCNumber"
+        *}
+        *
+        * @apiErrorExample {json} Error-Response:
+        *
+        *{
+        "status": "error",
+        "message": "Provided OC number is already in use, please enter a new OC number",
+        "data": null
+        }
+        */
 
-
+router.post('/getCustomersByName', ocListController.getCustomerByName);
+/**
+        * @api {post} ocList/getCustomersByName get customers List
+        * @apiVersion 0.0.1
+        * @apiGroup OC List
+        *
+        * @apiParam {String} customerName to get customers List. (Should pass as a body parameter.- required)
+        *
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "Records Found!!!",
+        "data": [
+            {
+                "_id":"string",
+                "name":"string",
+                "address":"string",
+                "contactNumber":"string",
+                "city":"string",
+                "state":"string",
+                "zip":"int",
+                "country":"string"
+            }
+        ]
+        *}
+        *
+        * @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "No Records found",
+        "data": null
+        }
+        */
 router.get('/getOcNumber', ocListController.getOcNumber);
 /**
         * @api {get} ocList/getOcNumber get OC Number

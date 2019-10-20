@@ -8,6 +8,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { QRCodeModule } from 'angularx-qrcode';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { MyDatePickerModule } from 'mydatepicker';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     Ng2SmartTableModule,
     QRCodeModule,
     NgSelectModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    MyDatePickerModule,
+    MatAutocompleteModule
   ],
   exports: [
     RouterModule,
@@ -31,11 +35,13 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     ReactiveFormsModule,
     Ng2SmartTableModule,
     DeviceDetectorModule,
+    MyDatePickerModule,
     QRCodeModule,
     NgSelectModule,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    MatAutocompleteModule
   ],
   providers: []
 })

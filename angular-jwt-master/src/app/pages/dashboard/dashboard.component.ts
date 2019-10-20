@@ -36,11 +36,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     }
                 }
             },
-            ProductID: {
-                title: 'Product ID',
-                filter: false,
-                valuePrepareFunction: (value) => { return value.name }
-            },
+            // ProductID: {
+            //     title: 'Product ID',
+            //     filter: false,
+            //     valuePrepareFunction: (value) => { return value.name }
+            // },
             Status: {
                 title: 'Status',
                 filter: false,
@@ -60,6 +60,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 filter: false,
             },
         },
+        pager: {
+            display: true,
+            perPage: 25
+        }
     };
     searchOcNo = '';
     currentUser$: Subscription;
@@ -79,8 +83,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.navigationSubscription = router.events
             .pipe(filter(e => e instanceof NavigationEnd))
             .subscribe((e: NavigationEnd) => {
-                this.getOcList();
-                this.getPriority();
+
             });
     }
 
@@ -115,6 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.currentUser$.unsubscribe();
+        this.navigationSubscription.unsubscribe();
     }
     getPriority() {
         this.dashboardService.getPriorityList().subscribe(res => {
@@ -176,25 +180,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //     }
     // }
 }
-//@Component({
-//    selector: 'app-custom-renderer',
-//    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()">Edit</span>
-//    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()">Transfer</span>
-//    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
-//    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()">Supporting Documents</span>`
-//})
+/* OLD
+@Component({
+    selector: 'app-custom-renderer',
+    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()">Edit</span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()">Transfer</span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()">Supporting Documents</span>
+    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()">Installation Report</span>`
+})
+*/
 @Component({
     selector: 'app-custom-renderer',
     template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="editOC()"><i class="fa fa-pencil" aria-hidden="true"></i></span>
     <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onCloseOC()"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onCloseOC()"><i class="fa fa-times" aria-hidden="true"></i></span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;font-size:16px" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;font-size:16px" (click)="onCloseOC()"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;font-size:16px" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()">Installation Report</span>`
 })
+
+
 export class CustomRendererComponent implements OnInit, OnDestroy {
     currentUser$: Subscription;
     currentUser: any;
     isStatusNew = true;
     isStatusComplete = false;
+    isStatusScheduled = false;
     @Output() save: EventEmitter<any> = new EventEmitter();
     constructor(private router: Router, private dashboardService: DashboardService,
         private toasterService: ToastrService, private authenticationService: AuthenticationService) {
@@ -213,12 +224,33 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         if (this.rowData.Status.name == 'Installation Complete') {
             this.isStatusComplete = true;
         }
+        if (this.currentUser.userRole == 'Sales Team') {
+            if (this.rowData.Status.name == 'In Progress - Branch/Dealer' || this.rowData.Status.name == 'Installation Scheduled') {
+                this.isStatusComplete = true;
+                this.isStatusNew = false;
+            }
+        }
+        if (this.currentUser.userRole == 'Branch/Dealer') {
+            if (this.rowData.Status.name == 'Installation Complete') {
+                this.isStatusComplete = true;
+                this.isStatusNew = true;
+            } else {
+                this.isStatusComplete = false;
+                this.isStatusNew = false;
+            }
+        }
+        if (this.rowData.Status.name == 'Installation Scheduled') {
+            this.isStatusScheduled = true;
+        }
     }
     ngOnDestroy() {
         this.currentUser$.unsubscribe();
     }
     editOC() {
         this.router.navigate(['/pages/dashboard/edit-oc/' + this.rowData.OCNumber]);
+    }
+    onReport() {
+        this.router.navigate(['/pages/dashboard/report/' + this.rowData.OCNumber]);
     }
     onCloseOC() {
         let body;

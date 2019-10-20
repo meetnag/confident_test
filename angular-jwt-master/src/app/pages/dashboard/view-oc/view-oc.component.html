@@ -5,262 +5,1602 @@
     </div>
     <div class="panel-body">
       <form class="form-horizontal mt-5 ml-5 mr-5">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="col-sm-4 ">OC Number</label>
-              <div class="col-sm-8">
-                {{ocObj.OCNumber}}
+        <!-- Admin and QA User -->
+        <div class="row" *ngIf="currentUser.userRole =='Admin' || currentUser.userRole=='QA Team'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Number</label>
+                <div class="col-sm-8">
+                  {{ocObj.OCNumber}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                  <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Priority</label>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
+                  {{ocObj.Priority.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
+                  {{ocObj.Installation.invoiceDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
+                  {{ocObj.Installation.invoiceNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
+                  --
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Priority</label>
-              <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
-                {{ocObj.Priority.name}}
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                  {{ocObj.OCDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Type</label>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                  {{ocObj.CustomerType.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                  --
+                </div>
               </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Branch Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                  {{ocObj.BranchID.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Type Of Sale</label>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
+                  {{ocObj.typeOfSale}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
+                  {{ocObj.Installation.transport}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Warranty (in months)</label>
+                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                  {{ocObj.warranty}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                  {{ocObj.LRNumber}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                  {{ocObj.LRDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                  --
+                </div>
+              </div>
+
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Name</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
-                {{ocObj.Customer.name}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
-                --
-              </div>
+          </div>
+
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details provided by Branch</b></h5>
+              <br>
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Address</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
-                <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
-                  class="form-control"></textarea>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  {{ocObj.Customer.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Address</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
+                  --
+                </div>
               </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer City</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  {{ocObj.Customer.city}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer State</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  {{ocObj.Customer.state}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Country</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
+                  {{ocObj.Customer.country}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer ZipCode</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
+                  {{ocObj.Customer.zip}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Phone</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  {{ocObj.Customer.contactNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Email</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  {{ocObj.Customer.CustEmailID}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                  <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                  --
+                </div>
+              </div>
+
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Address (By Branch)</label>
-              <div class="col-sm-8" *ngIf="ocObj.CustAddrByBranch !== undefined && ocObj.CustAddrByBranch !==''">
-                <textarea disabled type="text" name="addressbybranch" [(ngModel)]="ocObj.CustAddrByBranch"
-                  class="form-control"></textarea>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                  {{ocObj.BrinvNum}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.CustAddrByBranch == undefined || ocObj.CustAddrByBranch ==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached !== undefined ">
+                  <span *ngIf="ocObj.BrinvDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrinvDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached == undefined ">
+                  --
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer City</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
-                {{ocObj.Customer.city}}
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                  {{ocObj.TransportByBranch}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
+                  {{ocObj.Installation.installationDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
+                  --
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer State</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
-                {{ocObj.Customer.state}}
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Technician</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
+                  {{ocObj.Installation.installationTechnician}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Technician Contact</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
+                  {{ocObj.Installation.technicianContact}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
+                  --
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Country</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
-                {{ocObj.Customer.country}}
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Complete</label>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete !== undefined">
+                  <span *ngIf="ocObj.Installation.installationComplete">Yes</span>
+                  <span *ngIf="!ocObj.Installation.installationComplete ">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete == undefined">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer ZipCode</label>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
-                {{ocObj.Customer.zip}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Phone</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
-                {{ocObj.Customer.contactNumber}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Phone (By Branch)</label>
-              <div class="col-sm-8" *ngIf="ocObj.CustPhoneByBranch !== undefined && ocObj.CustPhoneByBranch !==''">
-                {{ocObj.CustPhoneByBranch}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.CustPhoneByBranch == undefined || ocObj.CustPhoneByBranch ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Notes</label>
-              <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
-                <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"></textarea>
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Notes (By Branch)</label>
-              <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
-                <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
-                  class="form-control"></textarea>
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached !== undefined">
+                  <span *ngIf="ocObj.BrInstaDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrInstaDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached == undefined">
+                  --
+                </div>
               </div>
             </div>
 
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="col-sm-4 ">OC Date</label>
-              <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
-                {{ocObj.OCDate}}
+        </div>
+        <!--  Sale User (Direct Sale) -->
+        <div class="row"
+          *ngIf="currentUser.userRole !=='Admin' && currentUser.userRole !=='Branch/Dealer' && currentUser.userRole !=='QA Team' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Number</label>
+                <div class="col-sm-8">
+                  {{ocObj.OCNumber}}
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                  <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
               </div>
-            </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Type Of Sale</label>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
+                  {{ocObj.typeOfSale}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Branch Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                  {{ocObj.BranchID.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
+                  {{ocObj.Installation.invoiceNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
+                  {{ocObj.Installation.invoiceDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
+                  --
+                </div>
+              </div>
 
-            <div class="form-group">
-              <label class="col-sm-4 ">Customer Type</label>
-              <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
-                {{ocObj.CustomerType.name}}
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  {{ocObj.Customer.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Address</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer City</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  {{ocObj.Customer.city}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer State</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  {{ocObj.Customer.state}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                  {{ocObj.OCDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Priority</label>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
+                  {{ocObj.Priority.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Type</label>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                  {{ocObj.CustomerType.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
+                  {{ocObj.Installation.transport}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Warranty (in months)</label>
+                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                  {{ocObj.warranty}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                  {{ocObj.LRNumber}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                  {{ocObj.LRDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Country</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
+                  {{ocObj.Customer.country}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer ZipCode</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
+                  {{ocObj.Customer.zip}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Phone</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  {{ocObj.Customer.contactNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Email</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  {{ocObj.Customer.CustEmailID}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
+                  --
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Branch Name</label>
-              <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
-                {{ocObj.BranchID.name}}
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                  {{ocObj.BrinvNum}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
-                --
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached !== undefined ">
+                  <span *ngIf="ocObj.BrinvDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrinvDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached == undefined ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                  {{ocObj.TransportByBranch}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
+                  {{ocObj.Installation.installationDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Technician</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
+                  {{ocObj.Installation.installationTechnician}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Technician Contact</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
+                  {{ocObj.Installation.technicianContact}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Complete</label>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete !== undefined">
+                  <span *ngIf="ocObj.Installation.installationComplete">Yes</span>
+                  <span *ngIf="!ocObj.Installation.installationComplete">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete == undefined">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached !== undefined">
+                  <span *ngIf="ocObj.BrInstaDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrInstaDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached == undefined">
+                  --
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Type Of Sale</label>
-              <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
-                {{ocObj.typeOfSale}}
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                  <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                  --
+                </div>
               </div>
-              <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Product</label>
-              <div class="col-sm-8" *ngIf="ocObj.ProductID.name !== undefined && ocObj.ProductID.name !==''">
-                {{ocObj.ProductID.name}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.ProductID.name == undefined || ocObj.ProductID.name ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Installation Technician</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
-                {{ocObj.Installation.installationTechnician}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Technician Contact</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
-                {{ocObj.Installation.technicianContact}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Transport</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
-                {{ocObj.Installation.transport}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Transport (By Branch)</label>
-              <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
-                {{ocObj.TransportByBranch}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Installation Date</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
-                {{ocObj.Installation.installationDate}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Invoice Date</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
-                {{ocObj.Installation.invoiceDate}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Invoice Number</label>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
-                {{ocObj.Installation.invoiceNumber}}
-              </div>
-              <div class="col-sm-8"
-                *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
-                --
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 ">Invoice Number (By Branch)</label>
-              <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
-                {{ocObj.BrinvNum}}
-              </div>
-              <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
-                --
-              </div>
+
             </div>
           </div>
         </div>
+        <!-- Sale User (Branch Sale) -->
+        <div class="row"
+          *ngIf="currentUser.userRole !=='Admin' && currentUser.userRole !=='QA Team' && currentUser.userRole !=='Branch/Dealer' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Branch Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Number</label>
+                <div class="col-sm-8">
+                  {{ocObj.OCNumber}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                  <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Type Of Sale</label>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
+                  {{ocObj.typeOfSale}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Branch Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                  {{ocObj.BranchID.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
+                  {{ocObj.Installation.invoiceNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
+                  {{ocObj.Installation.invoiceDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                  {{ocObj.OCDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Priority</label>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
+                  {{ocObj.Priority.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Type</label>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                  {{ocObj.CustomerType.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
+                  {{ocObj.Installation.transport}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Warranty (in months)</label>
+                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                  {{ocObj.warranty}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                  {{ocObj.LRNumber}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                  {{ocObj.LRDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                  --
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  {{ocObj.Customer.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Address</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer City</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  {{ocObj.Customer.city}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer State</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  {{ocObj.Customer.state}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Country</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
+                  {{ocObj.Customer.country}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer ZipCode</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
+                  {{ocObj.Customer.zip}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Phone</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  {{ocObj.Customer.contactNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Email</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  {{ocObj.Customer.CustEmailID}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                  <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                  {{ocObj.BrinvNum}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached !== undefined ">
+                  <span *ngIf="ocObj.BrinvDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrinvDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached == undefined ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                  {{ocObj.TransportByBranch}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
+                  {{ocObj.Installation.installationDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Technician</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
+                  {{ocObj.Installation.installationTechnician}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Technician Contact</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
+                  {{ocObj.Installation.technicianContact}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Complete</label>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete !== undefined">
+                  <span *ngIf="ocObj.Installation.installationComplete">Yes</span>
+                  <span *ngIf="!ocObj.Installation.installationComplete ">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete == undefined">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached !== undefined">
+                  <span *ngIf="ocObj.BrInstaDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrInstaDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached == undefined">
+                  --
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!--  Branch User (Direct Sale) -->
+        <div class="row"
+          *ngIf="currentUser.userRole =='Branch/Dealer'  && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Number</label>
+                <div class="col-sm-8">
+                  {{ocObj.OCNumber}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Priority</label>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
+                  {{ocObj.Priority.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  {{ocObj.Customer.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Address</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer City</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  {{ocObj.Customer.city}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer State</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  {{ocObj.Customer.state}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Country</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
+                  {{ocObj.Customer.country}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer ZipCode</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
+                  {{ocObj.Customer.zip}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Phone</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  {{ocObj.Customer.contactNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Email</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  {{ocObj.Customer.CustEmailID}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
+                  {{ocObj.Installation.invoiceNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                  {{ocObj.OCDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Type</label>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                  {{ocObj.CustomerType.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Branch Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                  {{ocObj.BranchID.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Type Of Sale</label>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
+                  {{ocObj.typeOfSale}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                  <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
+                  {{ocObj.Installation.transport}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Warranty (in months)</label>
+                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                  {{ocObj.warranty}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                  {{ocObj.LRNumber}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                  {{ocObj.LRDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
+                  {{ocObj.Installation.invoiceDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
+                  --
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                  {{ocObj.BrinvNum}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached !== undefined ">
+                  <span *ngIf="ocObj.BrinvDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrinvDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached == undefined ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                  {{ocObj.TransportByBranch}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
+                  {{ocObj.Installation.installationDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Technician</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
+                  {{ocObj.Installation.installationTechnician}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Technician Contact</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
+                  {{ocObj.Installation.technicianContact}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Complete</label>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete !== undefined">
+                  <span *ngIf="ocObj.Installation.installationComplete">Yes</span>
+                  <span *ngIf="!ocObj.Installation.installationComplete">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete == undefined">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached !== undefined">
+                  <span *ngIf="ocObj.BrInstaDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrInstaDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached == undefined">
+                  --
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                  <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- Branch User (Branch Sale) -->
+        <div class="row"
+          *ngIf="currentUser.userRole == 'Branch/Dealer' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Branch Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Number</label>
+                <div class="col-sm-8">
+                  {{ocObj.OCNumber}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Priority</label>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name !== undefined || ocObj.Priority.name !== ''">
+                  {{ocObj.Priority.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Priority.name == undefined || ocObj.Priority.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                  <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
+                  {{ocObj.Installation.invoiceNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
+                  --
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">OC Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                  {{ocObj.OCDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Type</label>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                  {{ocObj.CustomerType.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Branch Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                  {{ocObj.BranchID.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Type Of Sale</label>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale !== undefined && ocObj.typeOfSale !== ''">
+                  {{ocObj.typeOfSale}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.typeOfSale == undefined || ocObj.typeOfSale == '' ">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
+                  {{ocObj.Installation.transport}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Warranty (in months)</label>
+                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                  {{ocObj.warranty}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                  {{ocObj.LRNumber}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">LR Date</label>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                  {{ocObj.LRDate}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
+                  {{ocObj.Installation.invoiceDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
+                  --
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Name</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  {{ocObj.Customer.name}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Address</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer City</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  {{ocObj.Customer.city}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer State</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  {{ocObj.Customer.state}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
+                  --
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Country</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
+                  {{ocObj.Customer.country}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer ZipCode</label>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
+                  {{ocObj.Customer.zip}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Phone</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  {{ocObj.Customer.contactNumber}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Customer Email</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  {{ocObj.Customer.CustEmailID}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Notes (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                  <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control"></textarea>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                  --
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Number</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                  {{ocObj.BrinvNum}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Invoice Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached !== undefined ">
+                  <span *ngIf="ocObj.BrinvDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrinvDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrinvDocAttached == undefined ">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Transport (By Branch)</label>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                  {{ocObj.TransportByBranch}}
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined ||  ocObj.TransportByBranch ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Date</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate !== undefined && ocObj.Installation.installationDate !==''">
+                  {{ocObj.Installation.installationDate}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationDate == undefined || ocObj.Installation.installationDate ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Technician</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
+                  {{ocObj.Installation.installationTechnician}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.installationTechnician == undefined || ocObj.Installation.installationTechnician == ''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Technician Contact</label>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
+                  {{ocObj.Installation.technicianContact}}
+                </div>
+                <div class="col-sm-8"
+                  *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Complete</label>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete !== undefined">
+                  <span *ngIf="ocObj.Installation.installationComplete">Yes</span>
+                  <span *ngIf="!ocObj.Installation.installationComplete ">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.Installation.installationComplete == undefined">
+                  --
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 ">Installation Document Attached</label>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached !== undefined">
+                  <span *ngIf="ocObj.BrInstaDocAttached">Yes</span>
+                  <span *ngIf="!ocObj.BrInstaDocAttached">No</span>
+                </div>
+                <div class="col-sm-8" *ngIf="ocObj.BrInstaDocAttached == undefined">
+                  --
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Scan qr code list -->
         <div class="row">
           <div class="col-md-6" *ngFor="let qr of scanList">
             <div class="form-group">

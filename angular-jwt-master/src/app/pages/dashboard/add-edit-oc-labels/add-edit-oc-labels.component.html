@@ -14,7 +14,7 @@
                   class="form-control" disabled>
               </div>
             </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
+            <!-- <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Priority</label>
               <div class="col-sm-8">
                 <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
@@ -23,51 +23,7 @@
                   <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
                 </select>
               </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer Name</label>
-              <div class="col-sm-8">
-                <input type="text" name="name" [(ngModel)]="ocObj.Customer.name" class="form-control">
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer Address</label>
-              <div class="col-sm-8">
-                <textarea type="text" name="address" [(ngModel)]="ocObj.Customer.address"
-                  class="form-control"></textarea>
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer City</label>
-              <div class="col-sm-8">
-                <input type="text" name="name" [(ngModel)]="ocObj.Customer.city" class="form-control">
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer State</label>
-              <div class="col-sm-8">
-                <select name="ocState" class="form-control" [(ngModel)]="ocObj.Customer.state">
-                  <option value="">Select State</option>
-                  <option *ngFor="let state of stateList" [value]="state.name">{{state.name}}</option>
-                </select>
-                <!-- <input type="text" name="name" [(ngModel)]="ocObj.Customer.state" class="form-control"> -->
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer Country</label>
-              <div class="col-sm-8">
-                <select name="Country" class="form-control" [(ngModel)]="ocObj.Customer.country">
-                  <option value="">Select Country</option>
-                  <option *ngFor="let country of countryList" [value]="country.name">{{country.name}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer ZipCode</label>
-              <div class="col-sm-8">
-                <input type="text" name="name" [(ngModel)]="ocObj.Customer.zip" class="form-control">
-              </div>
-            </div>
+            </div> -->
             <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Notes</label>
               <div class="col-sm-8">
@@ -79,18 +35,14 @@
             <div class="form-group">
               <label class="col-sm-4 control-label">OC Date</label>
               <div class="col-sm-8">
-                <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
-                  data-trigger="hover" data-placement="top" data-title="Date Opened">
+                <!-- <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
+                  data-trigger="hover" data-placement="top" data-title="Date Opened"> -->
+                <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate"
+                  onkeydown="return false">
+                </my-date-picker>
               </div>
             </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Customer Phone</label>
-              <div class="col-sm-8">
-                <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
-                  (keypress)="numberOnly($event)" class="form-control">
-              </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
+            <!-- <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Customer Type</label>
               <div class="col-sm-8">
                 <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
@@ -100,27 +52,30 @@
                     {{customer_type.name}}</option>
                 </select>
               </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
+            </div> -->
+            <!-- <div class="form-group" [class.isPrinting]="!isPrinting">
               <label class="col-sm-4 control-label">Branch Name</label>
               <div class="col-sm-8">
-                <select name="ocBranch" class="form-control" [(ngModel)]="ocObj.BranchID._id"
-                  (change)="onBranchChange()">
+                <select name="ocBranch" class="form-control" [(ngModel)]="selectedBranch"
+                  (change)="onBranchChange($event.target.value)">
                   <option value="">Select Branch</option>
                   <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
                 </select>
               </div>
-            </div>
-            <div class="form-group" [class.isPrinting]="!isPrinting">
-              <label class="col-sm-4 control-label">Product</label>
+            </div> -->
+            <!-- <div class="form-group" [class.isPrinting]="!isPrinting">
+              <label class="col-sm-4 control-label">Type of Sales</label>
               <div class="col-sm-8">
-                <select name="ocProduct" class="form-control" [(ngModel)]="ocObj.ProductID._id"
-                  (change)="onProductChange()">
-                  <option value="">Select Product</option>
-                  <option *ngFor="let product of productList" [value]="product._id">{{product.name}}</option>
-                </select>
+                <div *ngFor="let status of statuses; let indx = index" style="display:inline-flex">
+                  <input class='mr-2' name='statusGroup' type='radio' [id]='status' [value]='status'
+                    [(ngModel)]='ocObj.typeOfSale' />
+                  <label [for]='status'>{{status}}</label>
+                </div>
               </div>
-            </div>
+              <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                <span *ngIf="ocObj.typeOfSale == undefined"> - </span> {{ocObj.typeOfSale}}
+              </div>
+            </div> -->
           </div>
         </div>
         <div class="row">

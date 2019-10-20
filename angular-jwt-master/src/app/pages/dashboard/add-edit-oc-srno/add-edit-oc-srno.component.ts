@@ -5,6 +5,7 @@ import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { OcModel } from '@app/shared/_models/oc-model';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { IMyDpOptions } from 'mydatepicker';
 
 @Component({
   selector: 'app-add-edit-oc-srno',
@@ -40,7 +41,10 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
   ocObj$: Subscription;
   data = [];
   dateFormat = 'yyyy-MM-dd';
-
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+  };
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService,
     private datePipe: DatePipe) {
     this.ocObj$ = this.dashboardService.currentOcObj.subscribe(data => {
@@ -48,15 +52,23 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
         this.ocObj = new OcModel();
         this.ocObj.SerialNumbers = [];
         this.ocObj = data;
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, this.dateFormat);
+        // this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, this.dateFormat);
         this.data = [];
         if (this.ocObj.SerialNumbers && this.ocObj.SerialNumbers.length) {
           this.ocObj.SerialNumbers.forEach(ele => {
             this.data.push(ele);
           });
         }
-        if (this.ocObj.ProductID._id != '' && this.ocObj.SerialNumbers && (this.ocObj.SerialNumbers.findIndex(v => v.ID == this.ocObj.ProductID.code) < 0)) {
-          this.data.push({ 'ID': this.ocObj.ProductID.code, 'name': this.ocObj.ProductID.name, 'srno': '' })
+        console.log('this.data',this.data);
+        // if (this.ocObj.ProductID._id != '' && this.ocObj.SerialNumbers && (this.ocObj.SerialNumbers.findIndex(v => v.ID == this.ocObj.ProductID.code) < 0)) {
+        //   this.data.push({ 'ID': this.ocObj.ProductID.code, 'name': this.ocObj.ProductID.name, 'srno': '' })
+        // }
+        if (this.ocObj.ProductID && this.ocObj.ProductID.length && this.ocObj.SerialNumbers) {
+          this.ocObj.ProductID.forEach((ele, index) => {
+            if ((this.ocObj.SerialNumbers.findIndex(v => v.ID == ele.code) < 0)) {
+              this.data.push({ 'ID': ele.code, 'name': ele.name, 'srno': '' })
+            }
+          });
         }
         if (this.ocObj.SubAssemblyIDs && this.ocObj.SubAssemblyIDs.length && this.ocObj.SerialNumbers) {
           this.ocObj.SubAssemblyIDs.forEach((ele, index) => {
@@ -99,7 +111,22 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
     script.defer = true;
     body.appendChild(script);
   }
-
+  onAddSrNo(value, row, index) {
+    this.data[index].srno = value
+    let obj = { 'ID': row.ID, 'name': row.name, 'srno': value };
+    if (this.ocObj.SerialNumbers.length) {
+      let i = this.ocObj.SerialNumbers.findIndex(v => v.ID == row.ID);
+      if (i > -1) {
+        this.ocObj.SerialNumbers[i] = obj;
+      } else {
+        this.ocObj.SerialNumbers.push(obj);
+      }
+    } else {
+      this.ocObj.SerialNumbers = [];
+      this.ocObj.SerialNumbers.push(obj);
+    }
+    this.dashboardService.currentOcObj.next(this.ocObj);
+  }
   ngOnDestroy() {
     this.ocObj$.unsubscribe();
   }
@@ -113,9 +140,7 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
     localStorage.setItem('ocObj', JSON.stringify(this.ocObj));
     this.router.navigate(['/pages/dashboard/add-edit-labels']);
   }
-  onAddSrNo() {
 
-  }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && ((charCode < 46 || charCode > 57) || charCode == 47)) {

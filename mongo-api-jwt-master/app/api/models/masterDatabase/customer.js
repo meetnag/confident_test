@@ -5,18 +5,19 @@ const Schema = mongoose.Schema;
 const customerSchema = new Schema({
  name: {
   type: String,  
-  required: true,
+  required:true,
  },
  address:{
      type:String,
-     required:true,
  },
  city:{
      type:String,
  },
  contactNumber :{
      type:String,
-     unique:true ,
+ },
+ CustEmailID:{
+     type:String,
  },
  state:{
      type:String,

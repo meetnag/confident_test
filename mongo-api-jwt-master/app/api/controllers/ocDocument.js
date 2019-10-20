@@ -1,4 +1,5 @@
 const ocDocumentModel = require('../models/ocDocument');
+const ocListModel = require('../models/ocList');
 var multer = require('multer');
 
 
@@ -47,10 +48,39 @@ module.exports = {
    // console.log(ocDocument)
 // console.log("sadsa",ocDocument)
    ocDocument.save(function(err,result) {
+      
       if (err)
         res.json({status:"error",message:"something looks wrong!!!",data:err});
-      else 
+      else {
+         ocListModel.findById(fileInfo.ocid,function(err,result){
+            if(err){
+               res.json({status:"error",message:"Something is wrong!!!",data:null})
+            }
+            else{
+               
+               const docAttachedCounter = {
+                  docAttachedCounter:result.docAttachedCounter+1,
+               }
+               var con = {
+                  "$set":docAttachedCounter
+               }
+               
+               ocListModel.findByIdAndUpdate(fileInfo.ocid,con, {
+                  upsert: true,
+                  new: true,
+                  // overwrite: true // works if you comment this out
+               },function(err, result){
+                     if (err){
+                        res.json({status:"error",message:"Doc Counter Error!!!",data:err})
+                     } 
+                     if(result){
+                        // console.log(result)
+                     }
+                  });
+            }
+         })
           res.json({status:"success",message:"Oc Document Uploaded successfully!!!",data:null})
+      }
   });
    
  },
@@ -74,6 +104,36 @@ module.exports = {
    deleteDocument :function(req,res,next){
       ocDocumentModel.findByIdAndRemove(req.params.documentId , function(err,result) {
          if (result) {
+            // const OCNumber = req.params.OCNumber
+            
+            ocListModel.findById(result.ocid,function(err,result){
+            if(err){
+               res.json({status:"error",message:"Something is wrong!!!",data:null})
+            }
+            else{
+               
+               const docAttachedCounter = {
+                  docAttachedCounter:result.docAttachedCounter-1,
+               }
+               var con = {
+                  "$set":docAttachedCounter
+               }
+               
+               ocListModel.findByIdAndUpdate(result._id,con, {
+                  upsert: true,
+                  new: true,
+                  // overwrite: true // works if you comment this out
+               },function(err, result){
+                     if (err){
+                        res.json({status:"error",message:"Doc Counter error!!!",data:err})
+                     } 
+                     if(result){
+                        // console.log(result)
+                     }
+                  });
+               }
+            });
+
             res.json({status:"success",message:"Document Deleted Successfully!!!",data:result})
          }
          else {

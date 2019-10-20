@@ -36,11 +36,11 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
             }
         }
       },
-      ProductID: {
-        title: 'Product ID',
-        filter: false,
-        valuePrepareFunction: (value) => { return value.name }
-      },
+      // ProductID: {
+      //   title: 'Product ID',
+      //   filter: false,
+      //   valuePrepareFunction: (value) => { return value.name }
+      // },
       UpdatedDate: {
         title: 'Installation Complete Date',
         filter: false,

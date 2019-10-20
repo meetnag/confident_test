@@ -16,6 +16,10 @@ const routes: Routes = [{
       loadChildren: './oc-history/oc-history.module#OcHistoryModule',
     },
     {
+      path: 'oc-upload',
+      loadChildren: './oc-upload/oc-upload.module#OcUploadModule',
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

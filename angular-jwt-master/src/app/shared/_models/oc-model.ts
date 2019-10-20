@@ -9,7 +9,7 @@ export class OcModel {
     UpdatedDate: any;
     BranchID: Branch;
     Priority: Priority;
-    ProductID: Product;
+    ProductID: Product[];
     SubAssemblyIDs: SubAssembly[];
     Installation: Installation;
     CustomerType: CustomerType;
@@ -28,16 +28,21 @@ export class OcModel {
     TransportByBranch: any;
     BrinvNum: any;
     BrinvDocAttached: any;
+    BrInstaDocAttached: any;
+    warranty: any;
+    LRNumber: any;
+    LRDate: any;
     constructor() {
         this.SerialNumbers = [];
         this.Priority = new Priority();
-        this.ProductID = new Product();
+        this.ProductID = [];
         this.SubAssemblyIDs = [];
         this.Customer = new Customer();
         this.CustomerType = new CustomerType();
         this.BranchID = new Branch();
         this.Installation = new Installation();
         this.StatusLog = [];
+        this.SpareIDs = [];
         this.typeOfSale = 'Direct Sale';
     }
 }
@@ -68,6 +73,7 @@ export class Customer {
     country: any;
     address: any;
     contactNumber: any;
+    CustEmailID: any;
     constructor() {
         this.name = '';
         this.city = '';
@@ -75,13 +81,17 @@ export class Customer {
         this.state = '';
         this.zip = '';
         this.address = '';
-        this.country = '';
+        this.country = 'India';
+        this.CustEmailID = '';
     }
 }
 export class SerialNumber {
     ID: any;
     name: any;
     srno: any;
+    constructor() {
+        this.srno = '';
+    }
 }
 export class Priority {
     _id: any;

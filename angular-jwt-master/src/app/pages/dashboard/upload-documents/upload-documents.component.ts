@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 })
 export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
+  
   fileToUpload: File = null;
   docHash: any = '';
   currentUser$: Subscription;

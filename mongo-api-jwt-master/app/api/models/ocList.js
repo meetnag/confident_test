@@ -25,6 +25,15 @@ const ocListSchema = new Schema({
     trim: true
     // required: true
 },
+warranty:{
+    type:Number,
+},
+LRNumber:{
+    type:Number,
+},
+LRDate:{
+    type:Date,
+},
  Priority : {
     _id:{
         type:String,
@@ -50,7 +59,7 @@ const ocListSchema = new Schema({
          type:String ,
      },
  },
- ProductID :{
+ ProductID :[{
      code:{
          type:String,
      },
@@ -60,7 +69,8 @@ const ocListSchema = new Schema({
      name:{
          type:String ,
      },
-  },
+  }],
+
  SubAssemblyIDs:[
      {
          name :{
@@ -97,6 +107,9 @@ Customer :{
         contactNumber :{
             type:String,
         },
+        CustEmailID :{
+            type:String,
+        },
         state:{
             type:String,
         },
@@ -128,6 +141,9 @@ Customer :{
     BrinvDocAttached:{
         type: Boolean,
     },
+BrInstaDocAttached:{
+    type:Boolean,
+},
 Status:{
     name:{
         type:String ,
@@ -186,6 +202,10 @@ SerialNumbers:[
 
     }
 ],
+docAttachedCounter :{
+    type:Number,
+    default:0,
+},
 StatusLog:[
     {
         UserName:{

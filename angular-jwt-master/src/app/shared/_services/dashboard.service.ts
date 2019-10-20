@@ -32,6 +32,9 @@ export class DashboardService {
   getPriorityList() {
     return this.apiService.apiCaller('get', 'priority/');
   }
+  getCustomersByName(name) {
+    return this.apiService.apiCaller('post', 'ocList/getCustomersByName', name);
+  }
   getCustomerTypeList() {
     return this.apiService.apiCaller('get', 'customerType/');
   }
@@ -43,6 +46,9 @@ export class DashboardService {
   }
   getOcNumber() {
     return this.apiService.apiCaller('get', 'ocList/getOcNumber');
+  }
+  checkOcNumber(id) {
+    return this.apiService.apiCaller('get', 'ocList/checkOCNumber/' + id);
   }
   getOcList(obj) {
     return this.apiService.apiCaller('post', 'ocList/', obj);

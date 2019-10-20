@@ -1,5 +1,6 @@
 const ocListModel = require('../models/ocList');
 const userModel = require('../models/users');
+const ocDocumentModel = require('../models/ocDocument');
 const modbusModel = require('../models/modbus');
 const modbusConsolidatedModel = require('../models/modbusConsoldated');
 const userRoleModel = require('../models/userRole');
@@ -7,14 +8,64 @@ const customerModel = require('../models/masterDatabase/customer');
 const localModbusModel = require('../models/localApi');
 // const localModbusModel = require('../models/localApi');
 const rawMaterialModbus = require('../models/rawMaterialModbus');
+var nodemailer = require('nodemailer');
 
-module.exports = {   
+var saveCustomerData = function(customerData,res){
+
+   var con = {
+      "$set":customerData
+   }
+   
+
+         customerModel.update(customerData,con, {
+            upsert: true,
+            new: true,
+            // overwrite: true // works if you comment this out
+         },function(err, result){
+            if (err){
+               res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
+            } 
+            if(result){
+               // console.log(result)
+            
+            }
+         });
+      // }
+}
+var sendMail = function(){
+ 
+
+  var transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+      user: "emailId@gmail.com",
+      pass: "password"
+   }
+ });
+ 
+ var mailOptions = {
+   from: 'harshitkyal@gmail.com',
+   to: 'kyalharshit@gmail.com',
+   subject: 'Sending Email using Node.js',
+   text: 'That was easy!'
+ };
+ 
+ transporter.sendMail(mailOptions, function(error, info){
+   if (error) {
+     console.log(error);
+   } else {
+     console.log('Email sent: ' + info.response);
+   }
+ });
+} 
+module.exports = {  
+   
    modbusConsolidatedGetAll: function(req, res, next) {
       let modbusConsoldated = {
          seqNumber : req.body.output[0],
          HMINo : req.body.output[1]
       };
-      console.log("output",req.body.output)
+      // console.log("output",req.body.output)
       let resultModbus=[];
       modbusConsolidatedModel.find(modbusConsoldated, function(err, result){
         if (err){
@@ -51,7 +102,11 @@ module.exports = {
         if (err){
           next(err);
         } else{
-         resultModbus.push(list[0].status,list[0].duration)
+           if(list[0].status == 1 ){
+              resultModbus.push(1)
+           }
+           else
+            resultModbus.push(0)  
          res.json(resultModbus)
          //  res.json({status:"success", message: " list found!!!", output:{list}});
         }
@@ -74,19 +129,19 @@ module.exports = {
       updateLocalModbus: function(req, res, next) {
          // console
          var updateData;
+         // console.log(req.body)
          var status=req.body.output[0];
          
          update={
             "status":req.body.output[0],
-            "duration":req.body.output[1]
+            "system":1
          }
-      
+         // console.log(update)
          var data = {
-            "system":1,
-            "is_active":true    
+            "system":1 
          }
          // console.log("in function")
-         localModbusModel.findOneAndUpdate(data,updateData, function(err, result){
+         localModbusModel.update(data,update, function(err, result){
             if (err)
             res.json({status:"error", message: " something is wrong!!!", data:err});
             else
@@ -104,16 +159,45 @@ module.exports = {
                "is_active":true ,
             }
             var resultModbus=[];
+            var errResult = [];
+            errResult.push(1);
             rawMaterialModbus.find(dataQuery, function(err, result){
                if (err)
                   res.json({status:"error", message: " something is wrong!!!", data:err});
-               else {
+               else if(result.length) {
                   resultModbus.push(result[0].rawMaterialA,result[0].rawMaterialB, result[0].rawMaterialC);
-
                   res.json(resultModbus);
                }
+               else 
+                  res.json(errResult)
             });
             },
+            getHMIRawMaterial: function(req, res, next) {
+               // var data = {
+               //    "operatorId":req.body.data[0],  
+               //    "startTime":req.body.data[1], 
+               //    "status":2
+               // }
+               var dataQuery = {
+                  // "operatorId":req.body.data[0],   
+                  "is_active":true ,
+                  "status":0
+               }
+               var resultModbus=[];
+               var errResult = [];
+               errResult.push(1);
+               rawMaterialModbus.find(dataQuery, function(err, result){
+                  if (err)
+                     res.json({status:"error", message: " something is wrong!!!", data:err});
+                  else if(result.length) {
+                     resultModbus.push(result[0].rawMaterialA,result[0].rawMaterialB, result[0].rawMaterialC);
+                     res.json(resultModbus);
+                  }
+                  else 
+                     res.json(errResult)
+                  
+               });
+               },
             getStatus: function(req, res, next) {
                var dataQuery = {
                   "is_active":true     
@@ -145,28 +229,27 @@ module.exports = {
                var data;
                if(status == 2){
 
-                  data = {
-                     "operatorId":req.body.data[0],  
-                     "startTime":req.body.data[1], 
+                  data = { 
+                     "startTime":new Date(),
                      "status":req.body.data[2]
                   }
                }else{
-                 data = {
-                     "operatorId":req.body.data[0],  
-                     "stopTime":req.body.data[1], 
-                     "status":req.body.data[2]
+                 data = { 
+                     "stopTime":new Date(),
+                    "status":req.body.data[2],
+                     
                   }
                }
                var dataQuery = {
-                  "operatorId":req.body.data[0],   
-                  "status":2
+                  "is_active":true
                }
                var resultModbus=[];
-               rawMaterialModbus.findOneAndUpdate(dataQuery,data, function(err, result){
+               resultModbus.push(1)
+               rawMaterialModbus.update(dataQuery,data, function(err, result){
                   if (err)
                      res.json({status:"error", message: " something is wrong!!!", data:err});
                   else {
-                     
+                     res.json(resultModbus);
                   
                   }
                });
@@ -179,7 +262,7 @@ module.exports = {
                   "rawMaterialA":req.body.data[1],
                   "rawMaterialB":req.body.data[2],
                   "rawMaterialC":req.body.data[3],
-                  "status":2,
+                  "status":0,
                   "is_active":true
                }
                // var resultModbus=[];
@@ -202,15 +285,13 @@ module.exports = {
                },
 
    updateModbusConsolidated: function(req, res, next) {
-   // let modbusConsoldated = [];
-   // var seq = parseInt(req.body.output[0],10);
-   // console.log(req.body.output[0],seq)
+
    let reqModbusConsoldated = {
       seqNumber : req.body.output[0],
       HMINo : req.body.output[1],
       lotNo:req.body.output[2]
    };
-   console.log("update",req.body.output)
+   // console.log("update",req.body.output)
 
 //    console.log
    var modbusConsoldated =  {
@@ -222,7 +303,7 @@ module.exports = {
    };
    modbusConsolidatedModel.findOneAndUpdate(reqModbusConsoldated,modbusConsoldated, function(err, result){
       if (err){
-            console.log(err);
+            // console.log(err);
          next(err);
       } else{
          // modbusConsoldated.push({lotNo: movies[0], colorSeq: movies[1], quantity: movies[2],timeDuration:movies[3],endTime: movies[4]});
@@ -317,7 +398,7 @@ module.exports = {
          })
         
       }
-      else if(roleName=="Sales Team" && branchName && status != "In Progress - Branch/Dealer"){
+      else if(roleName=="Sales Team" && branchName && status == "In Progress - Sales"){
          updateStatus="In Progress - Branch/Dealer";
          userModel.find({"branchId":req.body.branchId},function(err,result){
             if (err) {
@@ -389,6 +470,8 @@ module.exports = {
          });
          
       } else if (roleName == "Branch/Dealer") {
+
+
          if(req.body.branchId){
             ocListModel.find({"OCNumber":req.body.OCNumber,"BranchID._id":req.body.branchId},function(err,result){
                if(result)
@@ -462,11 +545,28 @@ module.exports = {
          });
       }
    },
+   getCustomerByName :function(req,res,next){
+      
+      var customerName ={
+         "name":req.body.customerName,
+      }
+
+      customerModel.find(customerName,function(err,result){
+         if(err) 
+            res.json({status:"error",message:"No Records Found!!!",data:err})
+         else
+            res.json({status:"success",message:"Records Found!!!",data:result})
+      });
+   },
    create: function(req, res,next) {
 
+      // var customerData = req.body.customer;
+      
       const d = new Date();
       const customerData = req.body.Customer
+      // saveCustomerData(customerData)
          var ocList = new ocListModel ({
+              OCNumber : req.body.OCNumber,
               OCDate: req.body.OCDate,
               OCNotes: req.body.OCNotes,
               Priority: req.body.Priority,
@@ -547,7 +647,7 @@ module.exports = {
                                  res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
                               } 
                               if(result){
-                                 console.log(result)
+                                 // console.log(result)
                               }
                            });
                         }
@@ -565,7 +665,20 @@ module.exports = {
 
       })
    },
+   checkForOcNumber: function(req, res, next) {
+      //sendMail()
+      
+      ocListModel.findOne({"OCNumber" : req.params.OCNumber},function(err, result){
+      if (result) 
+         res.json({status:"error", message: "Provided OC number is already in use, please enter a new OC number", data:null});
+      else
+         res.json({status:"success", message: "Unique OC Number", data:req.params.OCNumber});
+     
+         
+      })
+   },
    getAll: function(req, res, next) {
+      
       ocListModel.find({},function(err, ocList){
       if (err) 
          next(err)
@@ -617,61 +730,107 @@ module.exports = {
          }
       }
    },
+
    updateOC:function(req, res,next) {
 
+         var customerData = req.body.Customer;
+
+         if (req.body.Customer.name)
+            saveCustomerData(customerData,res)
+         
          let d = new Date()
          let ocList = req.body;
          let update;
          update = ocList;
-                  
-         if(req.body.Installation){
+         let flag = 1;
+         if(req.body.BrInstaDocAttached){
+            if(req.body.docAttachedCounter) {
+
+            }else{
+            res.json({status:"error",message:"No Document Attached!!!",data:null})
+            flag = 0;
+            }
+                        
+         }
+         if(req.body.Installation && flag){
             
             let installationDate = req.body.Installation.installationDate;
-            if(req.body.Installation.installationComplete && req.body.BrinvDocAttached){
+            if(req.body.typeOfSale == "Branch Sale"){
+               if(req.body.Installation.installationComplete && req.body.BrinvDocAttached && req.body.BrInstaDocAttached){
+                  updateStatus="Installation Complete";
+                  ocList.Status.name = updateStatus;
+                  sendMail()
+               }
+               else if(installationDate){
+                  updateStatus="Installation Scheduled";
+                  ocList.Status.name = updateStatus;
+                  
+               }
+            }
+            else if (req.body.Installation.installationComplete && req.body.BrInstaDocAttached){
                updateStatus="Installation Complete";
+               sendMail()
                ocList.Status.name = updateStatus;
             }
             else if(installationDate){
                   updateStatus="Installation Scheduled";
                   ocList.Status.name = updateStatus;
+               }
+            }
+         if(flag){
+            // res.json("hello")
+            ocListModel.findOneAndUpdate({
+               _id: req.body._id
+            },update, function(err, success) {
+               // If success //
+               if (success){
                   
-               }
-         }
-         
-
-         ocListModel.findOneAndUpdate({
-             _id: req.body._id
-         },update, function(err, success) {
-             // If success //
-             if (success){
-               const customerData = req.body.Customer
-               var con = {
-                  "$set":customerData
-               }
-               var contactNumber = {
-                  contactNumber:customerData.contactNumber
-               }
-
-               if (customerData.contactNumber){
-                     customerModel.update(contactNumber,con, {
-                        upsert: true,
-                        new: true,
-                        // overwrite: true // works if you comment this out
-                     },function(err, result){
-                        if (err){
-                           res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
-                        } 
-                        if(result){
-                           console.log(result)
+                  if (req.Customer.name){
+                        var con = {
+                           "$set":customerData
                         }
-                     });
-                  }
+                     
+                        customerModel.update(customerData,con, {
+                           upsert: true,
+                           new: true,
+                           // overwrite: true // works if you comment this out
+                        },function(err, result){
+                           if (err){
+                              res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
+                           } 
+                           
+                        });
+                        // }
+                     }
+               
+                  // const customerData = req.body.Customer
+                  // var con = {
+                  //    "$set":customerData
+                  // }
+                  // var contactNumber = {
+                  //    contactNumber:customerData.contactNumber
+                  // }
 
-               res.json({status:"success", message: "OC Updated Successfully!!!", data:success});
-             }
-             else 
-             res.json({status:"error", message: "Invalid OC ID", data:err});
+                  // if (customerData.contactNumber){
+                  //       customerModel.update(contactNumber,con, {
+                  //          upsert: true,
+                  //          new: true,
+                  //          // overwrite: true // works if you comment this out
+                  //       },function(err, result){
+                  //          if (err){
+                  //             res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
+                  //          } 
+                  //          if(result){
+                  //             // console.log(result)
+                  //          }
+                  //       });
+                  //    }
+                  res.json({status:"success", message: "OC Updated Successfully!!!", data:success});
+               }
+               else 
+               res.json({status:"error", message: "Invalid OC ID", data:err});
 
-            });
+               });
+            }
    },
 }
