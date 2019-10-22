@@ -4,7 +4,7 @@
       <h3 class="panel-hd">{{header}}</h3>
     </div>
     <div class="panel-body">
-      <form class="form-horizontal mt-5 ml-5 mr-5" #form="ngForm">
+      <form class="form-horizontal mt-5 ml-5 mr-5" #ocform="ngForm">
         <!-- Admin -->
         <div class="row" *ngIf="currentUser.userRole =='Admin' || currentUser.userRole=='QA Team'">
           <div class="col-md-6">
@@ -197,15 +197,15 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
               <label class="col-sm-4 control-label">Invoice Date</label>
               <div class="col-sm-8">
                 <my-date-picker name="invoicedate" [options]="myDatePickerOptionsInvoice"
-                  [(ngModel)]="installationObj.invoiceDate" #invoiceDate="ngModel" onkeydown="return false"
+                  [(ngModel)]="installationObj.invoiceDate" required #invoiceDt="ngModel" onkeydown="return false"
                   [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 </my-date-picker>
-                <div *ngIf="invoiceDate.invalid && (invoiceDate.dirty || invoiceDate.touched)" class="errors">
-                  <div *ngIf="invoiceDate.errors && invoiceDate.errors.required">
+                <div *ngIf="invoiceDt.invalid && (invoiceDt.dirty || invoiceDt.touched)" class="errors">
+                  <div *ngIf="invoiceDt.errors && invoiceDt.errors.required">
                     Invoice Date is required.
                   </div>
                 </div>
@@ -214,19 +214,42 @@
                                 [min]="ocObj.OCDate" onkeydown="return false" [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
               </div>
             </div>
-
+            <div class="form-group required"
+              *ngIf=" ocObj.typeOfSale != undefined &&  ocObj.typeOfSale == 'Branch Sale' ">
+              <label class="col-sm-4 control-label">Warranty (in months)</label>
+              <div class="col-sm-8">
+                <input type="text" name="Warranty" required #warrant="ngModel" [(ngModel)]="ocObj.warranty"
+                  class="form-control">
+                <div *ngIf="warrant.invalid && (warrant.dirty || warrant.touched)" class="errors">
+                  <div *ngIf="warrant.errors && warrant.errors.required">
+                    Warranty is required.
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
               <label class="col-sm-4 control-label">Customer Name</label>
               <div class="col-sm-8">
-                <input maxlength="100" type="text" name="name" required #cname="ngModel"
-                  (change)="getCustomersByName($event.target.value)" [(ngModel)]="ocObj.Customer.name"
-                  class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
+                  #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
+                  class="form-control">
                 <!-- [matAutocomplete]="auto" -->
+                <!-- (optionSelected)='onCustomerSelected($event)' -->
                 <!-- <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let customer of customerNameList" [value]="customer.name">
-                    <span>{{customer.name}} , {{customer.address}} , {{customer.city}} , {{customer.state}}</span> |
+                  <mat-option *ngFor="let customer of customerNameList | async" [value]="customer.name">
+                    <span>{{customer.name}} , {{customer.address}} , {{customer.city}} , {{customer.state}}</span>
                   </mat-option>
                 </mat-autocomplete> -->
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
+                  *ngIf="(customerNameList | async)?.length">
+                  <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
+                    (click)="onCustomerSelected(customer)">
+                    <span>{{customer.name}} <span *ngIf="customer.address != undefined && customer.address != ''">,
+                        {{customer.address}}</span> <span *ngIf="customer.city != undefined && customer.city != ''">,
+                        {{customer.city}}</span> <span *ngIf="customer.state != undefined && customer.state != ''">,
+                        {{customer.state}}</span> </span>
+                  </li>
+                </ul>
                 <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="errors">
                   <div *ngIf="cname.errors && cname.errors.required">
                     Customer Name is required.
@@ -340,26 +363,20 @@
                 </div>
               </div>
             </div>
-            <div class="form-group required">
-              <label class="col-sm-4 control-label">Warranty (in months)</label>
-              <div class="col-sm-8">
-                <input type="text" name="Warranty" required #warrant="ngModel" [(ngModel)]="ocObj.warranty"
-                  class="form-control">
-                <div *ngIf="warrant.invalid && (warrant.dirty || warrant.touched)" class="errors">
-                  <div *ngIf="warrant.errors && warrant.errors.required">
-                    Warranty is required.
-                  </div>
-                </div>
-              </div>
-            </div>
+
             <div class="form-group required">
               <label class="col-sm-4 control-label">LR Number</label>
               <div class="col-sm-8">
                 <input type="text" name="lrnumber" required #lrNo="ngModel" [(ngModel)]="ocObj.LRNumber"
-                  class="form-control">
+                  class="form-control" [pattern]="'^[a-zA-Z0-9 \'\-]+$'">
                 <div *ngIf="lrNo.invalid && (lrNo.dirty || lrNo.touched)" class="errors">
                   <div *ngIf="lrNo.errors && lrNo.errors.required">
                     LR Number is required.
+                  </div>
+                </div>
+                <div *ngIf="lrNo.invalid && (lrNo.dirty || lrNo.touched)" class="errors">
+                  <div *ngIf="lrNo.errors && !lrNo.errors.required">
+                    Enter valid LR Number.
                   </div>
                 </div>
               </div>
@@ -367,8 +384,8 @@
             <div class="form-group required">
               <label class="col-sm-4 control-label">LR Date</label>
               <div class="col-sm-8">
-                <my-date-picker name="lrdate" required #ldate="ngModel" [options]="lrDateOptions"
-                  [(ngModel)]="ocObj.LRDate" (dateChanged)="onDateChanged($event)" onkeydown="return false">
+                <my-date-picker name="lrdate" required #ldate="ngModel" [(ngModel)]="ocObj.LRDate"
+                  onkeydown="return false" [options]="myDatePickerForDisable">
                 </my-date-picker>
                 <div *ngIf="ldate.invalid && (ldate.dirty || ldate.touched)" class="errors">
                   <div *ngIf="ldate.errors && ldate.errors.required">
@@ -426,6 +443,19 @@
                 <div *ngIf="cemail.invalid && (cemail.dirty || cemail.touched)" class="errors">
                   <div *ngIf="cemail.errors && cemail.errors.required">
                     Customer Email is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required"
+              *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale' ">
+              <label class="col-sm-4 control-label">Warranty (in months)</label>
+              <div class="col-sm-8">
+                <input type="text" name="Warranty" required #warrant="ngModel" [(ngModel)]="ocObj.warranty"
+                  class="form-control">
+                <div *ngIf="warrant.invalid && (warrant.dirty || warrant.touched)" class="errors">
+                  <div *ngIf="warrant.errors && warrant.errors.required">
+                    Warranty is required.
                   </div>
                 </div>
               </div>
@@ -626,15 +656,15 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">LR Date</label>
                 <div class="col-sm-8">
-                  <my-date-picker name="lrdate" [options]="lrDateOptions" [(ngModel)]="ocObj.LRDate"
-                    (dateChanged)="onDateChanged($event)" [disabled]="currentUser.userRole == 'Branch/Dealer'"
-                    onkeydown="return false">
+                  <my-date-picker name="lrdate" [(ngModel)]="ocObj.LRDate"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
+                    [options]="myDatePickerForDisable">
                   </my-date-picker>
                   <!-- <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
                         [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
                 </div>
               </div>
-              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <div class="form-group">
                 <label class="col-sm-4 control-label">Invoice Date</label>
                 <div class="col-sm-8">
                   <my-date-picker name="invoicedate" [options]="myDatePickerOptionsInvoice"
@@ -659,12 +689,18 @@
           </div>
           <div class="row col-md-12">
             <div class="col-md-6">
-              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
                 <label class="col-sm-4 control-label">Installation Date</label>
                 <div class="col-sm-8">
                   <my-date-picker name="installationdate" [options]="myDatePickerForDisable"
-                    [(ngModel)]="installationObj.installationDate" onkeydown="return false">
+                    [(ngModel)]="installationObj.installationDate" required #instDate="ngModel"
+                    onkeydown="return false">
                   </my-date-picker>
+                  <!-- <div *ngIf="installationObj.installationDate != undefined && instDate.invalid && (instDate.dirty || instDate.touched)" class="errors">
+                    <div *ngIf="instDate.errors && instDate.errors.required">
+                      Installation Date is required.
+                    </div>
+                  </div> -->
                   <!-- <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
                     name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
                     data-title="Date Opened" [min]="ocObj.minInstallationDate" onkeydown="return false"> -->
@@ -705,7 +741,7 @@
 
 
               <!-- && installationObj.typeOfSale == 'Branch Sale' -->
-              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer' ">
+              <!-- <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer' ">
                 <label class="col-sm-4 control-label">Invoice Number (By Branch)</label>
                 <div class="col-sm-8">
                   <input type="text" name="Invoicenumberbr" required #invBrnch="ngModel" [(ngModel)]="ocObj.BrinvNum"
@@ -716,7 +752,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
                 <label class="col-sm-4 control-label" for="complete">Installation Complete</label>
@@ -725,12 +761,12 @@
                     id="complete">
                 </div>
               </div>
-              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
+              <!-- <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
                 <label class="col-sm-4 control-label" for="doc"> Invoice Document Attached</label>
                 <div class="col-sm-8" style="margin-top:7px;">
                   <input type="checkbox" name="completebr" [(ngModel)]="ocObj.BrinvDocAttached" id="doc">
                 </div>
-              </div>
+              </div> -->
               <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
                 <label class="col-sm-4 control-label" for="doc"> Installation Document Attached</label>
                 <div class="col-sm-8" style="margin-top:7px;">
@@ -891,9 +927,9 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">LR Date</label>
                 <div class="col-sm-8">
-                  <my-date-picker name="lrdate" [options]="lrDateOptions" [(ngModel)]="ocObj.LRDate"
-                    (dateChanged)="onDateChanged($event)" [disabled]="currentUser.userRole == 'Branch/Dealer'"
-                    onkeydown="return false">
+                  <my-date-picker name="lrdate" [(ngModel)]="ocObj.LRDate"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
+                    [options]="myDatePickerForDisable">
                   </my-date-picker>
                   <!-- <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
                         [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
@@ -928,10 +964,28 @@
                 *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">Customer Name</label>
                 <div class="col-sm-8">
-                  <input maxlength="100" type="text" name="name" (change)="getCustomersByName($event.target.value)"
-                    [(ngModel)]="ocObj.Customer.name" class="form-control" required #cName="ngModel">
-                  <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="errors">
-                    <div *ngIf="cName.errors && cName.errors.required">
+                  <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
+                    #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
+                    class="form-control">
+                  <!-- [matAutocomplete]="auto" -->
+                  <!-- (optionSelected)='onCustomerSelected($event)' -->
+                  <!-- <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let customer of customerNameList | async" [value]="customer.name">
+                    <span>{{customer.name}} , {{customer.address}} , {{customer.city}} , {{customer.state}}</span>
+                  </mat-option>
+                </mat-autocomplete> -->
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
+                    *ngIf="(customerNameList | async)?.length">
+                    <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
+                      (click)="onCustomerSelected(customer)">
+                      <span>{{customer.name}} <span *ngIf="customer.address != undefined && customer.address != ''">,
+                          {{customer.address}}</span> <span *ngIf="customer.city != undefined && customer.city != ''">,
+                          {{customer.city}}</span> <span *ngIf="customer.state != undefined && customer.state != ''">,
+                          {{customer.state}}</span> </span>
+                    </li>
+                  </ul>
+                  <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="errors">
+                    <div *ngIf="cname.errors && cname.errors.required">
                       Customer Name is required.
                     </div>
                   </div>
@@ -1085,12 +1139,17 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+              <div class="form-group required">
                 <label class="col-sm-4 control-label">Installation Date</label>
                 <div class="col-sm-8">
-                  <my-date-picker name="installationdate" [options]="myDatePickerForDisable"
+                  <my-date-picker name="installationdate" required instDate="ngModel" [options]="myDatePickerForDisable"
                     [(ngModel)]="installationObj.installationDate" onkeydown="return false">
                   </my-date-picker>
+                  <div *ngIf="instDate?.invalid && (instDate?.dirty || instDate?.touched)" class="errors">
+                    <div *ngIf="instDate?.errors && instDate?.errors?.required">
+                      Installation Date is required.
+                    </div>
+                  </div>
                   <!-- <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
                       name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
                       data-title="Date Opened" [min]="ocObj.minInstallationDate" onkeydown="return false"> -->
@@ -1149,10 +1208,10 @@
         <div class="row text-right">
           <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onCancel()">Cancel
           </button>
-          <button *ngIf="!isUpdate" [disabled]="form.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
-            (click)="onNext()">Next
+          <button *ngIf="!isUpdate" [disabled]="ocform.invalid" type="button"
+            class="btn btn-primary btn-asset ml-3 mb-5" (click)="onNext()">Next
           </button>
-          <button *ngIf="isUpdate" [disabled]="form.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
+          <button *ngIf="isUpdate" [disabled]="ocform.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
             (click)="onNext()">Update
           </button>
         </div>

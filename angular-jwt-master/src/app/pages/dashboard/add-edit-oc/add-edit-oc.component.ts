@@ -14,10 +14,12 @@ import {
   Installation,
   SerialNumber
 } from "@app/shared/_models/oc-model";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { AuthenticationService } from "@app/shared/_services/authentication.service";
 import { DatePipe } from "@angular/common";
 import { IMyDpOptions } from "mydatepicker";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "@environments/environment";
 
 @Component({
   selector: "app-add-edit-oc",
@@ -31,7 +33,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   subAssemblyList: SubAssembly[] = [];
   productList = [];
   priorityList: Priority[] = [];
-  customerNameList: Customer[] = [];
+  customerNameList: Observable<Array<Customer[]>>;
   customerTypeList: CustomerType[] = [];
   spareList: Spare[] = [];
   branchList: Branch[] = [];
@@ -70,7 +72,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     private dashboardService: DashboardService,
     private toasterService: ToastrService,
     private authenticationService: AuthenticationService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private http: HttpClient
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(
       data => {
@@ -93,6 +96,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.customerNameList = this.dashboardService.getCustomersByName({ customerName: "" });
+
     const isIEOrEdge = /msie\s|trident\/|edge\//i.test(
       window.navigator.userAgent
     );
@@ -175,29 +180,10 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         this.ocObj = new OcModel();
         this.ocObj = data.data.ocList[0];
         this.installationObj = new Installation();
-        var minInsDate = new Date(this.ocObj.OCDate);
-        var date = new Date(minInsDate.setDate(minInsDate.getDate() + 1));
-        // add a day
-        this.ocObj.minInstallationDate = this.datePipe.transform(
-          date,
-          this.dateFormat
-        );
-        this.ocObj.minInstallationDate = this.getFormattedDate(this.ocObj.minInstallationDate);
-        this.ocObj.OCDate = this.getFormattedDate(this.ocObj.OCDate);
-        if (this.ocObj.LRDate != undefined) {
-          this.ocObj.LRDate = this.getFormattedDate(this.ocObj.LRDate);
+        if (this.ocObj.Customer && this.ocObj.Customer.name != undefined && this.ocObj.Customer.name != '') {
+          this.customerNameList = this.dashboardService.getCustomersByName({ customerName: this.ocObj.Customer.name });
         }
-        let obj: IMyDpOptions = {
-          dateFormat: this.dateFormatP,
-          disableUntil: this.ocObj.minInstallationDate.date
-        };
-        this.myDatePickerForDisable = obj;
-        console.log('this.ocObj.OCDate.date', this.ocObj.OCDate.date);
-        let obj1: IMyDpOptions = {
-          dateFormat: this.dateFormatP,
-          disableUntil: this.ocObj.OCDate.date
-        };
-        this.myDatePickerOptionsInvoice = obj1;
+        this.setDateValidations();
         console.log('installationObj.invoiceDate', this.installationObj.invoiceDate)
         // this.ocObj.OCDate = this.datePipe.transform(
         //   this.ocObj.OCDate,
@@ -252,6 +238,31 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     });
   }
 
+  setDateValidations() {
+    var minInsDate = new Date(this.ocObj.OCDate);
+    var date = new Date(minInsDate.setDate(minInsDate.getDate() + 1));
+    // add a day
+    this.ocObj.minInstallationDate = this.datePipe.transform(
+      date,
+      this.dateFormat
+    );
+    this.ocObj.minInstallationDate = this.getFormattedDate(this.ocObj.minInstallationDate);
+    this.ocObj.OCDate = this.getFormattedDate(this.ocObj.OCDate);
+    if (this.ocObj.LRDate != undefined) {
+      this.ocObj.LRDate = this.getFormattedDate(this.ocObj.LRDate);
+    }
+    let obj: IMyDpOptions = {
+      dateFormat: this.dateFormatP,
+      disableUntil: this.ocObj.minInstallationDate.date
+    };
+    this.myDatePickerForDisable = obj;
+    console.log('this.ocObj.OCDate.date', this.ocObj.OCDate.date);
+    let obj1: IMyDpOptions = {
+      dateFormat: this.dateFormatP,
+      disableUntil: this.ocObj.OCDate.date
+    };
+    this.myDatePickerOptionsInvoice = obj1;
+  }
   onDateChanged(event) {
     console.log('event', event);
     var minInsDate = new Date(event.jsdate);
@@ -309,6 +320,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     // console.log('onj', this.installationObj.installationComplete)
     // console.log('onj', this.ocObj)
     if (this.selectedSubAssembly.length) {
+      this.ocObj.SubAssemblyIDs = [];
       this.selectedSubAssembly.forEach(ele => {
         let i = this.subAssemblyList.findIndex(v => v._id == ele);
         if (i > -1) {
@@ -317,6 +329,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedSpare.length) {
+      this.ocObj.SpareIDs = [];
       this.selectedSpare.forEach(ele => {
         let i = this.spareList.findIndex(v => v._id == ele);
         if (i > -1) {
@@ -325,6 +338,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedProduct.length) {
+      this.ocObj.ProductID = [];
+      console.log(this.selectedProduct)
       this.selectedProduct.forEach(ele => {
         let i = this.productList.findIndex(v => v._id == ele);
         if (i > -1) {
@@ -397,8 +412,9 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
               this.router.navigate(["/pages/dashboard"]);
             } else {
               this.toasterService.error(res.message);
+              this.setDateValidations();
               console.log('errree', res);
-              this.router.navigate(["/pages/dashboard"]);
+              // this.router.navigate(["/pages/dashboard"]);
             }
           },
           err => {
@@ -489,25 +505,36 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     });
   }
   getCustomersByName(name) {
-    alert(name)
     let body = {
       customerName: name
     };
-    this.dashboardService.getCustomersByName(body).subscribe(res => {
-      if (res.status === "success" && res.data) {
-        console.log('name', res.data);
-        let data = res.data;
-        this.customerNameList = data;
-        // if (data.length) {
-        // data.forEach(ele => {
-        // let str = ele.name + " , " + ele.address + " , " + ele.city + " , " + ele.state ;
-        // this.customerNameList.push(str);
-        // })
-        // }
-      } else {
-        this.toasterService.error(res.message);
-      }
-    });
+    // this.customerNameList = this
+    //   .http
+    //   .post<Observable<Array<any>>>
+    //   (environment.apiUrl + 'ocList/getCustomersByName', body);
+    // console.log('this', this.customerNameList);
+    this.customerNameList = this.dashboardService.getCustomersByName(body);
+    console.log('this', this.customerNameList);
+
+
+    // this.dashboardService.getCustomersByName(body).subscribe(res => {
+    //   if (res.status === "success" && res.data) {
+    //     console.log('name', res.data);
+    //     let data = res.data;
+    //     this.customerNameList = data;
+    //     // if (data.length) {
+    //     //   data.forEach(ele => {
+    //     //     let str = ele.name + " , " + ele.address + " , " + ele.city + " , " + ele.state;
+    //     //     this.customerNameList.push(str);
+    //     //   })
+    //     // }
+    //   } else {
+    //     this.toasterService.error(res.message);
+    //   }
+    // });
+  }
+  onCustomerSelected(value) {
+    this.ocObj.Customer = value;
   }
   onPriorityChange() {
     if (this.priorityList.length) {

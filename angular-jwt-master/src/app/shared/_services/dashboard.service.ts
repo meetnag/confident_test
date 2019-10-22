@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { BehaviorSubject } from 'rxjs';
-import { OcModel } from '../_models/oc-model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { OcModel, Customer } from '../_models/oc-model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class DashboardService {
 
   currentOcObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
   selectedObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private http: HttpClient) { }
   getSubAssemblyList() {
     return this.apiService.apiCaller('get', 'subAssembly/');
   }
@@ -32,8 +34,24 @@ export class DashboardService {
   getPriorityList() {
     return this.apiService.apiCaller('get', 'priority/');
   }
-  getCustomersByName(name) {
-    return this.apiService.apiCaller('post', 'ocList/getCustomersByName', name);
+  getCustomersByName(name): Observable<Array<Customer[]>> {
+    return this.http.post(environment.apiUrl + 'ocList/getCustomersByName', name)
+      .map((response: any) => {
+        if (response.status === "success" && response.data) {
+          console.log('res', response.data)
+          return response.data;
+        } else {
+          return [];
+        }
+      });
+    // return this.apiService.apiCaller('post', 'ocList/getCustomersByName', name).map((response: any) => {
+    //   if (response.status === "success" && response.data) {
+    //     console.log('res',response.data)
+    //     return response.data;
+    //   } else {
+    //     return [];
+    //   }
+    // });;
   }
   getCustomerTypeList() {
     return this.apiService.apiCaller('get', 'customerType/');

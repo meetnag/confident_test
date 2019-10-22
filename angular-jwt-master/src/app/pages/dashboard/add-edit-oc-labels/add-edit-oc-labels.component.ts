@@ -134,6 +134,15 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
     console.log('date', this.ocObj.OCDate);
     this.ocObj.OCDate = this.ocObj.OCDate.formatted;
     console.log('date', this.ocObj.OCDate);
+    if (this.ocObj.Installation.installationDate != undefined) {
+      this.ocObj.Installation.installationDate = this.ocObj.Installation.installationDate.formatted;
+    }
+    if (this.ocObj.Installation.invoiceDate != undefined) {
+      this.ocObj.Installation.invoiceDate = this.ocObj.Installation.invoiceDate.formatted;
+    }
+    if (this.ocObj.LRDate != undefined) {
+      this.ocObj.LRDate = this.ocObj.LRDate.formatted;
+    }
     if (this.ocObj._id == undefined) {
       this.ocObj.CreatedDate = new Date();
       this.ocObj.Createdby = this.currentUser.user.name;

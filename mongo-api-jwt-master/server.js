@@ -25,7 +25,7 @@ global.mongoose = require('./config/database'); //database configuration
 
 var jwt = require('jsonwebtoken');
 const app = express();
-app.use(bodyParser({limit: '50mb'}));
+// app.use(bodyParser({limit: '50mb'}));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

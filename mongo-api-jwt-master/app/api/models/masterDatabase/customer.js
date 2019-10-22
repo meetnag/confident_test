@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const customerSchema = new Schema({
  name: {
   type: String,  
-  required:true,
  },
  address:{
      type:String,

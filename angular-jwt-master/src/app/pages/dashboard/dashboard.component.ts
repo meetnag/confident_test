@@ -8,6 +8,7 @@ import { Priority, OcModel } from '@app/shared/_models/oc-model';
 import { ToastrService } from 'ngx-toastr';
 import { filter } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+declare var $: any;
 
 @Component({ templateUrl: 'dashboard.component.html', providers: [DatePipe] })
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -180,25 +181,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //     }
     // }
 }
-/* OLD
+/*@Component({
+    selector: 'app-custom-renderer',
+    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()"><i class="fa fa-pencil" aria-hidden="true"></span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()"><i class="fa fa-exchange" aria-hidden="true"></span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()"><i class="fa fa-trash-o" aria-hidden="true"></span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></span>
+    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
+})*/
 @Component({
     selector: 'app-custom-renderer',
-    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()">Edit</span>
-    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()">Transfer</span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()">Close</span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()">Supporting Documents</span>
-    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()">Installation Report</span>`
+    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue" (click)="editOC()" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="transfer"><i class="fa fa-exchange" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="delete"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()" data-toggle="tooltip" data-placement="top" title="upload"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
 })
-*/
-@Component({
-    selector: 'app-custom-renderer',
-    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="editOC()"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onCloseOC()"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;font-size:16px" (click)="onCloseOC()"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;font-size:16px" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()">Installation Report</span>`
-})
-
 
 export class CustomRendererComponent implements OnInit, OnDestroy {
     currentUser$: Subscription;
@@ -219,6 +217,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     @Input() value: string | number;
     @Input() rowData: any;
     ngOnInit() {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
         if (this.currentUser.userRole === 'QA Team' || this.currentUser.userRole === 'Admin')
             this.isStatusNew = this.rowData.Status.name === 'New' ? true : false;
         if (this.rowData.Status.name == 'Installation Complete') {

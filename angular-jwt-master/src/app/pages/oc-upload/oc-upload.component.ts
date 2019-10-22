@@ -1,10 +1,11 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '@app/shared/_services';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { OcModel } from '@app/shared/_models/oc-model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-oc-upload',
@@ -15,7 +16,7 @@ export class OcUploadComponent implements OnInit, OnDestroy {
   fileToUpload: File = null;
   docHash: any = '';
   fileNote = '';
-  myInputVariable: ElementRef;
+  @ViewChild('myInput') myInput: ElementRef;
   currentUser$: Subscription;
   currentUser: any;
   productList = [];
@@ -88,7 +89,7 @@ export class OcUploadComponent implements OnInit, OnDestroy {
   //     })
   //   }
   // }
-  onUploadFile() {
+  onUploadFile(form: NgForm) {
     if (this.fileToUpload != null) {
       console.log('this.sele', this.selectedOc);
       let successCounter = 0;
@@ -112,11 +113,12 @@ export class OcUploadComponent implements OnInit, OnDestroy {
               successCounter++;
               if (successCounter == this.selectedOc.length && index == this.selectedOc.length - 1) {
                 this.toasterService.success(resSuccessMsg);
+                form.resetForm();
                 // this.selectedProduct = '';
                 this.selectedOc = [];
                 this.fileNote = '';
                 this.fileToUpload = null;
-                this.myInputVariable.nativeElement.value = "";
+                this.myInput.nativeElement.value = "";
               }
             } else {
               resErrorMsg = res.message;

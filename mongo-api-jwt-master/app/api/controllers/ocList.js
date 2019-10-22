@@ -32,23 +32,22 @@ var saveCustomerData = function(customerData,res){
          });
       // }
 }
-var sendMail = function(){
- 
+var sendMail = function(CustEmailID){
 
   var transporter = nodemailer.createTransport({
    service: 'gmail',
    auth: {
-      user: "emailId@gmail.com",
-      pass: "password"
+      user: "cddonotreply@gmail.com",
+      pass: "Lambda123*"
    }
  });
  
- var mailOptions = {
-   from: 'harshitkyal@gmail.com',
-   to: 'kyalharshit@gmail.com',
-   subject: 'Sending Email using Node.js',
-   text: 'That was easy!'
- };
+var mailOptions = {
+	from: 'cddonotreply@gmail.com',
+	to: CustEmailID,
+	subject: 'Your product has been installed, Thank you',
+	text: 'Sample Content'
+};
  
  transporter.sendMail(mailOptions, function(error, info){
    if (error) {
@@ -488,7 +487,7 @@ module.exports = {
       let roleName = req.body.roleName;
       if (req.body.Priority) {
          if (roleName == "Admin" || roleName == "QA Team" ) {
-            ocListModel.find({"Priority.name":req.body.Priority , "Status.name" :{ $ne:"Closed" } },function(err,result){
+            ocListModel.find({"Priority.name":req.body.Priority , "Status.name" :{ $ne:"Closed" } },null,{sort: {OCDate: -1}},function(err,result){
                if(result)
                   res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
                else
@@ -498,7 +497,7 @@ module.exports = {
             
          }else if (roleName == "Branch/Dealer") {
             if(req.body.branchId){
-               ocListModel.find({"Status.name" :{ $in:["In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] },"Priority.name":req.body.Priority,"BranchID._id":req.body.branchId},function(err,result){
+               ocListModel.find({"Status.name" :{ $in:["In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] },"Priority.name":req.body.Priority,"BranchID._id":req.body.branchId},null,{sort: {OCDate: -1}},function(err,result){
                   if(result)
                      res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
                   else
@@ -507,7 +506,7 @@ module.exports = {
                });
             }
          }else if(roleName == "Sales Team") {
-            ocListModel.find({"Status.name" :{ $in:["In Progress - Sales","In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"]  },"Priority.name":req.body.Priority},function(err,result){
+            ocListModel.find({"Status.name" :{ $in:["In Progress - Sales","In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"]  },"Priority.name":req.body.Priority},null,{sort: {OCDate: -1}},function(err,result){
                if(result)
                   res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
                else
@@ -517,7 +516,7 @@ module.exports = {
          }
       }else if (roleName == "Branch/Dealer") {
          if(req.body.branchId){
-            ocListModel.find({"Status.name" :{ $in:["In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] },"BranchID._id":req.body.branchId},function(err,result){
+            ocListModel.find({"Status.name" :{ $in:["In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] },"BranchID._id":req.body.branchId},null,{sort: {OCDate: -1}},function(err,result){
                if(result)
                   res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
                else
@@ -527,7 +526,7 @@ module.exports = {
          }
       }
       else if (roleName == "Sales Team") {
-         ocListModel.find({"Status.name" :{ $in:["In Progress - Sales","In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] }},function(err,result){
+         ocListModel.find({"Status.name" :{ $in:["In Progress - Sales","In Progress - Branch/Dealer","Installation Scheduled","Installation Complete"] }},null,{sort: {OCDate: -1}},function(err,result){
          //   console.log(roleName)
             if(result)
                res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
@@ -536,7 +535,7 @@ module.exports = {
                   
          });
       }else{
-         ocListModel.find({ "Status.name" :{ $ne:"Closed" }} ,function(err,result){
+         ocListModel.find({ "Status.name" :{ $ne:"Closed" }},null,{sort: {OCDate: -1}} ,function(err,result){
             if(result)
                res.json({status:"success",message:"Oc List found!!!",data:{ocList:result}})
             else
@@ -666,7 +665,7 @@ module.exports = {
       })
    },
    checkForOcNumber: function(req, res, next) {
-      //sendMail()
+      // sendMail("harshit")
       
       ocListModel.findOne({"OCNumber" : req.params.OCNumber},function(err, result){
       if (result) 
@@ -735,8 +734,8 @@ module.exports = {
 
          var customerData = req.body.Customer;
 
-         if (req.body.Customer.name)
-            saveCustomerData(customerData,res)
+         // if (req.body.Customer.name)
+         //    saveCustomerData(customerData,res)
          
          let d = new Date()
          let ocList = req.body;
@@ -759,7 +758,7 @@ module.exports = {
                if(req.body.Installation.installationComplete && req.body.BrinvDocAttached && req.body.BrInstaDocAttached){
                   updateStatus="Installation Complete";
                   ocList.Status.name = updateStatus;
-                  sendMail()
+                  sendMail(req.body.Customer.CustEmailID)
                }
                else if(installationDate){
                   updateStatus="Installation Scheduled";
@@ -769,7 +768,7 @@ module.exports = {
             }
             else if (req.body.Installation.installationComplete && req.body.BrInstaDocAttached){
                updateStatus="Installation Complete";
-               sendMail()
+               sendMail(req.body.Customer.CustEmailID)
                ocList.Status.name = updateStatus;
             }
             else if(installationDate){
@@ -785,11 +784,12 @@ module.exports = {
                // If success //
                if (success){
                   
-                  if (req.Customer.name){
+                  if (req.body.Customer){
+                        delete customerData['_id'];
                         var con = {
                            "$set":customerData
                         }
-                     
+                        
                         customerModel.update(customerData,con, {
                            upsert: true,
                            new: true,
@@ -797,7 +797,9 @@ module.exports = {
                         },function(err, result){
                            if (err){
                               res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
-                           } 
+                           }
+                           else
+                               console.log("sdad")
                            
                         });
                         // }
