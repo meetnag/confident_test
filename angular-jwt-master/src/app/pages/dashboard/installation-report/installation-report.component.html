@@ -358,10 +358,11 @@
             </div>
           </div>
         </div>
-        <div class="row float-right" [class.isPrinting]="!isPrinting">
-          <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onPrint()">Print
-          </button>
+        <div class="row text-right" [class.isPrinting]="!isPrinting">
+        
           <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onClose()">Cancel
+          </button>
+          <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onPrint()">Print
           </button>
         </div>
         <br>

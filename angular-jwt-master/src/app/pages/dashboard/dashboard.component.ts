@@ -191,11 +191,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 })*/
 @Component({
     selector: 'app-custom-renderer',
-    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue" (click)="editOC()" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="transfer"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="delete"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()" data-toggle="tooltip" data-placement="top" title="upload"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
-    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
+    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue; font-size:16px" (click)="editOC()" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue; font-size:16px" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="Transfer"><i class="fa fa-exchange" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:blue; font-size:16px" (click)="onCloseOC()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-times" aria-hidden="true"></i></span>
+    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onUploadDocuments()" data-toggle="tooltip" data-placement="top" title="Upload"><i class="fa fa-upload" aria-hidden="true"></i></span>
+    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" (click)="onReport()" data-toggle="tooltip" data-placement="top" title="Installation Report"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
 })
 
 export class CustomRendererComponent implements OnInit, OnDestroy {
