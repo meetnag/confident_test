@@ -53,6 +53,10 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
         renderComponent: CustomRendererReportComponent
       },
     },
+    pager: {
+      display: false,
+      // perPage: 25
+    }
   };
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService, private datePipe: DatePipe,
     private toasterService: ToastrService, private authenticationService: AuthenticationService) {
@@ -140,7 +144,7 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
 }
 @Component({
   selector: 'app-report-renderer',
-  template: `<qrcode [qrdata]="qrcode" [size]="70" [level]="'M'"></qrcode>`
+  template: `<qrcode [qrdata]="qrcode" [size]="50" [level]="'M'"></qrcode>`
 })
 export class CustomRendererReportComponent implements OnInit {
 

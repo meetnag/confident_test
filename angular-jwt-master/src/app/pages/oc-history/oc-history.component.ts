@@ -6,6 +6,7 @@ import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { AuthenticationService } from '@app/shared/_services/authentication.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
+declare var $: any;
 
 @Component({
   selector: 'app-oc-history',
@@ -30,10 +31,10 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
         title: 'OC Date',
         filter: false,
         valuePrepareFunction: (OCDate) => {
-            var raw = new Date(OCDate);
-            if (raw) {
+          var raw = new Date(OCDate);
+          if (raw) {
             return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
-            }
+          }
         }
       },
       // ProductID: {
@@ -45,10 +46,10 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
         title: 'Installation Complete Date',
         filter: false,
         valuePrepareFunction: (UpdatedDate) => {
-            var raw = new Date(UpdatedDate);
-            if (raw) {
+          var raw = new Date(UpdatedDate);
+          if (raw) {
             return this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm a');
-            }
+          }
         }
       },
       _id: {
@@ -66,7 +67,7 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
   currentUser: any;
   userRole = '';
 
-  constructor(private router: Router, private dashboardService: DashboardService,private datePipe: DatePipe,
+  constructor(private router: Router, private dashboardService: DashboardService, private datePipe: DatePipe,
     private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -129,17 +130,38 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
 }
 @Component({
   selector: 'app-custom-renderer',
-  template: `  <span class="font-medium-1 mr-2" style="cursor:pointer;" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
+  template: `  <span class="font-medium-1 mr-2" style="cursor:pointer;"  data-toggle="tooltip" data-placement="top" title="Upload" (click)="onUploadDocuments()"><i class="fa fa-upload" aria-hidden="true"></i></span>
+  <span *ngIf="!isStatusScheduled" class="font-medium-1 mr-2"  data-toggle="tooltip" data-placement="top" title="Installation Report" style="cursor:pointer;color:blue;font-size:16px" (click)="onReport()" data-toggle="tooltip" data-placement="top" title="Installation Report"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
 })
-export class CustomRendererComponent implements OnInit {
-
-  constructor(private router: Router) { }
+export class CustomRendererComponent implements OnInit, OnDestroy {
+  currentUser$: Subscription;
+  currentUser: any;
+  isStatusScheduled = false;
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
+    this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
+      if (data != null) {
+        this.currentUser = data;
+      }
+    })
+  }
   renderValue: string;
   @Input() value: string | number;
   @Input() rowData: any;
-  ngOnInit() {
-  }
 
+  ngOnInit() {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    // if (this.rowData.Status.name == 'Installation Scheduled') {
+    //   this.isStatusScheduled = true;
+    // }
+  }
+  ngOnDestroy() {
+    this.currentUser$.unsubscribe();
+  }
+  onReport() {
+    this.router.navigate(['/pages/dashboard/report/' + this.rowData.OCNumber]);
+  }
   onUploadDocuments() {
     this.router.navigate(['/pages/dashboard/upload/' + this.value]);
   }
