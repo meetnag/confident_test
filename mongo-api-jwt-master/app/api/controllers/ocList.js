@@ -742,12 +742,12 @@ module.exports = {
          let update;
          update = ocList;
          let flag = 1;
-         if(req.body.BrInstaDocAttached){
-            if(req.body.docAttachedCounter) {
+         if(req.body.BrInstaDocAttached ){
+            if(req.body.docAttachedCounter && req.body.BrinvDocAttached) {
 
             }else{
-            res.json({status:"error",message:"No Document Attached!!!",data:null})
-            flag = 0;
+               res.json({status:"error",message:"No Document Attached!!!",data:null})
+               flag = 0;
             }
                         
          }
