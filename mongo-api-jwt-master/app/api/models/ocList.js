@@ -9,11 +9,11 @@ mongoose.pluralize(null);
 const Schema = mongoose.Schema;
 const ocListSchema = new Schema({
  OCNumber: {
-  type: Number,
+  type: String,
   required: true,
   unique:true ,
-  trim: true,
-  ref: 'OCNumber'
+  trim: true
+//   ref: 'OCNumber'
  },
  OCDate: {
   type: Date,
@@ -227,8 +227,8 @@ StatusLog:[
 ]
 
 });
-ocListSchema.plugin(autoIncrement.plugin,{model:'ocList',field :'OCNumber',startAt: 20191000,});
+//ocListSchema.plugin(autoIncrement.plugin,{model:'ocList',field :'OCNumber',startAt: 20191000,});
 
-var ocList = mongoose.model('ocList', ocListSchema),
-ocList = new ocList();
+// var ocList = mongoose.model('ocList', ocListSchema),
+// ocList = new ocList();
 module.exports = mongoose.model('ocList', ocListSchema);
