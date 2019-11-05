@@ -11,8 +11,8 @@
             <div class="form-group required">
               <label class="col-sm-4 control-label">OC Number</label>
               <div class="col-sm-8">
-                <input type="text" (keypress)="numberOnly($event)" (change)="onOcNumberChange($event.target.value)"
-                  name="num" [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                  [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
                   [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
                   <div *ngIf="ocnum.errors && ocnum.errors.required">
