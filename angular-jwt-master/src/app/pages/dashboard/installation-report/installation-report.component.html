@@ -46,12 +46,15 @@
               </div>
               <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
                 <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{ocObj.Customer.state}}</div>
+                <div class="col-sm-10">{{ocObj.Customer.state}} <span
+                    *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">-
+                    {{ocObj.Customer.zip}}</span>
+                </div>
               </div>
-              <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
+              <!-- <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
-              </div>
+              </div> -->
               <div class="row col-sm-12" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
