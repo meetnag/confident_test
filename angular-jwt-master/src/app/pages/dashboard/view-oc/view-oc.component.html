@@ -147,82 +147,45 @@
           </div>
           <div class="row col-md-12">
             <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Name</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
-                  {{ocObj.Customer.name}}
+              <div class="row col-md-12">
+                <hr>
+                <div>
+                  <h5><b>Customer Details</b></h5>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.name}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Address</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
-                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
-                    class="form-control"></textarea>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.address}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.city}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer City</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
-                  {{ocObj.Customer.city}}
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.state}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer State</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
-                  {{ocObj.Customer.state}}
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
-                  --
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Country</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
-                  {{ocObj.Customer.country}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer ZipCode</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
-                  {{ocObj.Customer.zip}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Phone</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
-                  {{ocObj.Customer.contactNumber}}
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Phone : {{ocObj.Customer.contactNumber}}</div>
                 </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Email</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
-                  {{ocObj.Customer.CustEmailID}}
-                </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
-                  --
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Email : {{ocObj.Customer.CustEmailID}}</div>
                 </div>
               </div>
               <div class="form-group">
@@ -979,83 +942,47 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Name</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
-                  {{ocObj.Customer.name}}
+              <div class="row col-md-12 form-group">
+                <div>
+                  <h5><b>Customer Details</b></h5>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.name}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Address</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
-                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
-                    class="form-control"></textarea>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.address}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.city}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer City</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
-                  {{ocObj.Customer.city}}
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.state}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer State</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
-                  {{ocObj.Customer.state}}
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Country</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
-                  {{ocObj.Customer.country}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer ZipCode</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
-                  {{ocObj.Customer.zip}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Phone</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
-                  {{ocObj.Customer.contactNumber}}
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Phone : {{ocObj.Customer.contactNumber}}</div>
                 </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Email</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
-                  {{ocObj.Customer.CustEmailID}}
-                </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
-                  --
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Email : {{ocObj.Customer.CustEmailID}}</div>
                 </div>
               </div>
+              <br>
               <div class="form-group">
                 <label class="col-sm-4 ">Invoice Number</label>
                 <div class="col-sm-8"
@@ -1423,82 +1350,44 @@
           </div>
           <div class="row col-md-12">
             <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Name</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
-                  {{ocObj.Customer.name}}
+              <div class="row col-md-12 form-group">
+                <div>
+                  <h5><b>Customer Details</b></h5>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.name == undefined || ocObj.Customer.name == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.name}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Address</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
-                  <textarea disabled type="text" name="address" [(ngModel)]="ocObj.Customer.address"
-                    class="form-control"></textarea>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.address}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.address == undefined || ocObj.Customer.address==''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.city}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer City</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
-                  {{ocObj.Customer.city}}
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.state}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.city == undefined ||ocObj.Customer.city == ''">
-                  --
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer State</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
-                  {{ocObj.Customer.state}}
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.state == undefined || ocObj.Customer.state ==''">
-                  --
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Country</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !==''">
-                  {{ocObj.Customer.country}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.country == undefined || ocObj.Customer.country ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer ZipCode</label>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !==''">
-                  {{ocObj.Customer.zip}}
-                </div>
-                <div class="col-sm-8" *ngIf="ocObj.Customer.zip == undefined || ocObj.Customer.zip ==''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Phone</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
-                  {{ocObj.Customer.contactNumber}}
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Phone : {{ocObj.Customer.contactNumber}}</div>
                 </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.contactNumber == undefined || ocObj.Customer.contactNumber == ''">
-                  --
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 ">Customer Email</label>
-                <div class="col-sm-8"
+                <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
-                  {{ocObj.Customer.CustEmailID}}
-                </div>
-                <div class="col-sm-8"
-                  *ngIf="ocObj.Customer.CustEmailID == undefined || ocObj.Customer.CustEmailID == ''">
-                  --
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Email : {{ocObj.Customer.CustEmailID}}</div>
                 </div>
               </div>
               <div class="form-group">

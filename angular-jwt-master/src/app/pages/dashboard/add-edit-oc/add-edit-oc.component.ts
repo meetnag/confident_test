@@ -190,28 +190,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
         //   this.dateFormat
         // );
         // console.log("sadsa",this.ocObj);
-        if (
-          this.currentUser.userRole !== "Admin" &&
-          this.currentUser.userRole !== "QA Team" &&
-          this.ocObj.Installation
-        ) {
-          // this.ocObj.Installation.installationDate = this.datePipe.transform(
-          //   this.ocObj.Installation.installationDate,
-          //   this.dateFormat
-          // );
-          if (this.ocObj.Installation.installationDate != undefined) {
-            this.ocObj.Installation.installationDate = this.getFormattedDate(this.ocObj.Installation.installationDate);
-          }
-          if (this.ocObj.Installation.invoiceDate != undefined) {
-            this.ocObj.Installation.invoiceDate = this.getFormattedDate(this.ocObj.Installation.invoiceDate);
-          }
-          // this.ocObj.Installation.invoiceDate = this.datePipe.transform(
-          //   this.ocObj.Installation.invoiceDate,
-          //   this.dateFormat
-          // );
-          console.log('this.oc', this.ocObj.Installation.installationDate);
-          this.installationObj = this.ocObj.Installation;
-        }
+        this.checkForInstallationobj();
         // && this.ocObj.ProductID._id != ""
         if (this.ocObj.ProductID.length) {
           this.selectedProduct = [];
@@ -396,9 +375,6 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       if (this.ocObj.LRDate != undefined) {
         this.ocObj.LRDate = this.ocObj.LRDate.formatted;
       }
-      console.log('this.ocObj.Installation.installationDate', this.ocObj.Installation.installationDate)
-      console.log('date', this.ocObj.OCDate);
-      console.log('obj', this.ocObj);
       this.ocObj.userName = this.currentUser.user.name;
       this.ocObj.roleName = this.currentUser.userRole;
       delete this.ocObj.StatusLog;
@@ -413,8 +389,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
             } else {
               this.toasterService.error(res.message);
               this.setDateValidations();
-              console.log('errree', res);
-              // this.router.navigate(["/pages/dashboard"]);
+              this.checkForInstallationobj();
+              this.router.navigate(['/pages/dashboard/upload/' + this.ocObj._id]);
             }
           },
           err => {
@@ -423,6 +399,30 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
           }
         );
       }
+    }
+  }
+  checkForInstallationobj() {
+    if (
+      this.currentUser.userRole !== "Admin" &&
+      this.currentUser.userRole !== "QA Team" &&
+      this.ocObj.Installation
+    ) {
+      // this.ocObj.Installation.installationDate = this.datePipe.transform(
+      //   this.ocObj.Installation.installationDate,
+      //   this.dateFormat
+      // );
+      if (this.ocObj.Installation.installationDate != undefined) {
+        this.ocObj.Installation.installationDate = this.getFormattedDate(this.ocObj.Installation.installationDate);
+      }
+      if (this.ocObj.Installation.invoiceDate != undefined) {
+        this.ocObj.Installation.invoiceDate = this.getFormattedDate(this.ocObj.Installation.invoiceDate);
+      }
+      // this.ocObj.Installation.invoiceDate = this.datePipe.transform(
+      //   this.ocObj.Installation.invoiceDate,
+      //   this.dateFormat
+      // );
+      console.log('this.oc', this.ocObj.Installation.installationDate);
+      this.installationObj = this.ocObj.Installation;
     }
   }
   numberOnly(event): boolean {
