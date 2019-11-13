@@ -388,6 +388,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
               this.router.navigate(["/pages/dashboard"]);
             } else {
               this.toasterService.error(res.message);
+              this.dashboardService.selectedObj.next(this.ocObj);
+              localStorage.setItem('selectedObj', JSON.stringify(this.ocObj));
               this.setDateValidations();
               this.checkForInstallationobj();
               this.router.navigate(['/pages/dashboard/upload/' + this.ocObj._id]);

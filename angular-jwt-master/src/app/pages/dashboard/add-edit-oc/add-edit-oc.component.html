@@ -38,9 +38,6 @@
             <div class="form-group required">
               <label class="col-sm-4 control-label">OC Date</label>
               <div class="col-sm-8">
-                <!-- <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
-                    data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
-                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"> -->
                 <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
                   #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
                   [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
@@ -53,20 +50,6 @@
               </div>
 
             </div>
-            <!-- <div class="form-group">
-              <label class="col-sm-4 control-label">Type of Sales</label>
-              <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
-                <div *ngFor="let status of statuses; let indx = index" style="display:inline-flex">
-                  <input class='mr-2' name='statusGroup' type='radio' [id]='status' [value]='status'
-                    [(ngModel)]='ocObj.typeOfSale' />
-                  <label [for]='status'>{{status}}</label>
-                </div>
-              </div>
-              <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
-                <span *ngIf="ocObj.typeOfSale == undefined"> - </span> {{ocObj.typeOfSale}}
-              </div>
-            </div> -->
-
             <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
               <label class="col-sm-4 control-label">Product</label>
               <div class="col-sm-8">
@@ -77,11 +60,6 @@
                     {{item.name}}
                   </ng-template>
                 </ng-select>
-                <!-- <select name="ocProduct" class="form-control" [(ngModel)]="selectedProduct"
-                    (change)="onProductChange($event.target.value)" required #product="ngModel">
-                    <option value="">Select Product</option>
-                    <option *ngFor="let products of productList" [value]="products._id">{{products.name}}</option>
-                  </select> -->
                 <div *ngIf="product.invalid && (product.dirty || product.touched)" class="errors">
                   <div *ngIf="product.errors && product.errors.required">
                     Product is required.
@@ -133,8 +111,8 @@
             <div class="form-group required">
               <label class="col-sm-4 control-label">OC Number</label>
               <div class="col-sm-8">
-                <input type="text" (keypress)="numberOnly($event)" (change)="onOcNumberChange($event.target.value)"
-                  name="num" [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                  [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
                   [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
                   <div *ngIf="ocnum.errors && ocnum.errors.required">
@@ -189,8 +167,7 @@
               <label class="col-sm-4 control-label">Invoice Number</label>
               <div class="col-sm-8">
                 <input type="text" name="Invoicenumber" required #invoiceNo [(ngModel)]="installationObj.invoiceNumber"
-                  class="form-control" (keypress)="numberOnly($event)"
-                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 <div *ngIf="invoiceNo.invalid && (invoiceNo.dirty || invoiceNo.touched)" class="errors">
                   <div *ngIf="invoiceNo.errors && invoiceNo.errors.required">
                     Invoice Number is required.
@@ -210,9 +187,6 @@
                     Invoice Date is required.
                   </div>
                 </div>
-                <!-- <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
-                                data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened"
-                                [min]="ocObj.OCDate" onkeydown="return false" [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
               </div>
             </div>
             <div class="form-group required"
@@ -234,13 +208,6 @@
                 <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
                   #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
                   class="form-control">
-                <!-- [matAutocomplete]="auto" -->
-                <!-- (optionSelected)='onCustomerSelected($event)' -->
-                <!-- <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let customer of customerNameList | async" [value]="customer.name">
-                    <span>{{customer.name}} , {{customer.address}} , {{customer.city}} , {{customer.state}}</span>
-                  </mat-option>
-                </mat-autocomplete> -->
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
                   *ngIf="(customerNameList | async)?.length">
                   <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
@@ -306,9 +273,6 @@
             <div class="form-group required">
               <label class="col-sm-4 control-label">OC Date</label>
               <div class="col-sm-8">
-                <!-- <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
-                    data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
-                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"> -->
                 <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
                   #ocdate="ngModel" (dateChanged)="onDateChanged($event)" onkeydown="return false">
                 </my-date-picker>
@@ -369,17 +333,12 @@
               <label class="col-sm-4 control-label">LR Number</label>
               <div class="col-sm-8">
                 <input type="text" name="lrnumber" required #lrNo="ngModel" [(ngModel)]="ocObj.LRNumber"
-                  class="form-control" (keypress)="numberOnly($event)">
+                  class="form-control">
                 <div *ngIf="lrNo.invalid && (lrNo.dirty || lrNo.touched)" class="errors">
                   <div *ngIf="lrNo.errors && lrNo.errors.required">
                     LR Number is required.
                   </div>
                 </div>
-                <!-- <div *ngIf="lrNo.invalid && (lrNo.dirty || lrNo.touched)" class="errors">
-                  <div *ngIf="lrNo.errors && !lrNo.errors.required">
-                    Enter valid LR Number.
-                  </div>
-                </div> -->
               </div>
             </div>
             <div class="form-group required">
@@ -393,8 +352,6 @@
                     LR Date is required.
                   </div>
                 </div>
-                <!-- <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
-                          [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
               </div>
             </div>
             <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
@@ -477,8 +434,8 @@
               <div class="form-group required">
                 <label class="col-sm-4 control-label">OC Number</label>
                 <div class="col-sm-8">
-                  <input type="text" (keypress)="numberOnly($event)" (change)="onOcNumberChange($event.target.value)"
-                    name="num" [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                  <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                    [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'">
                   <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
                     <div *ngIf="ocnum.errors && ocnum.errors.required">
@@ -564,9 +521,8 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">Invoice Number</label>
                 <div class="col-sm-8">
-                  <input type="text" name="Invoicenumber" (keypress)="numberOnly($event)"
-                    [(ngModel)]="installationObj.invoiceNumber" class="form-control"
-                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <input type="text" name="Invoicenumber" [(ngModel)]="installationObj.invoiceNumber"
+                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 </div>
               </div>
             </div>
@@ -574,9 +530,6 @@
               <div class="form-group required">
                 <label class="col-sm-4 control-label">OC Date</label>
                 <div class="col-sm-8">
-                  <!-- <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
-                  data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
-                  [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"> -->
                   <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
                     #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
@@ -656,8 +609,8 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">LR Number</label>
                 <div class="col-sm-8">
-                  <input type="text" name="lrnumber" (keypress)="numberOnly($event)" [(ngModel)]="ocObj.LRNumber"
-                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <input type="text" name="lrnumber" [(ngModel)]="ocObj.LRNumber" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 </div>
               </div>
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
@@ -667,8 +620,6 @@
                     [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
                     [options]="myDatePickerForDisable">
                   </my-date-picker>
-                  <!-- <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
-                        [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
                 </div>
               </div>
               <div class="form-group">
@@ -678,9 +629,6 @@
                     [(ngModel)]="installationObj.invoiceDate" onkeydown="return false"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'">
                   </my-date-picker>
-                  <!-- <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
-                    data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened"
-                    [min]="ocObj.OCDate" onkeydown="return false" [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
                 </div>
               </div>
             </div>
@@ -703,14 +651,6 @@
                     [(ngModel)]="installationObj.installationDate" required #instDate="ngModel"
                     onkeydown="return false">
                   </my-date-picker>
-                  <!-- <div *ngIf="installationObj.installationDate != undefined && instDate.invalid && (instDate.dirty || instDate.touched)" class="errors">
-                    <div *ngIf="instDate.errors && instDate.errors.required">
-                      Installation Date is required.
-                    </div>
-                  </div> -->
-                  <!-- <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
-                    name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                    data-title="Date Opened" [min]="ocObj.minInstallationDate" onkeydown="return false"> -->
                 </div>
               </div>
               <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
@@ -743,28 +683,6 @@
                 </div>
               </div>
 
-              <!-- <div class="form-group"
-                *ngIf="currentUser.userRole == 'Branch/Dealer' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Branch Sale'">
-                <label class="col-sm-4 control-label">Transport (By Branch)</label>
-                <div class="col-sm-8">
-                  <input type="text" name="transportbr" [(ngModel)]="ocObj.TransportByBranch" class="form-control">
-                </div>
-              </div> -->
-
-
-              <!-- && installationObj.typeOfSale == 'Branch Sale' -->
-              <!-- <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer' ">
-                <label class="col-sm-4 control-label">Invoice Number (By Branch)</label>
-                <div class="col-sm-8">
-                  <input type="text" name="Invoicenumberbr" required #invBrnch="ngModel" [(ngModel)]="ocObj.BrinvNum"
-                    class="form-control">
-                  <div *ngIf="invBrnch.invalid && (invBrnch.dirty || invBrnch.touched)" class="errors">
-                    <div *ngIf="invBrnch.errors && invBrnch.errors.required">
-                      Invoice Number is required.
-                    </div>
-                  </div>
-                </div>
-              </div> -->
 
               <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
                 <label class="col-sm-4 control-label" for="complete">Installation Complete</label>
@@ -773,12 +691,6 @@
                     id="complete">
                 </div>
               </div>
-              <!-- <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
-                <label class="col-sm-4 control-label" for="doc"> Invoice Document Attached</label>
-                <div class="col-sm-8" style="margin-top:7px;">
-                  <input type="checkbox" name="completebr" [(ngModel)]="ocObj.BrinvDocAttached" id="doc">
-                </div>
-              </div> -->
               <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
                 <label class="col-sm-4 control-label" for="doc"> Installation Document Attached</label>
                 <div class="col-sm-8" style="margin-top:7px;">
@@ -816,8 +728,8 @@
               <div class="form-group required">
                 <label class="col-sm-4 control-label">OC Number</label>
                 <div class="col-sm-8">
-                  <input type="text" (keypress)="numberOnly($event)" (change)="onOcNumberChange($event.target.value)"
-                    name="num" [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                  <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                    [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'">
                   <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
                     <div *ngIf="ocnum.errors && ocnum.errors.required">
@@ -851,9 +763,8 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">Invoice Number</label>
                 <div class="col-sm-8">
-                  <input type="text" name="Invoicenumber" (keypress)="numberOnly($event)"
-                    [(ngModel)]="installationObj.invoiceNumber" class="form-control"
-                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <input type="text" name="Invoicenumber" [(ngModel)]="installationObj.invoiceNumber"
+                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 </div>
               </div>
             </div>
@@ -861,9 +772,6 @@
               <div class="form-group required">
                 <label class="col-sm-4 control-label">OC Date</label>
                 <div class="col-sm-8">
-                  <!-- <input type="date" class="form-control" [(ngModel)]="ocObj.OCDate" name="date" data-toggle="tooltip"
-                  data-trigger="hover" data-placement="top" data-title="Date Opened" required #ocdate="ngModel"
-                  [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"> -->
                   <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
                     #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
@@ -933,8 +841,8 @@
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
                 <label class="col-sm-4 control-label">LR Number</label>
                 <div class="col-sm-8">
-                  <input type="text" name="lrnumber" (keypress)="numberOnly($event)" [(ngModel)]="ocObj.LRNumber"
-                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <input type="text" name="lrnumber" [(ngModel)]="ocObj.LRNumber" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
                 </div>
               </div>
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
@@ -944,8 +852,6 @@
                     [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
                     [options]="myDatePickerForDisable">
                   </my-date-picker>
-                  <!-- <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
-                        [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
                 </div>
               </div>
               <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
@@ -955,9 +861,6 @@
                     [(ngModel)]="installationObj.invoiceDate" onkeydown="return false"
                     [disabled]="currentUser.userRole == 'Branch/Dealer'">
                   </my-date-picker>
-                  <!-- <input type="date" class="form-control" name="invoicedate" [(ngModel)]="installationObj.invoiceDate"
-                    data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened"
-                    [min]="ocObj.OCDate" onkeydown="return false" [disabled]="currentUser.userRole == 'Branch/Dealer'"> -->
                 </div>
               </div>
             </div>
@@ -980,13 +883,6 @@
                   <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
                     #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
                     class="form-control">
-                  <!-- [matAutocomplete]="auto" -->
-                  <!-- (optionSelected)='onCustomerSelected($event)' -->
-                  <!-- <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let customer of customerNameList | async" [value]="customer.name">
-                    <span>{{customer.name}} , {{customer.address}} , {{customer.city}} , {{customer.state}}</span>
-                  </mat-option>
-                </mat-autocomplete> -->
                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
                     *ngIf="(customerNameList | async)?.length">
                     <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
@@ -1130,8 +1026,8 @@
               <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer' ">
                 <label class="col-sm-4 control-label">Invoice Number (By Branch)</label>
                 <div class="col-sm-8">
-                  <input type="text" name="Invoicenumberbr" (keypress)="numberOnly($event)" required #invBrnch="ngModel"
-                    [(ngModel)]="ocObj.BrinvNum" class="form-control">
+                  <input type="text" name="Invoicenumberbr" required #invBrnch="ngModel" [(ngModel)]="ocObj.BrinvNum"
+                    class="form-control">
                   <div *ngIf="invBrnch.invalid && (invBrnch.dirty || invBrnch.touched)" class="errors">
                     <div *ngIf="invBrnch.errors && invBrnch.errors.required">
                       Invoice Number is required.
@@ -1169,9 +1065,6 @@
                       Installation Date is required.
                     </div>
                   </div>
-                  <!-- <input type="date" [(ngModel)]="installationObj.installationDate" class="form-control"
-                      name="installationdate" data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                      data-title="Date Opened" [min]="ocObj.minInstallationDate" onkeydown="return false"> -->
                 </div>
               </div>
               <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
@@ -1203,13 +1096,6 @@
                   </div>
                 </div>
               </div>
-
-
-
-
-              <!-- && installationObj.typeOfSale == 'Branch Sale' -->
-
-
               <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
                 <label class="col-sm-4 control-label" for="complete">Installation Complete</label>
                 <div class="col-sm-8" style="margin-top:7px;">

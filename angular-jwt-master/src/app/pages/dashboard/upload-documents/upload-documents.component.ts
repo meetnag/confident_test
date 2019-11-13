@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common';
 })
 export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
-  
+
   fileToUpload: File = null;
   docHash: any = '';
   currentUser$: Subscription;
@@ -90,7 +90,11 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
     this.ocObj$ = this.dashboardService.selectedObj.subscribe(data => {
       if (data) {
         this.ocObj = data;
-        this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy ');
+        if (this.ocObj.OCDate && this.ocObj.OCDate.formatted) {
+          this.ocObj.OCDate = this.ocObj.OCDate.formatted;
+        } else {
+          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
+        }
       }
     })
   }
