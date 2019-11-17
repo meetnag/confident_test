@@ -1,8 +1,0 @@
-{
-  "/users/*": {
-    "target": "http://bekorov-staging.us-east-1.elasticbeanstalk.com",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
-}

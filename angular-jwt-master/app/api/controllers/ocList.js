@@ -6,7 +6,6 @@ const modbusConsolidatedModel = require('../models/modbusConsoldated');
 const userRoleModel = require('../models/userRole');
 const customerModel = require('../models/masterDatabase/customer');
 const localModbusModel = require('../models/localApi');
-// const localModbusModel = require('../models/localApi');
 const rawMaterialModbus = require('../models/rawMaterialModbus');
 var nodemailer = require('nodemailer');
 
@@ -16,21 +15,18 @@ var saveCustomerData = function(customerData,res){
       "$set":customerData
    }
    
-
-         customerModel.update(customerData,con, {
-            upsert: true,
-            new: true,
-            // overwrite: true // works if you comment this out
-         },function(err, result){
-            if (err){
-               res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
-            } 
-            if(result){
-               // console.log(result)
-            
-            }
-         });
-      // }
+   customerModel.update(customerData,con, {
+      upsert: true,
+      new: true,
+      // overwrite: true // works if you comment this out
+   },function(err, result){
+      if (err){
+         res.json({status:"error",message:"Customer Info Not updated Successfully!!!",data:err})
+      } 
+      if(result){
+      
+      }
+   });
 }
 var sendMail = function(CustEmailID){
 
@@ -42,12 +38,13 @@ var sendMail = function(CustEmailID){
    }
  });
  
-var mailOptions = {
-	from: 'cddonotreply@gmail.com',
-	to: CustEmailID,
-	subject: 'Your product has been installed, Thank you',
-	text: 'Sample Content'
-};
+   var mailOptions = {
+      from: 'cddonotreply@gmail.com',
+      to: CustEmailID,
+      cc: "contact@lambdablocks.com",
+      subject: 'Your product has been installed, Thank you',
+      text: 'Sample Content'
+   };
  
  transporter.sendMail(mailOptions, function(error, info){
    if (error) {
@@ -129,23 +126,23 @@ module.exports = {
          // console
          var updateData;
          // console.log(req.body)
-         var status=req.body.output[0];
-         
-         update={
-            "status":req.body.output[0],
-            "system":1
-         }
+         var status=req.body;
+         console.log(JSON(req.body))
+         // update={
+         //    "status":req.body.output[0],
+         //    "system":1
+         // }
          // console.log(update)
-         var data = {
-            "system":1 
-         }
+         // var data = {
+         //    "system":1 
+         // }
          // console.log("in function")
-         localModbusModel.update(data,update, function(err, result){
-            if (err)
-            res.json({status:"error", message: " something is wrong!!!", data:err});
-            else
-               res.json(result);
-         });
+         // localModbusModel.update(data,update, function(err, result){
+         //    if (err)
+         //    res.json({status:"error", message: " something is wrong!!!", data:err});
+         //    else
+               res.json("sd");
+         // });
          },
          getRawMaterial: function(req, res, next) {
             // var data = {
@@ -545,14 +542,10 @@ module.exports = {
       }
    },
    getCustomerByName :function(req,res,next){
-      
-      var customerName ={
-         "name":req.body.customerName,
-      }
-
-      customerModel.find(customerName,function(err,result){
-         if(err) 
-            res.json({status:"error",message:"No Records Found!!!",data:err})
+   
+      customerModel.find({"name" : { '$regex':`^${req.body.customerName}`,'$options':'i'}},function(err,result){
+         if(err) {}
+            // res.json({status:"error",message:"No Records Found!!!",data:err})
          else
             res.json({status:"success",message:"Records Found!!!",data:result})
       });
@@ -689,18 +682,17 @@ module.exports = {
    getClosedOCs: function(req, res, next) {
       let roleName = req.body.roleName;
       let branchId = req.body.branchId;
-
+      
       if(req.body.Priority){
          if(roleName =="Branch/Dealer") {
-            ocListModel.find({"Priority.name":req.body.Priority,"Status.name":"Closed","BranchID._id":branchId},function(err, ocList){
+            ocListModel.find({"Priority.name":req.body.Priority,"Status.name":"Closed","BranchID._id":branchId},null,{sort: {"UpdatedDate": -1}},function(err, ocList){
                if (err) 
                   next(err)
-                  else 
+               else 
                   res.json({status:"success", message: "OC List fetched!!!", data:{ocList: ocList}});
-         
                })
          }else{
-            ocListModel.find({"Priority.name":req.body.Priority,"Status.name":"Closed"},function(err, ocList){
+            ocListModel.find({"Priority.name":req.body.Priority,"Status.name":"Closed"},null,{sort: {"UpdatedDate": -1}},function(err, ocList){
                if (err) 
                   next(err)
                   else 
@@ -711,7 +703,7 @@ module.exports = {
       }
       else{
          if(roleName =="Branch/Dealer") {
-            ocListModel.find({"Status.name":"Closed","BranchID._id":branchId},function(err, ocList){
+            ocListModel.find({"Status.name":"Closed","BranchID._id":branchId},null,{sort: {"UpdatedDate": -1}},function(err, ocList){
                if (err) 
                   next(err)
                   else 
@@ -719,7 +711,7 @@ module.exports = {
          
                })
          }else{
-            ocListModel.find({"Status.name":"Closed"},function(err, ocList){
+            ocListModel.find({"Status.name":"Closed"},null,{sort: {"UpdatedDate": -1}},function(err, ocList){
                if (err) 
                   next(err)
                   else 
@@ -733,21 +725,33 @@ module.exports = {
    updateOC:function(req, res,next) {
 
          var customerData = req.body.Customer;
-
-         // if (req.body.Customer.name)
-         //    saveCustomerData(customerData,res)
-         
          let d = new Date()
          let ocList = req.body;
-         console.log(ocList)
-         console.log("in update")
          let update;
          update = ocList;
          let flag = 1;
-         if(req.body.BrInstaDocAttached ){
-            if(req.body.docAttachedCounter && req.body.BrinvDocAttached) {
+         let documentCounter = "No";
 
-            }else{
+         if(req.body.docAttachedCounter)
+            documentCounter=req.body.docAttachedCounter
+      
+         if(req.body.typeOfSale == "Branch Sale"){
+            if((req.body.BrinvDocAttached && req.body.BrInstaDocAttached) || req.body.Installation.installationComplete ){
+               if((req.body.docAttachedCounter <2)){
+                  res.json({status:"error",message: "" + documentCounter + " Document Attached!!!",data:null})
+                  flag = 0;
+               }
+
+            }
+         }else if(req.body.Installation.installationComplete){
+            if(!req.body.docAttachedCounter){
+               res.json({status:"error",message:"No Document Attached!!!",data:null})
+               flag = 0;
+            }
+         }
+
+         if(req.body.BrInstaDocAttached || req.body.BrinvDocAttached ){
+            if(!req.body.docAttachedCounter){
                res.json({status:"error",message:"No Document Attached!!!",data:null})
                flag = 0;
             }
@@ -756,8 +760,9 @@ module.exports = {
          if(req.body.Installation && flag){
             
             let installationDate = req.body.Installation.installationDate;
+
             if(req.body.typeOfSale == "Branch Sale"){
-               if(req.body.Installation.installationComplete && req.body.BrinvDocAttached && req.body.BrInstaDocAttached){
+               if(req.body.Installation.installationComplete && req.body.BrinvDocAttached && req.body.BrInstaDocAttached && (req.body.docAttachedCounter >1)){
                   updateStatus="Installation Complete";
                   ocList.Status.name = updateStatus;
                   sendMail(req.body.Customer.CustEmailID)
@@ -832,7 +837,7 @@ module.exports = {
                   res.json({status:"success", message: "OC Updated Successfully!!!", data:success});
                }
                else 
-               res.json({status:"error", message: "Invalid OC ID", data:err});
+                  res.json({status:"error", message: "OC Not Updated Successfully!!!", data:err});
 
                });
             }
