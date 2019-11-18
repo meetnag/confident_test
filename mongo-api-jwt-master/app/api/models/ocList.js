@@ -26,10 +26,10 @@ const ocListSchema = new Schema({
     // required: true
 },
 warranty:{
-    type:Number,
+    type:String,
 },
 LRNumber:{
-    type:Number,
+    type:String,
 },
 LRDate:{
     type:Date,
@@ -137,7 +137,7 @@ Customer :{
         type: String,
     },
     BrinvNum: {
-        type: Number,
+        type: String,
     },
     BrinvDocAttached:{
         type: Boolean,

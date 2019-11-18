@@ -1,0 +1,1132 @@
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-hd">{{header}}</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal mt-5 ml-5 mr-5" #ocform="ngForm">
+        <!-- Admin -->
+        <div class="row" *ngIf="currentUser.userRole =='Admin' || currentUser.userRole=='QA Team'">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Number</label>
+              <div class="col-sm-8">
+                <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                  [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
+                  <div *ngIf="ocnum.errors && ocnum.errors.required">
+                    OC Number is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Notes</label>
+              <div class="col-sm-8">
+                <textarea type="text" maxlength="1000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'" #ocnotes="ngModel"></textarea>
+                <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
+                  <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
+                    Notes can be of max length 1000.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Date</label>
+              <div class="col-sm-8">
+                <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
+                  #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
+                </my-date-picker>
+                <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
+                  <div *ngIf="ocdate.errors && ocdate.errors.required">
+                    OC Date is required.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Product</label>
+              <div class="col-sm-8">
+                <ng-select name="ocProduct" [items]="productList" [multiple]="true" bindLabel="name"
+                  [closeOnSelect]="false" bindValue="_id" [(ngModel)]="selectedProduct" required #product="ngModel">
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [checked]="selectedProduct.indexOf(item._id) > -1" />
+                    {{item.name}}
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="product.invalid && (product.dirty || product.touched)" class="errors">
+                  <div *ngIf="product.errors && product.errors.required">
+                    Product is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Sub-Assembly</label>
+              <div class="col-sm-8">
+                <ng-select name="ocSubAssemblyy" [items]="subAssemblyList" [multiple]="true" bindLabel="name"
+                  [closeOnSelect]="false" bindValue="_id" [(ngModel)]="selectedSubAssembly" required
+                  #subAssembly="ngModel">
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [checked]="selectedSubAssembly.indexOf(item._id) > -1" />
+                    {{item.name}}
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="subAssembly.invalid && (subAssembly.dirty || subAssembly.touched)" class="errors">
+                  <div *ngIf="subAssembly.errors && subAssembly.errors.required">
+                    Sub-Assembly is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="currentUser.userRole==='Admin' ||currentUser.userRole==='QA Team' ">
+              <label class="col-sm-4 control-label">Spare</label>
+              <div class="col-sm-8">
+                <ng-select name="spare" [items]="spareList" [multiple]="true" bindLabel="name" [closeOnSelect]="false"
+                  bindValue="_id" [(ngModel)]="selectedSpare" #spareId="ngModel" required>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [checked]="selectedSpare.indexOf(item._id) > -1" />
+                    {{item.name}}
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="spareId.invalid && (spareId.dirty || spareId.touched)" class="errors">
+                  <div *ngIf="spareId.errors && spareId.errors.required">
+                    Spare is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Sales User -->
+        <div class="row"
+          *ngIf="currentUser.userRole !=='Admin' && currentUser.userRole !=='QA Team'  && currentUser.userRole !=='Branch/Dealer'">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Number</label>
+              <div class="col-sm-8">
+                <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                  [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
+                  <div *ngIf="ocnum.errors && ocnum.errors.required">
+                    OC Number is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Notes</label>
+              <div class="col-sm-8">
+                <textarea type="text" maxlength="1000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'" #ocnotes="ngModel"></textarea>
+                <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
+                  <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
+                    Notes can be of max length 1000.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Type of Sales</label>
+              <div class="col-sm-8">
+                <div *ngFor="let status of statuses; let indx = index" style="display:inline-flex">
+                  <input class='mr-2' name='statusGroup' (change)="onTypeOfSaleChange(status)" type='radio'
+                    [id]='status' [value]='status' required #typeS="ngModel" [(ngModel)]='ocObj.typeOfSale' />
+                  <label [for]='status'>{{status}}</label>
+                  <div *ngIf="typeS.invalid && (typeS.dirty || typeS.touched)" class="errors">
+                    <div *ngIf="typSe.errors && typeS.errors.required">
+                      Type of Sales is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Branch Name</label>
+              <div class="col-sm-8">
+                <select name="ocBranch" class="form-control" [(ngModel)]="selectedBranch"
+                  (change)="onBranchChange($event.target.value)" required name="branchname" #brnachId="ngModel">
+                  <option value="">Select Branch</option>
+                  <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+                </select>
+                <div *ngIf="brnachId.invalid && (brnachId.dirty || brnachId.touched)" class="errors">
+                  <div *ngIf="brnachId.errors && brnachId.errors.required">
+                    Branch Name is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Invoice Number</label>
+              <div class="col-sm-8">
+                <input type="text" name="Invoicenumber" required #invoiceNo [(ngModel)]="installationObj.invoiceNumber"
+                  class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <div *ngIf="invoiceNo.invalid && (invoiceNo.dirty || invoiceNo.touched)" class="errors">
+                  <div *ngIf="invoiceNo.errors && invoiceNo.errors.required">
+                    Invoice Number is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Invoice Date</label>
+              <div class="col-sm-8">
+                <my-date-picker name="invoicedate" [options]="myDatePickerOptionsInvoice"
+                  [(ngModel)]="installationObj.invoiceDate" required #invoiceDt="ngModel" onkeydown="return false"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </my-date-picker>
+                <div *ngIf="invoiceDt.invalid && (invoiceDt.dirty || invoiceDt.touched)" class="errors">
+                  <div *ngIf="invoiceDt.errors && invoiceDt.errors.required">
+                    Invoice Date is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required"
+              *ngIf=" ocObj.typeOfSale != undefined &&  ocObj.typeOfSale == 'Branch Sale' ">
+              <label class="col-sm-4 control-label">Warranty (in months)</label>
+              <div class="col-sm-8">
+                <input type="text" name="Warranty" required #warrant="ngModel" [(ngModel)]="ocObj.warranty"
+                  class="form-control">
+                <div *ngIf="warrant.invalid && (warrant.dirty || warrant.touched)" class="errors">
+                  <div *ngIf="warrant.errors && warrant.errors.required">
+                    Warranty is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer Name</label>
+              <div class="col-sm-8">
+                <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
+                  #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
+                  class="form-control">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
+                  *ngIf="(customerNameList | async)?.length">
+                  <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
+                    (click)="onCustomerSelected(customer)">
+                    <span>{{customer.name}} <span *ngIf="customer.address != undefined && customer.address != ''">,
+                        {{customer.address}}</span> <span *ngIf="customer.city != undefined && customer.city != ''">,
+                        {{customer.city}}</span> <span *ngIf="customer.state != undefined && customer.state != ''">,
+                        {{customer.state}}</span> </span>
+                  </li>
+                </ul>
+                <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="errors">
+                  <div *ngIf="cname.errors && cname.errors.required">
+                    Customer Name is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer Address</label>
+              <div class="col-sm-8">
+                <textarea maxlength="200" type="text" required name="address" #cAddress="ngModel"
+                  [(ngModel)]="ocObj.Customer.address" class="form-control"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'"></textarea>
+                <div *ngIf="cAddress.invalid && (cAddress.dirty || cAddress.touched)" class="errors">
+                  <div *ngIf="cAddress.errors && cAddress.errors.required">
+                    Customer Address is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer City</label>
+              <div class="col-sm-8">
+                <input maxlength="100" type="text" required name="City" #ccity="ngModel"
+                  [(ngModel)]="ocObj.Customer.city" class="form-control"
+                  [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                <div *ngIf="ccity.invalid && (ccity.dirty || ccity.touched)" class="errors">
+                  <div *ngIf="ccity.errors && ccity.errors.required">
+                    Customer City is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer State</label>
+              <div class="col-sm-8">
+                <select name="ocState" required class="form-control" #cstate="ngModel"
+                  [(ngModel)]="ocObj.Customer.state" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <option value="">Select State</option>
+                  <option *ngFor="let state of stateList" [value]="state.name">{{state.name}}</option>
+                </select>
+                <div *ngIf="cstate.invalid && (cstate.dirty || cstate.touched)" class="errors">
+                  <div *ngIf="cstate.errors && cstate.errors.required">
+                    Customer State is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">OC Date</label>
+              <div class="col-sm-8">
+                <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
+                  #ocdate="ngModel" (dateChanged)="onDateChanged($event)" onkeydown="return false">
+                </my-date-picker>
+                <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
+                  <div *ngIf="ocdate.errors && ocdate.errors.required">
+                    OC Date is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Priority</label>
+              <div class="col-sm-8">
+                <select name="ocPriority" required #cpriority="ngModel" class="form-control"
+                  [(ngModel)]="ocObj.Priority._id" (change)="onPriorityChange()">
+                  <option value="">Select Priority</option>
+                  <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
+                </select>
+                <div *ngIf="cpriority.invalid && (cpriority.dirty || cpriority.touched)" class="errors">
+                  <div *ngIf="cpriority.errors && cpriority.errors.required">
+                    Priority is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">Customer Type</label>
+              <div class="col-sm-8">
+                <select name="ocPCustomerType" required class="form-control" [(ngModel)]="ocObj.CustomerType._id"
+                  (change)="onCustomerTypeChange()" #ctype="ngModel">
+                  <option value="">Select Customer Type</option>
+                  <option *ngFor="let customer_type of customerTypeList" [value]="customer_type._id">
+                    {{customer_type.name}}</option>
+                </select>
+                <div *ngIf="ctype.invalid && (ctype.dirty || ctype.touched)" class="errors">
+                  <div *ngIf="ctype.errors && ctype.errors.required">
+                    Customer Type is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group required" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+              <label class="col-sm-4 control-label">Transport</label>
+              <div class="col-sm-8">
+                <input type="text" name="transport" #cTransport="ngModel" required
+                  [(ngModel)]="installationObj.transport" class="form-control">
+                <div *ngIf="cTransport.invalid && (cTransport.dirty || cTransport.touched)" class="errors">
+                  <div *ngIf="cTransport.errors && cTransport.errors.required">
+                    Transport is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">LR Number</label>
+              <div class="col-sm-8">
+                <input type="text" name="lrnumber" required #lrNo="ngModel" [(ngModel)]="ocObj.LRNumber"
+                  class="form-control">
+                <div *ngIf="lrNo.invalid && (lrNo.dirty || lrNo.touched)" class="errors">
+                  <div *ngIf="lrNo.errors && lrNo.errors.required">
+                    LR Number is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-4 control-label">LR Date</label>
+              <div class="col-sm-8">
+                <my-date-picker name="lrdate" required #ldate="ngModel" [(ngModel)]="ocObj.LRDate"
+                  onkeydown="return false" [options]="myDatePickerForDisable">
+                </my-date-picker>
+                <div *ngIf="ldate.invalid && (ldate.dirty || ldate.touched)" class="errors">
+                  <div *ngIf="ldate.errors && ldate.errors.required">
+                    LR Date is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer Country</label>
+              <div class="col-sm-8">
+                <select name="Country" required #cCountry="ngModel" class="form-control"
+                  [(ngModel)]="ocObj.Customer.country">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of countryList" [value]="country.name">{{country.name}}</option>
+                </select>
+                <div *ngIf="cCountry.invalid && (cCountry.dirty || cCountry.touched)" class="errors">
+                  <div *ngIf="cCountry.errors && cCountry.errors.required">
+                    Country is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Cusotmer ZipCode</label>
+              <div class="col-sm-8">
+                <input maxlength="100" type="text" name="Zip" required #czip="ngModel" [(ngModel)]="ocObj.Customer.zip"
+                  class="form-control">
+                <div *ngIf="czip.invalid && (czip.dirty || czip.touched)" class="errors">
+                  <div *ngIf="czip.errors && czip.errors.required">
+                    Cusotmer ZipCode is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer Phone</label>
+              <div class="col-sm-8">
+                <input type="text" name="phone" required #cphone1="ngModel" [(ngModel)]="ocObj.Customer.contactNumber"
+                  (keypress)="numberOnly($event)" class="form-control" pattern="[1-9]{1}[0-9]{9}">
+                <div *ngIf="cphone1.invalid && (cphone1.dirty || cphone1.touched)" class="errors">
+                  <div *ngIf="cphone1.errors && cphone1.errors.required">
+                    Customer Phone is required.
+                  </div>
+                </div>
+                <div *ngIf="cphone1.invalid && (cphone1.dirty || cphone1.touched)" class="errors">
+                  <div *ngIf="cphone1.errors && cphone1.errors.pattern">
+                    Enter Correct Number.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required" *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+              <label class="col-sm-4 control-label">Customer Email</label>
+              <div class="col-sm-8">
+                <input type="text" name="email" required #cemail="ngModel" [(ngModel)]="ocObj.Customer.CustEmailID"
+                  class="form-control">
+                <div *ngIf="cemail.invalid && (cemail.dirty || cemail.touched)" class="errors">
+                  <div *ngIf="cemail.errors && cemail.errors.required">
+                    Customer Email is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group required"
+              *ngIf="ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale' ">
+              <label class="col-sm-4 control-label">Warranty (in months)</label>
+              <div class="col-sm-8">
+                <input type="text" name="Warranty" required #warrant="ngModel" [(ngModel)]="ocObj.warranty"
+                  class="form-control">
+                <div *ngIf="warrant.invalid && (warrant.dirty || warrant.touched)" class="errors">
+                  <div *ngIf="warrant.errors && warrant.errors.required">
+                    Warranty is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Branch (Direct sale) -->
+        <div
+          *ngIf="currentUser.userRole=='Branch/Dealer' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Direct Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group required">
+                <label class="col-sm-4 control-label">OC Number</label>
+                <div class="col-sm-8">
+                  <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                    [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
+                    <div *ngIf="ocnum.errors && ocnum.errors.required">
+                      OC Number is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Priority</label>
+                <div class="col-sm-8">
+                  <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
+                    (change)="onPriorityChange()" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select Priority</option>
+                    <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Name</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" type="text" name="name" (change)="getCustomersByName($event.target.value)"
+                    [(ngModel)]="ocObj.Customer.name" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Address</label>
+                <div class="col-sm-8">
+                  <textarea maxlength="200" type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'"></textarea>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer City</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" type="text" name="City" [(ngModel)]="ocObj.Customer.city" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer State</label>
+                <div class="col-sm-8">
+                  <select name="ocState" class="form-control" [(ngModel)]="ocObj.Customer.state"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select State</option>
+                    <option *ngFor="let state of stateList" [value]="state.name">{{state.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Country</label>
+                <div class="col-sm-8">
+                  <select name="Country" class="form-control" [(ngModel)]="ocObj.Customer.country"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select Country</option>
+                    <option *ngFor="let country of countryList" [value]="country.name">{{country.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Cusotmer ZipCode</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" type="text" name="Zip" [(ngModel)]="ocObj.Customer.zip" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Phone</label>
+                <div class="col-sm-8">
+                  <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
+                    (keypress)="numberOnly($event)" class="form-control" pattern="[1-9]{1}[0-9]{9}"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Email</label>
+                <div class="col-sm-8">
+                  <input type="text" name="email" [(ngModel)]="ocObj.Customer.CustEmailID" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Invoice Number</label>
+                <div class="col-sm-8">
+                  <input type="text" name="Invoicenumber" [(ngModel)]="installationObj.invoiceNumber"
+                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group required">
+                <label class="col-sm-4 control-label">OC Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
+                    #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
+                  </my-date-picker>
+                  <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
+                    <div *ngIf="ocdate.errors && ocdate.errors.required">
+                      OC Date is required.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Customer Type</label>
+                <div class="col-sm-8">
+                  <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
+                    (change)="onCustomerTypeChange()" #type="ngModel"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select Customer Type</option>
+                    <option *ngFor="let customer_type of customerTypeList" [value]="customer_type._id">
+                      {{customer_type.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Branch Name</label>
+                <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
+                  <select name="ocBranch" class="form-control" [(ngModel)]="selectedBranch"
+                    (change)="onBranchChange($event.target.value)" name="branchname" #brnachId="ngModel">
+                    <option value="">Select Branch</option>
+                    <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                  {{ocObj.BranchID.name}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Type of Sales</label>
+                <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
+                  <div *ngFor="let status of statuses; let indx = index" style="display:inline-flex">
+                    <input class='mr-2' name='statusGroup' type='radio' [id]='status' [value]='status'
+                      [(ngModel)]='ocObj.typeOfSale' />
+                    <label [for]='status'>{{status}}</label>
+                  </div>
+                </div>
+                <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                  <span *ngIf="ocObj.typeOfSale == undefined"> - </span> {{ocObj.typeOfSale}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Notes</label>
+                <div class="col-sm-8">
+                  <textarea type="text" maxlength="1000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" #ocnotes="ngModel"></textarea>
+                  <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
+                    <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
+                      Notes can be of max length 1000.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Transport</label>
+                <div class="col-sm-8">
+                  <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Warranty (in months)</label>
+                <div class="col-sm-8">
+                  <input type="text" name="Warranty" [(ngModel)]="ocObj.warranty" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">LR Number</label>
+                <div class="col-sm-8">
+                  <input type="text" name="lrnumber" [(ngModel)]="ocObj.LRNumber" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">LR Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="lrdate" [(ngModel)]="ocObj.LRDate"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
+                    [options]="myDatePickerForDisable">
+                  </my-date-picker>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Invoice Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="invoicedate" [options]="myDatePickerOptionsInvoice"
+                    [(ngModel)]="installationObj.invoiceDate" onkeydown="return false"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  </my-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details to be provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label">Installation Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="installationdate" [options]="myDatePickerForDisable"
+                    [(ngModel)]="installationObj.installationDate" required #instDate="ngModel"
+                    onkeydown="return false">
+                  </my-date-picker>
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label">Installation Technician</label>
+                <div class="col-sm-8">
+                  <input type="text" name="installationTech" required #iTech="ngModel"
+                    [(ngModel)]="installationObj.installationTechnician" class="form-control">
+                  <div *ngIf="iTech.invalid && (iTech.dirty || iTech.touched)" class="errors">
+                    <div *ngIf="iTech.errors && iTech.errors.required">
+                      Installation Technician is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label">Technician Contact</label>
+                <div class="col-sm-8">
+                  <input type="text" name="technicianContact" [(ngModel)]="installationObj.technicianContact"
+                    class="form-control" pattern="[1-9]{1}[0-9]{9}" required #tcontact="ngModel">
+                  <div *ngIf="tcontact.invalid && (tcontact.dirty || tcontact.touched)" class="errors">
+                    <div *ngIf="tcontact.errors && tcontact.errors.required">
+                      Technician Contact is required.
+                    </div>
+                  </div>
+                  <div *ngIf="tcontact.invalid && (tcontact.dirty || tcontact.touched)" class="errors">
+                    <div *ngIf="tcontact.errors && tcontact.errors.pattern">
+                      Enter Correct Number.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label" for="complete">Installation Complete</label>
+                <div class="col-sm-8" style="margin-top:7px;">
+                  <input type="checkbox" name="complete" [(ngModel)]="installationObj.installationComplete"
+                    id="complete">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
+                <label class="col-sm-4 control-label" for="doc"> Installation Document Attached</label>
+                <div class="col-sm-8" style="margin-top:7px;">
+                  <input type="checkbox" name="completeinstallation" [(ngModel)]="ocObj.BrInstaDocAttached" id="doc1">
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group required" *ngIf="currentUser.userRole == 'Branch/Dealer'">
+                <label class="col-sm-4 control-label">Notes (By Branch)</label>
+                <div class="col-sm-8">
+                  <textarea type="text" maxlength="1000" name="notesbr" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control" required #ocnotesbr="ngModel"></textarea>
+                  <div *ngIf="ocnotesbr.invalid && (ocnotesbr.dirty || ocnotesbr.touched)" class="errors">
+                    <div *ngIf="ocnotesbr.errors && ocnotesbr.errors.maxlength">
+                      Notes can be of max length 1000.
+                    </div>
+                  </div>
+                  <div *ngIf="ocnotesbr.invalid && (ocnotesbr.dirty || ocnotesbr.touched)" class="errors">
+                    <div *ngIf="ocnotesbr.errors && ocnotesbr.errors.required">
+                      Notes is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Branch (Branch sale) -->
+        <div class="row"
+          *ngIf="currentUser.userRole=='Branch/Dealer' && ocObj.typeOfSale != undefined && ocObj.typeOfSale == 'Branch Sale'">
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group required">
+                <label class="col-sm-4 control-label">OC Number</label>
+                <div class="col-sm-8">
+                  <input type="text" (change)="onOcNumberChange($event.target.value)" name="num"
+                    [(ngModel)]="ocObj.OCNumber" class="form-control" required #ocnum="ngModel"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  <div *ngIf="ocnum.invalid && (ocnum.dirty || ocnum.touched)" class="errors">
+                    <div *ngIf="ocnum.errors && ocnum.errors.required">
+                      OC Number is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Priority</label>
+                <div class="col-sm-8">
+                  <select name="ocPriority" class="form-control" [(ngModel)]="ocObj.Priority._id"
+                    (change)="onPriorityChange()" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select Priority</option>
+                    <option *ngFor="let priority of priorityList" [value]="priority._id">{{priority.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Notes</label>
+                <div class="col-sm-8">
+                  <textarea type="text" maxlength="1000" name="notes" [(ngModel)]="ocObj.OCNotes" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" #ocnotes="ngModel"></textarea>
+                  <div *ngIf="ocnotes.invalid && (ocnotes.dirty || ocnotes.touched)" class="errors">
+                    <div *ngIf="ocnotes.errors && ocnotes.errors.maxlength">
+                      Notes can be of max length 1000.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Invoice Number</label>
+                <div class="col-sm-8">
+                  <input type="text" name="Invoicenumber" [(ngModel)]="installationObj.invoiceNumber"
+                    class="form-control" [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group required">
+                <label class="col-sm-4 control-label">OC Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="date" [options]="myDatePickerOptions" [(ngModel)]="ocObj.OCDate" required
+                    #ocdate="ngModel" (dateChanged)="onDateChanged($event)"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false">
+                  </my-date-picker>
+                  <div *ngIf="ocdate.invalid && (ocdate.dirty || ocdate.touched)" class="errors">
+                    <div *ngIf="ocdate.errors && ocdate.errors.required">
+                      OC Date is required.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Customer Type</label>
+                <div class="col-sm-8">
+                  <select name="ocPCustomerType" class="form-control" [(ngModel)]="ocObj.CustomerType._id"
+                    (change)="onCustomerTypeChange()" #type="ngModel"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                    <option value="">Select Customer Type</option>
+                    <option *ngFor="let customer_type of customerTypeList" [value]="customer_type._id">
+                      {{customer_type.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Branch Name</label>
+                <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
+                  <select name="ocBranch" class="form-control" [(ngModel)]="selectedBranch"
+                    (change)="onBranchChange($event.target.value)" name="branchname" #brnachId="ngModel">
+                    <option value="">Select Branch</option>
+                    <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+                  </select>
+
+                </div>
+                <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                  {{ocObj.BranchID.name}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Type of Sales</label>
+                <div class="col-sm-8" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
+                  <div *ngFor="let status of statuses; let indx = index" style="display:inline-flex">
+                    <input class='mr-2' name='statusGroup' type='radio' [id]='status' [value]='status'
+                      [(ngModel)]='ocObj.typeOfSale' />
+                    <label [for]='status'>{{status}}</label>
+                  </div>
+                </div>
+                <div class="col-sm-8" *ngIf="currentUser.userRole === 'Branch/Dealer'">
+                  <span *ngIf="ocObj.typeOfSale == undefined"> - </span> {{ocObj.typeOfSale}}
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Transport</label>
+                <div class="col-sm-8">
+                  <input type="text" name="transport" [(ngModel)]="installationObj.transport" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Warranty (in months)</label>
+                <div class="col-sm-8">
+                  <input type="text" name="Warranty" [(ngModel)]="ocObj.warranty" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">LR Number</label>
+                <div class="col-sm-8">
+                  <input type="text" name="lrnumber" [(ngModel)]="ocObj.LRNumber" class="form-control"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">LR Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="lrdate" [(ngModel)]="ocObj.LRDate"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'" onkeydown="return false"
+                    [options]="myDatePickerForDisable">
+                  </my-date-picker>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Invoice Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="invoicedate" [options]="myDatePickerOptionsInvoice"
+                    [(ngModel)]="installationObj.invoiceDate" onkeydown="return false"
+                    [disabled]="currentUser.userRole == 'Branch/Dealer'">
+                  </my-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Details to be provided by Branch</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Name</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" id="menu1" data-toggle="dropdown" type="text" name="name1" required
+                    #cname="ngModel" (ngModelChange)="getCustomersByName($event)" [(ngModel)]="ocObj.Customer.name"
+                    class="form-control">
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1"
+                    *ngIf="(customerNameList | async)?.length">
+                    <li style="cursor:pointer" *ngFor="let customer of customerNameList | async"
+                      (click)="onCustomerSelected(customer)">
+                      <span>{{customer.name}} <span *ngIf="customer.address != undefined && customer.address != ''">,
+                          {{customer.address}}</span> <span *ngIf="customer.city != undefined && customer.city != ''">,
+                          {{customer.city}}</span> <span *ngIf="customer.state != undefined && customer.state != ''">,
+                          {{customer.state}}</span> </span>
+                    </li>
+                  </ul>
+                  <div *ngIf="cname.invalid && (cname.dirty || cname.touched)" class="errors">
+                    <div *ngIf="cname.errors && cname.errors.required">
+                      Customer Name is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Address</label>
+                <div class="col-sm-8">
+                  <textarea maxlength="200" type="text" name="address" [(ngModel)]="ocObj.Customer.address"
+                    class="form-control" required #cAddress="ngModel"></textarea>
+                  <div *ngIf="cAddress.invalid && (cAddress.dirty || cAddress.touched)" class="errors">
+                    <div *ngIf="cAddress.errors && cAddress.errors.required">
+                      Customer Address is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer City</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" type="text" name="City" [(ngModel)]="ocObj.Customer.city" class="form-control"
+                    required #cCity="ngModel">
+                  <div *ngIf="cCity.invalid && (cCity.dirty || cCity.touched)" class="errors">
+                    <div *ngIf="cCity.errors && cCity.errors.required">
+                      Customer City is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer State</label>
+                <div class="col-sm-8">
+                  <select name="ocState" class="form-control" [(ngModel)]="ocObj.Customer.state" required
+                    #cState="ngModel">
+                    <option value="">Select State</option>
+                    <option *ngFor="let state of stateList" [value]="state.name">{{state.name}}</option>
+                  </select>
+                  <div *ngIf="cState.invalid && (cState.dirty || cState.touched)" class="errors">
+                    <div *ngIf="cState.errors && cState.errors.required">
+                      Customer State is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Country</label>
+                <div class="col-sm-8">
+                  <select name="Country" class="form-control" [(ngModel)]="ocObj.Customer.country" required
+                    #cCountry="ngModel">
+                    <option value="">Select Country</option>
+                    <option *ngFor="let country of countryList" [value]="country.name">{{country.name}}</option>
+                  </select>
+                  <div *ngIf="cCountry.invalid && (cCountry.dirty || cCountry.touched)" class="errors">
+                    <div *ngIf="cCountry.errors && cCountry.errors.required">
+                      Customer Country is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Cusotmer ZipCode</label>
+                <div class="col-sm-8">
+                  <input maxlength="100" type="text" name="Zip" [(ngModel)]="ocObj.Customer.zip" class="form-control"
+                    required #cZip="ngModel">
+                  <div *ngIf="cZip.invalid && (cZip.dirty || cZip.touched)" class="errors">
+                    <div *ngIf="cZip.errors && cZip.errors.required">
+                      Customer ZipCode is required.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Phone</label>
+                <div class="col-sm-8">
+                  <input type="text" name="phone" [(ngModel)]="ocObj.Customer.contactNumber"
+                    (keypress)="numberOnly($event)" class="form-control" required pattern="[1-9]{1}[0-9]{9}"
+                    #cPhone="ngModel">
+                  <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="errors">
+                    <div *ngIf="cPhone.errors && cPhone.errors.required">
+                      Customer Phone is required.
+                    </div>
+                  </div>
+                  <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="errors">
+                    <div *ngIf="cPhone.errors && cPhone.errors.pattern">
+                      Enter Correct Number.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required"
+                *ngIf="currentUser.userRole!=='Admin' &&currentUser.userRole!=='QA Team' ">
+                <label class="col-sm-4 control-label">Customer Email</label>
+                <div class="col-sm-8">
+                  <input type="text" name="email" [(ngModel)]="ocObj.Customer.CustEmailID" class="form-control" required
+                    #cEmail="ngModel">
+                  <div *ngIf="cEmail.invalid && (cEmail.dirty || cEmail.touched)" class="errors">
+                    <div *ngIf="cEmail.errors && cEmail.errors.required">
+                      Customer Email is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole == 'Branch/Dealer'">
+                <label class="col-sm-4 control-label">Notes (By Branch)</label>
+                <div class="col-sm-8">
+                  <textarea type="text" maxlength="1000" name="notesbr" [(ngModel)]="ocObj.NotesByBranch"
+                    class="form-control" required #ocnotesbr="ngModel"></textarea>
+                  <div *ngIf="ocnotesbr.invalid && (ocnotesbr.dirty || ocnotesbr.touched)" class="errors">
+                    <div *ngIf="ocnotesbr.errors && ocnotesbr.errors.maxlength">
+                      Notes can be of max length 1000.
+                    </div>
+                  </div>
+                  <div *ngIf="ocnotesbr.invalid && (ocnotesbr.dirty || ocnotesbr.touched)" class="errors">
+                    <div *ngIf="ocnotesbr.errors && ocnotesbr.errors.required">
+                      Notes is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer' ">
+                <label class="col-sm-4 control-label">Invoice Number (By Branch)</label>
+                <div class="col-sm-8">
+                  <input type="text" name="Invoicenumberbr" required #invBrnch="ngModel" [(ngModel)]="ocObj.BrinvNum"
+                    class="form-control">
+                  <div *ngIf="invBrnch.invalid && (invBrnch.dirty || invBrnch.touched)" class="errors">
+                    <div *ngIf="invBrnch.errors && invBrnch.errors.required">
+                      Invoice Number is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label" for="doc"> Invoice Document Attached</label>
+                <div class="col-sm-8" style="margin-top:7px;">
+                  <input type="checkbox" name="completebr" [(ngModel)]="ocObj.BrinvDocAttached" id="doc">
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole == 'Branch/Dealer'">
+                <label class="col-sm-4 control-label">Transport (By Branch)</label>
+                <div class="col-sm-8">
+                  <input type="text" name="transportbr" [(ngModel)]="ocObj.TransportByBranch" class="form-control"
+                    required #transportBranch="ngModel">
+                  <div *ngIf="transportBranch.invalid && (transportBranch.dirty || transportBranch.touched)"
+                    class="errors">
+                    <div *ngIf="transportBranch.errors && transportBranch.errors.required">
+                      Transport is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-4 control-label">Installation Date</label>
+                <div class="col-sm-8">
+                  <my-date-picker name="installationdate" required instDate="ngModel" [options]="myDatePickerForDisable"
+                    [(ngModel)]="installationObj.installationDate" onkeydown="return false">
+                  </my-date-picker>
+                  <div *ngIf="instDate?.invalid && (instDate?.dirty || instDate?.touched)" class="errors">
+                    <div *ngIf="instDate?.errors && instDate?.errors?.required">
+                      Installation Date is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label">Installation Technician</label>
+                <div class="col-sm-8">
+                  <input type="text" name="installationTech" required #iTech="ngModel"
+                    [(ngModel)]="installationObj.installationTechnician" class="form-control">
+                  <div *ngIf="iTech.invalid && (iTech.dirty || iTech.touched)" class="errors">
+                    <div *ngIf="iTech.errors && iTech.errors.required">
+                      Installation Technician is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label">Technician Contact</label>
+                <div class="col-sm-8">
+                  <input type="text" name="technicianContact" required #tcontact="ngModel"
+                    [(ngModel)]="installationObj.technicianContact" pattern="[1-9]{1}[0-9]{9}" class="form-control">
+                  <div *ngIf="tcontact.invalid && (tcontact.dirty || tcontact.touched)" class="errors">
+                    <div *ngIf="tcontact.errors && tcontact.errors.required">
+                      Technician Contact is required.
+                    </div>
+                  </div>
+                  <div *ngIf="tcontact.invalid && (tcontact.dirty || tcontact.touched)" class="errors">
+                    <div *ngIf="tcontact.errors && tcontact.errors.pattern">
+                      Enter Correct Number.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'  ">
+                <label class="col-sm-4 control-label" for="complete">Installation Complete</label>
+                <div class="col-sm-8" style="margin-top:7px;">
+                  <input type="checkbox" name="complete" [(ngModel)]="installationObj.installationComplete"
+                    id="complete">
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="currentUser.userRole=='Branch/Dealer'">
+                <label class="col-sm-4 control-label" for="doc">Installation Document Attached</label>
+                <div class="col-sm-8" style="margin-top:7px;">
+                  <input type="checkbox" name="completeinstallation" [(ngModel)]="ocObj.BrInstaDocAttached" id="doc1">
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="row text-right">
+          <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onCancel()">Cancel
+          </button>
+          <button *ngIf="!isUpdate" [disabled]="ocform.invalid" type="button"
+            class="btn btn-primary btn-asset ml-3 mb-5" (click)="onNext()">Next
+          </button>
+          <button *ngIf="isUpdate" [disabled]="ocform.invalid" type="button" class="btn btn-primary btn-asset ml-3 mb-5"
+            (click)="onNext()">Update
+          </button>
+        </div>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>
