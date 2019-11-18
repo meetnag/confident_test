@@ -1,7 +1,10 @@
-<div class="container">
+<div class="container" *ngIf="!isModal">
   <div class="panel">
     <div class="panel-heading">
       <h3 class="panel-hd">OC Documents</h3>
+      <button *ngIf="isModal" type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
     <div class="panel-body">
       <form class="form-horizontal mt-5 ml-5 mr-5">
@@ -40,7 +43,7 @@
             <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onUploadFile()">Upload File</button>
           </div>
           <div class="col-md-2">
-            <button type="button" class="btn btn-primary btn-asset" (click)="onBack()">Back
+            <button *ngIf="!isModal" type="button" class="btn btn-primary btn-asset" (click)="onBack()">Back
             </button>
           </div>
         </div>
@@ -52,4 +55,57 @@
       </form>
     </div>
   </div>
+</div>
+<div *ngIf="isModal" class="modal-header">
+  <h3>OC Documents</h3>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div *ngIf="isModal" class="modal-body">
+  <form class="form-horizontal mt-5 ml-5 mr-5">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="col-sm-4">OC Number</label>
+          <div class="col-sm-8">
+            {{ocObj.OCNumber}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="col-sm-4">OC Date</label>
+          <div class="col-sm-8">
+            {{ocObj.OCDate}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <input #myInput type="file" name="file" id="file" (change)="handleFileInput($event.target.files)" />
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Note</label>
+          <div class="col-sm-8">
+            <input type="text" name="filetext" [(ngModel)]="fileNote" placeholder="File Note" maxlength="50"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onUploadFile()">Upload File</button>
+      </div>
+    </div>
+    <div class="row">
+      <ng2-smart-table class="table table-striped table-bordered table-hover table-responsive mt-4"
+        [settings]="settings" [source]="source"></ng2-smart-table>
+    </div>
+    <br>
+  </form>
+</div>
+<div *ngIf="isModal" class="modal-header">
+  <button type="button" class="btn btn-primary btn-asset" (click)="onClose()">Close</button>
 </div>

@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
-import { DashboardService } from '@app/shared/_services/dashboard.service';
-import { AuthenticationService } from '@app/shared/_services/authentication.service';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { LocalDataSource } from 'ng2-smart-table';
-import { OcModel } from '@app/shared/_models/oc-model';
-import { environment } from '@environments/environment.prod';
-import { ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OcModel } from '@app/shared/_models/oc-model';
+import { AuthenticationService } from '@app/shared/_services/authentication.service';
+import { DashboardService } from '@app/shared/_services/dashboard.service';
+import { environment } from '@environments/environment.prod';
+import { LocalDataSource } from 'ng2-smart-table';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-upload-documents',
   templateUrl: './upload-documents.component.html',
@@ -30,7 +30,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   @ViewChild('myInput')
   myInputVariable: ElementRef;
-
+  isModal = false;
   settings = {
     actions: false,
     columns: {
@@ -81,6 +81,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
   constructor(private dashboardService: DashboardService, private router: Router, private datePipe: DatePipe,
     private authenticationService: AuthenticationService, private route: ActivatedRoute, private toasterService: ToastrService,
+    public bsModalRef: BsModalRef
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -92,6 +93,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
         this.ocObj = data;
         if (this.ocObj.OCDate && this.ocObj.OCDate.formatted) {
           this.ocObj.OCDate = this.ocObj.OCDate.formatted;
+          this.isModal = true;
         } else {
           this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'yyyy-MM-dd');
         }
@@ -101,6 +103,9 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+    if (this.isModal) {
+      this.id = this.ocObj._id;
+    }
     this.getDocuments();
   }
 
@@ -129,6 +134,9 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
       this.docHash = btoa(reader.result as string);
     };
 
+  }
+  onClose() {
+    this.bsModalRef.hide();
   }
   onUploadFile() {
     if (this.fileToUpload != null) {

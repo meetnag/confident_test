@@ -1,25 +1,15 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { DashboardService } from "@app/shared/_services/dashboard.service";
-import { ToastrService } from "ngx-toastr";
-import {
-  OcModel,
-  Priority,
-  SubAssembly,
-  Spare,
-  Product,
-  CustomerType,
-  Branch,
-  Customer,
-  Installation,
-  SerialNumber
-} from "@app/shared/_models/oc-model";
-import { Subscription, Observable } from "rxjs";
-import { AuthenticationService } from "@app/shared/_services/authentication.service";
 import { DatePipe } from "@angular/common";
-import { IMyDpOptions } from "mydatepicker";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "@environments/environment";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Branch, Customer, CustomerType, Installation, OcModel, Priority, Spare, SubAssembly } from "@app/shared/_models/oc-model";
+import { AuthenticationService } from "@app/shared/_services/authentication.service";
+import { DashboardService } from "@app/shared/_services/dashboard.service";
+import { IMyDpOptions } from "mydatepicker";
+import { ToastrService } from "ngx-toastr";
+import { Observable, Subscription } from "rxjs";
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { UploadDocumentsComponent } from "../upload-documents/upload-documents.component";
 
 @Component({
   selector: "app-add-edit-oc",
@@ -52,6 +42,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   countryList = [];
   selectedProduct = [];
   selectedBranch = "";
+  public modalRef: BsModalRef;
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: this.dateFormatP,
@@ -73,7 +64,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
     private toasterService: ToastrService,
     private authenticationService: AuthenticationService,
     private datePipe: DatePipe,
-    private http: HttpClient
+    private http: HttpClient,
+    private modalService: BsModalService
   ) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(
       data => {
@@ -392,7 +384,8 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
               localStorage.setItem('selectedObj', JSON.stringify(this.ocObj));
               this.setDateValidations();
               this.checkForInstallationobj();
-              this.router.navigate(['/pages/dashboard/upload/' + this.ocObj._id]);
+              this.modalRef = this.modalService.show(UploadDocumentsComponent);
+              // this.router.navigate(['/pages/dashboard/upload/' + this.ocObj._id]);
             }
           },
           err => {

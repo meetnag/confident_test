@@ -10,6 +10,7 @@ import { AddEditOcSrnoComponent, CustomRendererSrNoComponent } from './add-edit-
 import { AddEditOcLabelsComponent } from './add-edit-oc-labels/add-edit-oc-labels.component';
 import { ScanOcComponent } from './scan-oc/scan-oc.component';
 import { InstallationReportComponent, CustomRendererReportComponent, CustomRendererReportViewComponent } from './installation-report/installation-report.component';
+import { BsModalRef } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,10 @@ import { InstallationReportComponent, CustomRendererReportComponent, CustomRende
     SharedModule,
     DashboarRoutingdModule
   ],
-  entryComponents: [CustomRendererComponent, CustomRendererSrNoComponent, CustomRendererViewComponent, CustomRendererFileComponent, CustomRendererFileDeleteComponent,CustomRendererReportComponent,CustomRendererReportViewComponent]
+  entryComponents: [CustomRendererComponent, CustomRendererSrNoComponent,
+    CustomRendererViewComponent, CustomRendererFileComponent,
+    CustomRendererFileDeleteComponent, CustomRendererReportComponent,
+    CustomRendererReportViewComponent, UploadDocumentsComponent],
+  providers: [BsModalRef]
 })
 export class DashboardModule { }

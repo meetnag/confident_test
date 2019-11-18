@@ -108,6 +108,7 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
             this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
 
           }
+          this.ocObj.LRDate = this.datePipe.transform(this.ocObj.LRDate, 'dd/MM/yyyy ');
           if (!this.ocObj.Customer) {
             this.ocObj.Customer = new Customer();
             this.ocObj.Customer.city = '';

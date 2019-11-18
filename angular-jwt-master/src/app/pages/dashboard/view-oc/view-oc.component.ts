@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-view-oc',
   templateUrl: './view-oc.component.html',
   styleUrls: ['./view-oc.component.css'],
-  providers: [DatePipe] 
+  providers: [DatePipe]
 })
 export class ViewOcComponent implements OnInit, OnDestroy {
   header = 'View OC';
@@ -56,9 +56,9 @@ export class ViewOcComponent implements OnInit, OnDestroy {
         valuePrepareFunction: (OCDate) => {
           var raw = new Date(OCDate);
           if (raw) {
-          return this.datePipe.transform(raw, 'dd/MM/yyyy ');
+            return this.datePipe.transform(raw, 'dd/MM/yyyy ');
           }
-      }
+        }
       }
     },
   };
@@ -91,13 +91,15 @@ export class ViewOcComponent implements OnInit, OnDestroy {
           this.ocObj.SerialNumbers = [];
           this.ocObj = data.data.ocList[0];
           // var raw = new Date(this.ocObj.OCDate);
-           
+
           this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy ');
-          if(this.ocObj.Installation){
-              this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy ');
-              this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
-            
+          if (this.ocObj.Installation) {
+            this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy ');
+            this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
+
           }
+          this.ocObj.LRDate = this.datePipe.transform(this.ocObj.LRDate, 'dd/MM/yyyy ');
+
           this.getDocuments();
           if (!this.ocObj.Customer) {
             this.ocObj.Customer = new Customer();

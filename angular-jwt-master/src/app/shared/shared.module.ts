@@ -9,7 +9,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { QRCodeModule } from 'angularx-qrcode';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { MyDatePickerModule } from 'mydatepicker';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ModalModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     Ng2SmartTableModule,
     QRCodeModule,
     NgSelectModule,
+    ModalModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     MyDatePickerModule,
     MatAutocompleteModule
@@ -41,7 +43,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ModalModule
   ],
   providers: []
 })
