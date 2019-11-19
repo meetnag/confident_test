@@ -739,6 +739,7 @@ module.exports = {
             console.log(result.docAttachedCounter)
             docAttachedCounter = result.docAttachedCounter
 
+            update.docAttachedCounter = docAttachedCounter;
             if (docAttachedCounter)
                documentCounter = docAttachedCounter
 
