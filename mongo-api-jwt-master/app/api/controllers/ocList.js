@@ -736,7 +736,7 @@ module.exports = {
       
       ocListModel.findOne({ OCNumber: req.body.OCNumber }, function (err, result) {
          if (result) {
-            console.log(result.docAttachedCounter)
+            // console.log(result.docAttachedCounter)
             docAttachedCounter = result.docAttachedCounter
 
             update.docAttachedCounter = docAttachedCounter;
