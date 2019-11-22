@@ -9,6 +9,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+declare var $: any;
 @Component({
   selector: 'app-upload-documents',
   templateUrl: './upload-documents.component.html',
@@ -181,12 +182,16 @@ export class CustomRendererFileComponent implements OnInit {
   @Input() value: string | number;
   @Input() rowData: any;
   ngOnInit() {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
     this.url = environment.apiUrl + 'ocDocument/download/' + this.rowData._id;
   }
 }
 @Component({
   selector: 'app-custom-renderer-file-delete',
-  template: `<span (click)="onDelete()" class="font-medium-1 mr-2" style="cursor:pointer;color:red">X</span>`
+  template: `<span (click)="onDelete()" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;font-size:16px" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></span>`
+  
 })
 export class CustomRendererFileDeleteComponent implements OnInit {
 
@@ -197,6 +202,7 @@ export class CustomRendererFileDeleteComponent implements OnInit {
   @Input() value: string | number;
   @Input() rowData: any;
   ngOnInit() {
+    
   }
   onDelete() {
     this.dashboardService.deleteDocument(this.value).subscribe(res => {

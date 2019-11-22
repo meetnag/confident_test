@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://api.testautotech.xyz/',
-  apiUrl :'http://mac.local:3000/',
-  // apiUrl: 'https://cdapi.lambdablocks.com/',
+  //apiUrl :'http://mac.local:3000/',
+  apiUrl: 'http://cdtestapi.lambdablocks.com/',
   // domainUrl: 'http://testautotech.xyz/'
-  domainUrl: 'https://cd.lambdablocks.com/'
+  domainUrl: 'http://cdtest.lambdablocks.com/'
 }
 
 /*
