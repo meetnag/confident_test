@@ -28,25 +28,25 @@
               </div>
             </div>
             <div class="row col-md-12">
-              <hr>
+              <!--<hr>-->
               <div>
                 <h5><b>Customer Details</b></h5>
               </div>
               <div class="row col-sm-12" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{ocObj.Customer.name}}</div>
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">{{ocObj.Customer.name}}</div>
               </div>
               <div class="row col-sm-12" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{ocObj.Customer.address}}</div>
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">{{ocObj.Customer.address}}</div>
               </div>
               <div class="row col-sm-12" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{ocObj.Customer.city}}</div>
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">{{ocObj.Customer.city}}</div>
               </div>
               <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{ocObj.Customer.state}} <span
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">{{ocObj.Customer.state}} <span
                     *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">-
                     {{ocObj.Customer.zip}}</span>
                 </div>
@@ -56,18 +56,18 @@
                 <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
               </div> -->
               <div class="row col-sm-12" *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
+              <!--<div class="col-sm-2"></div>-->
+                <div class=""> {{ocObj.Customer.country}}</div>
               </div>
               <div class="row col-sm-12"
                 *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">Phone : {{ocObj.Customer.contactNumber}}</div>
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">Phone : {{ocObj.Customer.contactNumber}}</div>
               </div>
               <div class="row col-sm-12"
                 *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">Email : {{ocObj.Customer.CustEmailID}}</div>
+                <!--<div class="col-sm-2"></div>-->
+                <div class="">Email : {{ocObj.Customer.CustEmailID}}</div>
               </div>
             </div>
             <!-- <div class="row col-md-12">
@@ -100,11 +100,11 @@
           <div class="col-md-4">
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">OC Date</label>
-                <div class="col-sm-8" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
+                <label class="col-sm-5 ">OC Date</label>
+                <div class="col-sm-7" *ngIf="ocObj.OCDate !== undefined && ocObj.OCDate !== ''">
                   {{ocObj.OCDate}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
+                <div class="col-sm-7" *ngIf="ocObj.OCDate == undefined || ocObj.OCDate == ''">
                   --
                 </div>
               </div>
@@ -112,23 +112,23 @@
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Customer Type</label>
-                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
+                <label class="col-sm-5 ">Customer Type</label>
+                <div class="col-sm-7" *ngIf="ocObj.CustomerType.name !== undefined && ocObj.CustomerType.name !==''">
                   {{ocObj.CustomerType.name}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
+                <div class="col-sm-7" *ngIf="ocObj.CustomerType.name == undefined || ocObj.CustomerType.name ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
               <div class="form-group">
-                <label class="col-sm-4 ">Transport</label>
-                <div class="col-sm-8"
+                <label class="col-sm-5 ">Transport</label>
+                <div class="col-sm-7"
                   *ngIf="ocObj.Installation.transport !== undefined && ocObj.Installation.transport !==''">
                   {{ocObj.Installation.transport}}
                 </div>
-                <div class="col-sm-8"
+                <div class="col-sm-7"
                   *ngIf="ocObj.Installation.transport == undefined || ocObj.Installation.transport ==''">
                   --
                 </div>
@@ -136,35 +136,35 @@
             </div>
             <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">
               <div class="form-group">
-                <label class="col-sm-4 ">Transport (By Branch)</label>
-                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
+                <label class="col-sm-5 ">Transport (By Branch)</label>
+                <div class="col-sm-7" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
                   {{ocObj.TransportByBranch}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.TransportByBranch == undefined || ocObj.TransportByBranch ==''">
+                <div class="col-sm-7" *ngIf="ocObj.TransportByBranch == undefined || ocObj.TransportByBranch ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
               <div class="form-group">
-                <label class="col-sm-4 ">Notes</label>
-                <div class="col-sm-8" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                <label class="col-sm-5 ">Notes</label>
+                <div class="col-sm-7" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
                   <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
                     class="form-control"></textarea>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                <div class="col-sm-7" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">
               <div class="form-group">
-                <label class="col-sm-4 ">Branch Notes</label>
-                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+                <label class="col-sm-6 ">Branch Notes</label>
+                <div class="col-sm-6" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
                   <textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
                     class="form-control"></textarea>
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+                <div class="col-sm-6" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
                   --
                 </div>
               </div>
@@ -173,23 +173,23 @@
           <div class="col-md-4">
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Branch Name</label>
-                <div class="col-sm-8" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
+                <label class="col-sm-6 ">Branch Name</label>
+                <div class="col-sm-6" *ngIf="ocObj.BranchID.name !== undefined && ocObj.BranchID.name !==''">
                   {{ocObj.BranchID.name}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
+                <div class="col-sm-6" *ngIf="ocObj.BranchID.name == undefined || ocObj.BranchID.name ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Invoice Number</label>
-                <div class="col-sm-8"
+                <label class="col-sm-6 ">Invoice Number</label>
+                <div class="col-sm-6"
                   *ngIf="ocObj.Installation.invoiceNumber !== undefined && ocObj.Installation.invoiceNumber !==''">
                   {{ocObj.Installation.invoiceNumber}}
                 </div>
-                <div class="col-sm-8"
+                <div class="col-sm-6"
                   *ngIf="ocObj.Installation.invoiceNumber == undefined || ocObj.Installation.invoiceNumber ==''">
                   --
                 </div>
@@ -197,12 +197,12 @@
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Invoice Date</label>
-                <div class="col-sm-8"
+                <label class="col-sm-6 ">Invoice Date</label>
+                <div class="col-sm-6"
                   *ngIf="ocObj.Installation.invoiceDate !== undefined && ocObj.Installation.invoiceDate!==''">
                   {{ocObj.Installation.invoiceDate}}
                 </div>
-                <div class="col-sm-8"
+                <div class="col-sm-6"
                   *ngIf="ocObj.Installation.invoiceDate == undefined || ocObj.Installation.invoiceDate==''">
                   --
                 </div>
@@ -210,22 +210,22 @@
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Warranty (in months)</label>
-                <div class="col-sm-8" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
+                <label class="col-sm-6 ">Warranty (in months)</label>
+                <div class="col-sm-6" *ngIf="ocObj.warranty !== undefined && ocObj.warranty !==''">
                   {{ocObj.warranty}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
+                <div class="col-sm-6" *ngIf="ocObj.warranty == undefined || ocObj.warranty ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">LR Number</label>
-                <div class="col-sm-8" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
+                <label class="col-sm-6 ">LR Number</label>
+                <div class="col-sm-6" *ngIf="ocObj.LRNumber !== undefined && ocObj.LRNumber !==''">
                   {{ocObj.LRNumber}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
+                <div class="col-sm-6" *ngIf="ocObj.LRNumber == undefined || ocObj.LRNumber ==''">
                   --
                 </div>
               </div>
@@ -233,22 +233,22 @@
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">LR Date</label>
-                <div class="col-sm-8" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
+                <label class="col-sm-6 ">LR Date</label>
+                <div class="col-sm-6" *ngIf="ocObj.LRDate !== undefined && ocObj.LRDate !==''">
                   {{ocObj.LRDate}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
+                <div class="col-sm-6" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
                   --
                 </div>
               </div>
             </div>
             <div class="row col-md-12">
               <div class="form-group">
-                <label class="col-sm-4 ">Invoice Number (By Branch)</label>
-                <div class="col-sm-8" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
+                <label class="col-sm-6 ">Invoice Number (By Branch)</label>
+                <div class="col-sm-6" *ngIf="ocObj.BrinvNum !== undefined && ocObj.BrinvNum !==''">
                   {{ocObj.BrinvNum}}
                 </div>
-                <div class="col-sm-8" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
+                <div class="col-sm-6" *ngIf="ocObj.BrinvNum == undefined || ocObj.BrinvNum ==''">
                   --
                 </div>
               </div>
@@ -259,9 +259,9 @@
           <hr>
         </div>
         <div class="row col-md-12">
-          <div class="col-md-6">
+          <div class="">
             <h5><b>Equipment Details</b></h5>
-            <br>
+            <!--<br>-->
           </div>
         </div>
         <div class="row col-md-12">
@@ -280,8 +280,8 @@
         <div class="row col-md-12">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="col-sm-4 ">Installation Technician</label>
-              <div class="col-sm-8"
+              <label class="col-sm-6 ">Installation Technician</label>
+              <div class="col-sm-6"
                 *ngIf="ocObj.Installation.installationTechnician !== undefined && ocObj.Installation.installationTechnician!==''">
                 {{ocObj.Installation.installationTechnician}}
               </div>
@@ -292,12 +292,12 @@
             </div>
 
             <div class="form-group">
-              <label class="col-sm-4 ">Technician Contact</label>
-              <div class="col-sm-8"
+              <label class="col-sm-6 ">Technician Contact</label>
+              <div class="col-sm-6"
                 *ngIf="ocObj.Installation.technicianContact !== undefined && ocObj.Installation.technicianContact !==''">
                 {{ocObj.Installation.technicianContact}}
               </div>
-              <div class="col-sm-8"
+              <div class="col-sm-6"
                 *ngIf="ocObj.Installation.technicianContact == undefined || ocObj.Installation.technicianContact ==''">
                 --
               </div>
