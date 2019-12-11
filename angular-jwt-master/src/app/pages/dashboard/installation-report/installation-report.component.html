@@ -7,7 +7,7 @@
       <form class="form-horizontal mt-5 ml-5 mr-5">
         <!-- Admin and QA User -->
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <div class="row col-md-12">
               <div class="form-group">
                 <label class="col-sm-4 ">OC Number</label>
@@ -97,7 +97,7 @@
               </div>
             </div> -->
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="row col-md-12">
               <div class="form-group">
                 <label class="col-sm-5 ">OC Date</label>
@@ -134,7 +134,8 @@
                 </div>
               </div>
             </div>
-            <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">
+            <!--<div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">-->
+            <div class="row col-md-12">
               <div class="form-group">
                 <label class="col-sm-5 ">Transport (By Branch)</label>
                 <div class="col-sm-7" *ngIf="ocObj.TransportByBranch !== undefined && ocObj.TransportByBranch !==''">
@@ -145,18 +146,37 @@
                 </div>
               </div>
             </div>
-            <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
+            <!--<div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
               <div class="form-group">
                 <label class="col-sm-5 ">Notes</label>
-                <div class="col-sm-7" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                <br>-->
+                <!--<div class="col-sm-7" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
                   <textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
                     class="form-control"></textarea>
+                    {{ocObj.OCNotes}}
                 </div>
                 <div class="col-sm-7" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
                   --
                 </div>
               </div>
-            </div>
+            </div>-->
+            <!---starts-->
+            <!--<div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
+              <div class="form-group">
+                <div class="col-sm-12" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">-->
+
+                  <!--<textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                    class="form-control"></textarea>
+                    {{ocObj.OCNotes}}
+                    {{ocObj.NotesByBranch}}-->
+                <!--</div>
+                <div class="col-sm-12" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                  --
+                </div>
+              </div>
+            </div>-->
+
+
             <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">
               <div class="form-group">
                 <label class="col-sm-6 ">Branch Notes</label>
@@ -255,6 +275,50 @@
             </div>
           </div>
         </div>
+        <div class="row col-md-12">
+            <hr>
+          </div>
+        <div class="row col-md-12">
+          <div class="">
+            <h5><b>Notes (by QA/Sales)</b></h5>
+            <!--<br>-->
+          </div>
+        </div>
+        <div class="row col-md-12">
+          <div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Direct Sale'">
+            <div class="form-group">
+              <div class="col-sm-12" *ngIf="ocObj.OCNotes !== undefined && ocObj.OCNotes !== ''">
+                <!--<textarea disabled type="text" name="notes" [(ngModel)]="ocObj.OCNotes"
+                  class="form-control"></textarea>-->
+                  {{ocObj.OCNotes}}
+              </div>
+              <div class="col-sm-12" *ngIf="ocObj.OCNotes == undefined || ocObj.OCNotes ==''">
+                --
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row col-md-12">
+          <div class="">
+            <h5><b>Notes (by Branch)</b></h5>
+          </div>
+        </div>
+        <!--<div class="row col-md-12" *ngIf="ocObj.typeOfSale == 'Branch Sale'">-->
+        <div class="row col-md-12">
+          <div class="form-group">
+            <!--<label class="col-sm-6 ">Branch Notes</label>-->
+            <div class="col-sm-6" *ngIf="ocObj.NotesByBranch !== undefined && ocObj.NotesByBranch !==''">
+              <!--<textarea disabled type="text" name="notesbybranch" [(ngModel)]="ocObj.NotesByBranch"
+                class="form-control"></textarea>-->
+                {{ocObj.NotesByBranch}}
+            </div>
+            <div class="col-sm-6" *ngIf="ocObj.NotesByBranch == undefined || ocObj.NotesByBranch ==''">
+              --
+            </div>
+          </div>
+        </div>
+
         <div class="row col-md-12">
           <hr>
         </div>
