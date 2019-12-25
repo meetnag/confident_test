@@ -1,0 +1,11 @@
+  <div mat-dialog-title>
+    <span [innerHTML]="title"></span>
+  </div>
+  <!-- <mat-divider></mat-divider> -->
+  <div mat-dialog-content>
+    <span [innerHTML]="message"></span>
+  </div>
+  <div mat-dialog-actions>
+    <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onNoBtnClick()">{{noBtnText}}</button>
+    <button type="button" class="btn btn-primary btn-asset  mb-5" (click)="onYesBtnClick()">{{yesBtnText}}</button>
+  </div>

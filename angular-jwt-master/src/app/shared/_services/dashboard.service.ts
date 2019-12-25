@@ -10,8 +10,8 @@ import { environment } from '@environments/environment';
 })
 export class DashboardService {
 
-  currentOcObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
-  selectedObj: BehaviorSubject<OcModel> = new BehaviorSubject<OcModel>(null);
+  currentOcObj: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  selectedObj: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   constructor(private apiService: ApiService, private http: HttpClient) { }
   getSubAssemblyList() {
     return this.apiService.apiCaller('get', 'subAssembly/');

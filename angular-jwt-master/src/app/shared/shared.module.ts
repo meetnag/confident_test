@@ -11,12 +11,17 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { MyDatePickerModule } from 'mydatepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ModalModule } from 'ngx-bootstrap';
+import { ConfirmationAlertComponent } from './_components/confirmation-alert/confirmation-alert.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    ConfirmationAlertComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +34,9 @@ import { ModalModule } from 'ngx-bootstrap';
     ModalModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     MyDatePickerModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatDialogModule
   ],
   exports: [
     RouterModule,
@@ -44,8 +51,11 @@ import { ModalModule } from 'ngx-bootstrap';
     FooterComponent,
     SidebarComponent,
     MatAutocompleteModule,
-    ModalModule
+    ModalModule,
+    MatDividerModule,
+    MatDialogModule
   ],
-  providers: []
+  providers: [],
+  entryComponents: [ConfirmationAlertComponent]
 })
 export class SharedModule { }

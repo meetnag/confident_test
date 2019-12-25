@@ -4,6 +4,7 @@ import { PagesComponent } from './pages.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { Dashboard2Module } from './dashboard2/dashboard2.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     CommonModule,
     SharedModule,
     PagesRoutingModule,
-    DashboardModule
+    DashboardModule,
+    Dashboard2Module
   ]
 })
 export class PagesModule { }

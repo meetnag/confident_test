@@ -133,12 +133,12 @@ export class AddEditOcSrnoComponent implements OnInit, OnDestroy {
 
   onCancel() {
     localStorage.removeItem('ocObj');
-    this.router.navigate(['/pages/dashboard']);
+    this.router.navigate(['/pages/oc-list']);
   }
   onGenerateLabels() {
     this.dashboardService.currentOcObj.next(this.ocObj);
     localStorage.setItem('ocObj', JSON.stringify(this.ocObj));
-    this.router.navigate(['/pages/dashboard/add-edit-labels']);
+    this.router.navigate(['/pages/oc-list/add-edit-labels']);
   }
 
   numberOnly(event): boolean {

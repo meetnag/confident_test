@@ -52,7 +52,7 @@ export class ScanOcComponent implements OnInit, OnDestroy {
     }
   }
   onBack() {
-    this.router.navigate(['/pages/dashboard']);
+    this.router.navigate(['/pages/oc-list']);
   }
   getOcByNumber() {
     let body = {};

@@ -56,7 +56,7 @@ export class ViewOcComponent implements OnInit, OnDestroy {
         valuePrepareFunction: (OCDate) => {
           var raw = new Date(OCDate);
           if (raw) {
-            return this.datePipe.transform(raw, 'dd/MM/yyyy ');
+            return this.datePipe.transform(raw, 'dd/MM/yyyy');
           }
         }
       }
@@ -92,13 +92,13 @@ export class ViewOcComponent implements OnInit, OnDestroy {
           this.ocObj = data.data.ocList[0];
           // var raw = new Date(this.ocObj.OCDate);
 
-          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy ');
+          this.ocObj.OCDate = this.datePipe.transform(this.ocObj.OCDate, 'dd/MM/yyyy');
           if (this.ocObj.Installation) {
             this.ocObj.Installation.installationDate = this.datePipe.transform(this.ocObj.Installation.installationDate, 'dd/MM/yyyy ');
             this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
-
           }
-          this.ocObj.LRDate = this.datePipe.transform(this.ocObj.LRDate, 'dd/MM/yyyy ');
+          this.ocObj.LRDate = this.datePipe.transform(this.ocObj.LRDate, 'dd/MM/yyyy');
+          this.ocObj.InvDateByBranch = this.datePipe.transform(this.ocObj.InvDateByBranch, 'dd/MM/yyyy');
 
           this.getDocuments();
           if (!this.ocObj.Customer) {
@@ -106,13 +106,14 @@ export class ViewOcComponent implements OnInit, OnDestroy {
             this.ocObj.Customer.city = '';
             this.ocObj.Customer.name = '';
             this.ocObj.Customer.contactNumber = '';
+            this.ocObj.Customer.landlineNumber = '';
           }
           // console.log(this.ocObj)
           if (this.ocObj.SerialNumbers.length) {
             this.scanList = [];
             this.ocObj.SerialNumbers.forEach(ele => {
               // let obj = { 'name': ele.name, 'code': this.ocObj.OCNumber + ele.srno + ele.ID };
-              let obj = { 'name': ele.name, 'code': environment.domainUrl + 'scan/' + this.ocObj.OCNumber }
+              let obj = { 'name': ele.name, 'code': environment.domainUrl + 'scan/' + this.ocObj.OCNumber + ele.srno }
               this.scanList.push(obj);
             })
           }
@@ -137,6 +138,6 @@ export class ViewOcComponent implements OnInit, OnDestroy {
     this.currentUser$.unsubscribe();
   }
   onClose() {
-    this.router.navigate(['/pages/dashboard']);
+    this.router.navigate(['/pages/oc-list']);
   }
 }

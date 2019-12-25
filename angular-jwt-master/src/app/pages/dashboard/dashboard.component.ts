@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 title: 'OC Date',
                 filter: false,
                 valuePrepareFunction: (OCDate) => {
-                    // console.log('date', OCDate)
                     if (OCDate) {
                         var raw = new Date(OCDate);
                         if (raw) {
@@ -37,11 +36,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     }
                 }
             },
-            // ProductID: {
-            //     title: 'Product ID',
-            //     filter: false,
-            //     valuePrepareFunction: (value) => { return value.name }
-            // },
             Status: {
                 title: 'Status',
                 filter: false,
@@ -70,9 +64,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     currentUser$: Subscription;
     currentUser: any;
     priority = 'all';
+    typeOfSale = '';
     priorityList: Priority[] = [];
     userRole = '';
     navigationSubscription;
+    selectedBranch = '';
+    branchList: any = [];
     constructor(private router: Router, private dashboardService: DashboardService, private datePipe: DatePipe,
         private authenticationService: AuthenticationService) {
         this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -96,6 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
         this.getOcList();
         this.getPriority();
+        this.getBranch();
     }
     public loadScript(url: string) {
         this.dateFormat = 'dd/MM/yyyy'
@@ -128,7 +126,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
         })
     }
+    getBranch() {
+        this.dashboardService.getBranchList().subscribe(res => {
+            if (res.status === "success" && res.data) {
+                this.branchList = res.data["branchList"];
+            }
+        });
+    }
     onPriorityChange() {
+        this.getOcList();
+    }
+    onTypeOfSaleChange() {
+        this.getOcList();
+    }
+    onBranchChange() {
         this.getOcList();
     }
     getOcList() {
@@ -143,6 +154,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 roleName: this.currentUser.userRole
             };
         }
+        // if(this.typeOfSale != ''){
+        //     body.typeOfSale = this.typeOfSale;
+        // }
         if (this.currentUser.userRole === 'Branch/Dealer') {
             body.branchId = this.currentUser.user.branchId;
         }
@@ -154,41 +168,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
     onAddOc() {
-        this.router.navigate(['/pages/dashboard/add-oc']);
+        this.router.navigate(['/pages/oc-list/add-oc']);
     }
-    // onSearch(query: string) {
-    //     if (query != '') {
-    //         this.source.setFilter([
-    //             {
-    //                 field: 'OC Number',
-    //                 search: query
-    //             },
-    //             {
-    //                 field: 'OC Date',
-    //                 search: query
-    //             },
-    //             {
-    //                 field: 'Product ID',
-    //                 search: query
-    //             },
-    //             {
-    //                 field: 'Status',
-    //                 search: query
-    //             }
-    //         ], false);
-    //     } else {
-    //         this.source = new LocalDataSource(this.ocList);
-    //     }
-    // }
 }
-/*@Component({
-    selector: 'app-custom-renderer',
-    template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin: 9px;" (click)="editOC()"><i class="fa fa-pencil" aria-hidden="true"></span>
-    <span *ngIf="isStatusNew  && !isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red;margin: 9px;" (click)="onCloseOC()"><i class="fa fa-exchange" aria-hidden="true"></span>
-    <span *ngIf="isStatusNew && isStatusComplete" class="font-medium-1 mr-2" style="cursor:pointer;color:red" (click)="onCloseOC()"><i class="fa fa-trash-o" aria-hidden="true"></span>
-    <span class="font-medium-1 mr-2" style="cursor:pointer;color:blue;" (click)="onUploadDocuments()"><i class="fa fa-file-text-o" aria-hidden="true"></span>
-    <span *ngIf="isStatusScheduled" class="font-medium-1 mr-2" style="cursor:pointer;color:blue;margin-left: 9px;" (click)="onReport()"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>`
-})*/
 @Component({
     selector: 'app-custom-renderer',
     template: `<span *ngIf="isStatusNewAndNotAdmin" class="font-medium-1 mr-2" style="cursor:pointer;color:blue; font-size:16px" (click)="editOC()" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></span>
@@ -203,7 +185,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     currentUser: any;
     isStatusNew = true;
     isStatusComplete = false;
-    isStatusNewAndNotAdmin = true ;
+    isStatusNewAndNotAdmin = true;
     isStatusScheduled = false;
     @Output() save: EventEmitter<any> = new EventEmitter();
     constructor(private router: Router, private dashboardService: DashboardService,
@@ -221,7 +203,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
-        if (this.currentUser.userRole === 'QA Team' || this.currentUser.userRole === 'Admin'){
+        if (this.currentUser.userRole === 'QA Team' || this.currentUser.userRole === 'Admin') {
             this.isStatusNewAndNotAdmin = this.rowData.Status.name === 'New' ? true : false;
             this.isStatusNew = this.rowData.Status.name === 'New' ? true : false;
         }
@@ -251,10 +233,10 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
         this.currentUser$.unsubscribe();
     }
     editOC() {
-        this.router.navigate(['/pages/dashboard/edit-oc/' + this.rowData.OCNumber]);
+        this.router.navigate(['/pages/oc-list/edit-oc/' + this.rowData.OCNumber]);
     }
     onReport() {
-        this.router.navigate(['/pages/dashboard/report/' + this.rowData.OCNumber]);
+        this.router.navigate(['/pages/oc-list/report/' + this.rowData.OCNumber]);
     }
     onCloseOC() {
         let body;
@@ -287,7 +269,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     onUploadDocuments() {
         this.dashboardService.selectedObj.next(this.rowData);
         localStorage.setItem('selectedObj', JSON.stringify(this.rowData));
-        this.router.navigate(['/pages/dashboard/upload/' + this.value]);
+        this.router.navigate(['/pages/oc-list/upload/' + this.value]);
     }
 }
 @Component({
@@ -305,6 +287,6 @@ export class CustomRendererViewComponent implements OnInit {
     }
 
     onViewOc() {
-        this.router.navigate(['/pages/dashboard/view-oc/' + this.rowData.OCNumber]);
+        this.router.navigate(['/pages/oc-list/view-oc/' + this.rowData.OCNumber]);
     }
 }

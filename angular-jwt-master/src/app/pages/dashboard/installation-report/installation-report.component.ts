@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '@app/shared/_services';
 import { environment } from '@environments/environment';
 import { Subscription } from 'rxjs';
+import { CustomRendererFileComponent } from '../upload-documents/upload-documents.component';
 
 @Component({
   selector: 'app-installation-report',
@@ -46,17 +47,55 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
         type: 'custom',
         renderComponent: CustomRendererReportViewComponent
       },
-      _id: {
-        title: 'QR Code',
-        filter: false,
-        type: 'custom',
-        renderComponent: CustomRendererReportComponent
-      },
+      // _id: {
+      //   title: 'QR Code',
+      //   filter: false,
+      //   type: 'custom',
+      //   renderComponent: CustomRendererReportComponent
+      // },
     },
     pager: {
       display: false,
       // perPage: 25
     }
+  };
+  documentSource: LocalDataSource = new LocalDataSource();
+
+  documentSettings = {
+    actions: false,
+    columns: {
+      srNo: {
+        title: 'Sr No',
+        filter: false,
+        valuePrepareFunction: (cell, row) => {
+          return cell
+        }
+      },
+      documentname: {
+        title: 'Document Name',
+        filter: false,
+        type: 'custom',
+        renderComponent: CustomRendererFileComponent
+      },
+      notes: {
+        title: 'Notes',
+        filter: false
+      },
+      uploadedby: {
+        title: 'Uploaded By',
+        filter: false
+      },
+      uploadeddate: {
+        title: 'Uploaded Date',
+        filter: false,
+        valuePrepareFunction: (OCDate) => {
+          var raw = new Date(OCDate);
+          if (raw) {
+            return this.datePipe.transform(raw, 'dd/MM/yyyy');
+          }
+        }
+      }
+    },
   };
   constructor(private router: Router, private route: ActivatedRoute, private dashboardService: DashboardService, private datePipe: DatePipe,
     private toasterService: ToastrService, private authenticationService: AuthenticationService) {
@@ -108,12 +147,15 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
             this.ocObj.Installation.invoiceDate = this.datePipe.transform(this.ocObj.Installation.invoiceDate, 'dd/MM/yyyy ');
 
           }
+          this.getDocuments();
           this.ocObj.LRDate = this.datePipe.transform(this.ocObj.LRDate, 'dd/MM/yyyy ');
+          this.ocObj.InvDateByBranch = this.datePipe.transform(this.ocObj.InvDateByBranch, 'dd/MM/yyyy ');
           if (!this.ocObj.Customer) {
             this.ocObj.Customer = new Customer();
             this.ocObj.Customer.city = '';
             this.ocObj.Customer.name = '';
             this.ocObj.Customer.contactNumber = '';
+            this.ocObj.Customer.landlineNumber = '';
           }
           if (this.ocObj.SerialNumbers.length) {
             this.ocObj.SerialNumbers.forEach(ele => {
@@ -136,11 +178,23 @@ export class InstallationReportComponent implements OnInit, OnDestroy {
       }
     });
   }
+  getDocuments() {
+    const body = {
+      ocid: this.ocObj._id
+    }
+    this.dashboardService.getDocument(body).subscribe(res => {
+      if (res.status === 'success' && res.data) {
+        this.documentSource.load(res.data.ocDocument);
+      } else {
+        this.toasterService.error(res.message);
+      }
+    })
+  }
   onPrint() {
     window.print();
   }
   onClose() {
-    this.router.navigate(['/pages/dashboard']);
+    this.router.navigate(['/pages/oc-list']);
   }
 }
 @Component({
@@ -155,7 +209,7 @@ export class CustomRendererReportComponent implements OnInit {
   @Input() rowData: any;
   qrcode = '';
   ngOnInit() {
-    this.qrcode = environment.domainUrl + 'scan/' + this.rowData.OCNumber
+    this.qrcode = environment.domainUrl + 'scan/' + this.rowData.OCNumber + this.rowData.srno
   }
 
 }

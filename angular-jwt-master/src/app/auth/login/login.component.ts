@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(email, password).subscribe(data => {
             if (data != null) {
                 this.toaster.success("Logged in Successfully!!");
-                this.router.navigate(['/pages/dashboard']);
+                this.router.navigate(['/pages/oc-list']);
             } else {
                 this.toaster.error("Invalid Username or Password.");
             }

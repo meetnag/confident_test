@@ -8,7 +8,7 @@ const routes: Routes = [{
   component: PagesComponent,
   children: [
     {
-      path: 'dashboard',
+      path: 'oc-list',
       loadChildren: './dashboard/dashboard.module#DashboardModule',
     },
     {
@@ -20,8 +20,12 @@ const routes: Routes = [{
       loadChildren: './oc-upload/oc-upload.module#OcUploadModule',
     },
     {
+      path: 'dashboard',
+      loadChildren: './dashboard2/dashboard2.module#Dashboard2Module',
+    },
+    {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'oc-list',
       pathMatch: 'full',
     },
   ],

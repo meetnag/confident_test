@@ -29,6 +29,7 @@ export class OcModel {
     BrinvNum: any;
     BrinvDocAttached: any;
     BrInstaDocAttached: any;
+    InvDateByBranch: any;
     warranty: any;
     LRNumber: any;
     LRDate: any;
@@ -73,11 +74,13 @@ export class Customer {
     country: any;
     address: any;
     contactNumber: any;
+    landlineNumber: any;
     CustEmailID: any;
     constructor() {
         this.name = '';
         this.city = '';
         this.contactNumber = '';
+        this.landlineNumber = '';
         this.state = '';
         this.zip = '';
         this.address = '';

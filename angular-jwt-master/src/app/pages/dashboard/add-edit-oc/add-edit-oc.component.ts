@@ -275,7 +275,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
   }
   onCancel() {
     localStorage.removeItem("ocObj");
-    this.router.navigate(["/pages/dashboard"]);
+    this.router.navigate(["/pages/oc-list"]);
   }
   checkSelected(item) {
     if (this.selectedSubAssembly.findIndex(item._id) > -1) {
@@ -354,7 +354,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       this.currentUser.userRole === "Admin" ||
       this.currentUser.userRole === "QA Team"
     ) {
-      this.router.navigate(["/pages/dashboard/add-edit-srno"]);
+      this.router.navigate(["/pages/oc-list/add-edit-srno"]);
     } else {
       console.log('date', this.ocObj.OCDate);
       this.ocObj.OCDate = this.ocObj.OCDate.formatted;
@@ -363,6 +363,9 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       }
       if (this.ocObj.Installation.invoiceDate != undefined) {
         this.ocObj.Installation.invoiceDate = this.ocObj.Installation.invoiceDate.formatted;
+      }
+      if (this.ocObj.InvDateByBranch != undefined) {
+        this.ocObj.InvDateByBranch = this.ocObj.InvDateByBranch.formatted;
       }
       if (this.ocObj.LRDate != undefined) {
         this.ocObj.LRDate = this.ocObj.LRDate.formatted;
@@ -377,7 +380,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
           res => {
             if (res.status === "success") {
               this.toasterService.success(res.message);
-              this.router.navigate(["/pages/dashboard"]);
+              this.router.navigate(["/pages/oc-list"]);
             } else {
               this.toasterService.error(res.message);
               this.dashboardService.selectedObj.next(this.ocObj);
@@ -385,7 +388,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
               this.setDateValidations();
               this.checkForInstallationobj();
               this.modalRef = this.modalService.show(UploadDocumentsComponent);
-              // this.router.navigate(['/pages/dashboard/upload/' + this.ocObj._id]);
+              // this.router.navigate(['/pages/oc-list/upload/' + this.ocObj._id]);
             }
           },
           err => {
@@ -411,6 +414,9 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       }
       if (this.ocObj.Installation.invoiceDate != undefined) {
         this.ocObj.Installation.invoiceDate = this.getFormattedDate(this.ocObj.Installation.invoiceDate);
+      }
+      if (this.ocObj.InvDateByBranch != undefined) {
+        this.ocObj.InvDateByBranch = this.getFormattedDate(this.ocObj.InvDateByBranch);
       }
       // this.ocObj.Installation.invoiceDate = this.datePipe.transform(
       //   this.ocObj.Installation.invoiceDate,

@@ -80,7 +80,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
             // let obj = { 'name': ele.name, 'code': this.ocObj.OCNumber + ele.srno + ele.ID };
             let obj = {
               name: ele.name,
-              code: environment.domainUrl + "scan/" + this.ocObj.OCNumber
+              code: environment.domainUrl + "scan/" + this.ocObj.OCNumber + ele.srno
             };
             this.scanList.push(obj);
           });
@@ -125,7 +125,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
 
   onCancel() {
     localStorage.removeItem("ocObj");
-    this.router.navigate(["/pages/dashboard"]);
+    this.router.navigate(["/pages/oc-list"]);
   }
   onSave() {
     this.ocObj.userName = this.currentUser.user.name;
@@ -151,10 +151,10 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
           if (res.status === "success") {
             this.toasterService.success('OC Number  ' + this.ocObj.OCNumber + '  created successfully!')
             // window.print();
-            this.router.navigate(["/pages/dashboard"]);
+            this.router.navigate(["/pages/oc-list"]);
           } else {
             this.toasterService.error(res.message);
-            this.router.navigate(["/pages/dashboard"]);
+            this.router.navigate(["/pages/oc-list"]);
           }
         },
         err => {
@@ -169,10 +169,10 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
           if (res.status === "success") {
             this.toasterService.success(res.message);
             // window.print();
-            this.router.navigate(["/pages/dashboard"]);
+            this.router.navigate(["/pages/oc-list"]);
           } else {
             this.toasterService.error(res.message);
-            this.router.navigate(["/pages/dashboard"]);
+            this.router.navigate(["/pages/oc-list"]);
           }
         },
         err => {
@@ -183,7 +183,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
   }
   onPrint() {
     window.print();
-    // this.router.navigate(['/pages/dashboard']);
+    // this.router.navigate(['/pages/oc-list']);
   }
   getStateList() {
     this.dashboardService.getStateList().subscribe(res => {

@@ -37,11 +37,6 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
           }
         }
       },
-      // ProductID: {
-      //   title: 'Product ID',
-      //   filter: false,
-      //   valuePrepareFunction: (value) => { return value.name }
-      // },
       UpdatedDate: {
         title: 'Installation Complete Date',
         filter: false,
@@ -66,6 +61,9 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
   currentUser$: Subscription;
   currentUser: any;
   userRole = '';
+  typeOfSale = '';
+  selectedBranch = '';
+  branchList: any = [];
 
   constructor(private router: Router, private dashboardService: DashboardService, private datePipe: DatePipe,
     private authenticationService: AuthenticationService) {
@@ -80,6 +78,7 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getOcList();
     this.getPriority();
+    this.getBranch();
   }
 
   ngOnDestroy() {
@@ -91,6 +90,20 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
         this.priorityList = res.data['priorityList'];
       }
     })
+  }
+  getBranch() {
+    this.dashboardService.getBranchList().subscribe(res => {
+      if (res.status === "success" && res.data) {
+        this.branchList = res.data["branchList"];
+      }
+    });
+  }
+
+  onTypeOfSaleChange() {
+    this.getOcList();
+  }
+  onBranchChange() {
+    this.getOcList();
   }
   onPriorityChange() {
     this.getOcList();
@@ -110,6 +123,9 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
     if (this.currentUser.userRole === 'Branch/Dealer') {
       body.branchId = this.currentUser.user.branchId;
     }
+    // if(this.typeOfSale != ''){
+    //     body.typeOfSale = this.typeOfSale;
+    // }
     this.dashboardService.getOcArchives(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
@@ -137,7 +153,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
   currentUser$: Subscription;
   currentUser: any;
   isStatusScheduled = false;
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private router: Router, private authenticationService: AuthenticationService, private dashboardService: DashboardService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
         this.currentUser = data;
@@ -160,10 +176,12 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     this.currentUser$.unsubscribe();
   }
   onReport() {
-    this.router.navigate(['/pages/dashboard/report/' + this.rowData.OCNumber]);
+    this.router.navigate(['/pages/oc-list/report/' + this.rowData.OCNumber]);
   }
   onUploadDocuments() {
-    this.router.navigate(['/pages/dashboard/upload/' + this.value]);
+    this.dashboardService.selectedObj.next(this.rowData);
+    localStorage.setItem('selectedObj', JSON.stringify(this.rowData));
+    this.router.navigate(['/pages/oc-list/upload/' + this.value]);
   }
 }
 @Component({
@@ -181,7 +199,7 @@ export class CustomRendererViewComponent implements OnInit {
   }
 
   onViewOc() {
-    this.router.navigate(['/pages/dashboard/view-oc/' + this.rowData.OCNumber]);
+    this.router.navigate(['/pages/oc-list/view-oc/' + this.rowData.OCNumber]);
   }
 
 }
