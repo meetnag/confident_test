@@ -35,6 +35,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
   @ViewChild('myInput')
   myInputVariable: ElementRef;
   isModal = false;
+  isAdmin = false;
   settings = {
     actions: false,
     columns: {
@@ -126,6 +127,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
     this.authenticationService.currentUserSubject.pipe(takeUntil(this.unsubscribeAll)).subscribe(data => {
       if (data != null) {
         this.currentUser = data;
+        this.isAdmin = (this.currentUser.userRole === "Admin") ? true : false;
       }
     });
     this.dashboardService.selectedObj.pipe(takeUntil(this.unsubscribeAll)).subscribe(data => {
@@ -137,7 +139,7 @@ export class UploadDocumentsComponent implements OnInit, OnDestroy {
           this.isModal = true;
         } else {
           this.ocObj.OCDate = this.datePipe.transform(new Date(this.ocObj.OCDate), 'dd/MM/yyyy');
-          if (this.ocObj.Status.name == 'Closed') {
+          if (this.ocObj.Status.name == 'Closed' && !this.isAdmin) {
             this.isClosed = true;
           }
         }
