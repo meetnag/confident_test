@@ -139,6 +139,27 @@
           <div class="row col-md-12">
             <hr>
           </div>
+          <!-- Scan qr code list -->
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Equipment Details</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6" *ngFor="let qr of scanList">
+              <div class="form-group">
+                <span class="col-sm-4" *ngIf="!qr.isProduct">{{qr.name}}</span>
+                <span class="col-sm-4" *ngIf="qr.isProduct"><b>{{qr.name}}</b></span>
+                <div class="col-sm-8">
+                  <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
           <div class="row col-md-12">
             <div class="col-md-6">
               <h5><b>Details provided by Branch</b></h5>
@@ -526,6 +547,27 @@
           <div class="row col-md-12">
             <hr>
           </div>
+          <!-- Scan qr code list -->
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Equipment Details</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6" *ngFor="let qr of scanList">
+              <div class="form-group">
+                <span class="col-sm-4" *ngIf="!qr.isProduct">{{qr.name}}</span>
+                <span class="col-sm-4" *ngIf="qr.isProduct"><b>{{qr.name}}</b></span>
+                <div class="col-sm-8">
+                  <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
           <div class="row col-md-12">
             <div class="col-md-6">
               <h5><b>Details provided by Branch</b></h5>
@@ -767,6 +809,27 @@
                 </div>
                 <div class="col-sm-8" *ngIf="ocObj.LRDate== undefined || ocObj.LRDate ==''">
                   --
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
+          <!-- Scan qr code list -->
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Equipment Details</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6" *ngFor="let qr of scanList">
+              <div class="form-group">
+                <span class="col-sm-4" *ngIf="!qr.isProduct">{{qr.name}}</span>
+                <span class="col-sm-4" *ngIf="qr.isProduct"><b>{{qr.name}}</b></span>
+                <div class="col-sm-8">
+                  <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
                 </div>
               </div>
             </div>
@@ -1164,6 +1227,27 @@
           <div class="row col-md-12">
             <hr>
           </div>
+          <!-- Scan qr code list -->
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Equipment Details</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6" *ngFor="let qr of scanList">
+              <div class="form-group">
+                <span class="col-sm-4" *ngIf="!qr.isProduct">{{qr.name}}</span>
+                <span class="col-sm-4" *ngIf="qr.isProduct"><b>{{qr.name}}</b></span>
+                <div class="col-sm-8">
+                  <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
           <div class="row col-md-12">
             <div class="col-md-6">
               <h5><b>Details provided by Branch</b></h5>
@@ -1416,6 +1500,28 @@
           <div class="row col-md-12">
             <hr>
           </div>
+
+          <!-- Scan qr code list -->
+          <div class="row col-md-12">
+            <div class="col-md-6">
+              <h5><b>Equipment Details</b></h5>
+              <br>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <div class="col-md-6" *ngFor="let qr of scanList">
+              <div class="form-group">
+                <span class="col-sm-4" *ngIf="!qr.isProduct">{{qr.name}}</span>
+                <span class="col-sm-4" *ngIf="qr.isProduct"><b>{{qr.name}}</b></span>
+                <div class="col-sm-8">
+                  <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <hr>
+          </div>
           <div class="row col-md-12">
             <div class="col-md-6">
               <h5><b>Details provided by Branch</b></h5>
@@ -1581,17 +1687,6 @@
           </div>
         </div>
 
-        <!-- Scan qr code list -->
-        <div class="row">
-          <div class="col-md-6" *ngFor="let qr of scanList">
-            <div class="form-group">
-              <label class="col-sm-4 ">{{qr.name}}</label>
-              <div class="col-sm-8">
-                <qrcode [qrdata]="qr.code" [size]="70" [level]="'M'"></qrcode>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="row">
           <ng2-smart-table class="table table-striped table-bordered table-hover table-responsive mt-4"
             [settings]="settings" [source]="source"></ng2-smart-table>

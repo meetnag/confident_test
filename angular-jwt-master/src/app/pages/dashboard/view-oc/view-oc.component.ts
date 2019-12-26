@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DashboardService } from '@app/shared/_services/dashboard.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '@app/shared/_services';
-import { OcModel, Customer } from '@app/shared/_models/oc-model';
+import { OcModel, Customer, Product } from '@app/shared/_models/oc-model';
 import { Subscription } from 'rxjs';
 import { environment } from '@environments/environment';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -25,6 +25,7 @@ export class ViewOcComponent implements OnInit, OnDestroy {
   currentUser: any;
   id: any;
   source: LocalDataSource = new LocalDataSource();
+  productList: Product[] = [];
 
   settings = {
     actions: false,
@@ -71,8 +72,18 @@ export class ViewOcComponent implements OnInit, OnDestroy {
     })
   }
   ngOnInit() {
+    this.getProduct();
     this.id = this.route.snapshot.paramMap.get('id');
     this.getOcByNumber();
+  }
+  getProduct() {
+    this.dashboardService.getProductList().subscribe(res => {
+      if (res.status === "success" && res.data) {
+        this.productList = res.data["productList"];
+      } else {
+        this.toasterService.error(res.message);
+      }
+    });
   }
   getOcByNumber() {
     let body = {
@@ -84,7 +95,7 @@ export class ViewOcComponent implements OnInit, OnDestroy {
     }
     this.dashboardService.getOcByNumber(body).subscribe(data => {
       if (data.status === 'success' && data.data != null) {
-        // console.log(data);
+        console.log(data);
         if (data.data) {
           this.ocObj = new OcModel();
           this.ocObj.Customer = new Customer();
@@ -112,8 +123,12 @@ export class ViewOcComponent implements OnInit, OnDestroy {
           if (this.ocObj.SerialNumbers.length) {
             this.scanList = [];
             this.ocObj.SerialNumbers.forEach(ele => {
+              let isProduct = false;
               // let obj = { 'name': ele.name, 'code': this.ocObj.OCNumber + ele.srno + ele.ID };
-              let obj = { 'name': ele.name, 'code': environment.domainUrl + 'scan/' + this.ocObj.OCNumber + ele.srno }
+              if (this.productList.length) {
+                isProduct = this.productList.findIndex(v => v.code == ele.ID) > -1 ? true : false;
+              }
+              let obj = { 'name': ele.name, 'code': environment.domainUrl + 'scan/' + this.ocObj.OCNumber + ele.srno, 'isProduct': isProduct }
               this.scanList.push(obj);
             })
           }
