@@ -56,6 +56,55 @@
                   --
                 </div>
               </div>
+              <div *ngIf="ocObj.typeOfSale == 'Direct Sale'" class="row col-sm-12 form-group">
+                <!-- <hr> -->
+                <div>
+                  <h5><b>Customer Details</b></h5>
+                </div>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.name !== undefined || ocObj.Customer.name !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.name}}</div>
+                </div>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.address !== undefined && ocObj.Customer.address!== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.address}}</div>
+                </div>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.city !== undefined && ocObj.Customer.city !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.city}}</div>
+                </div>
+                <div class="row col-sm-12" *ngIf="ocObj.Customer.state !== undefined && ocObj.Customer.state !==''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.state}} <span
+                      *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">-
+                      {{ocObj.Customer.zip}}</span>
+                  </div>
+                </div>
+                <!-- <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
+                </div> -->
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10"> {{ocObj.Customer.country}}</div>
+                </div>
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.contactNumber !== undefined && ocObj.Customer.contactNumber !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Phone : {{ocObj.Customer.contactNumber}}</div>
+                </div>
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.landlineNumber !== undefined && ocObj.Customer.landlineNumber !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Landline : {{ocObj.Customer.landlineNumber}}</div>
+                </div>
+                <div class="row col-sm-12"
+                  *ngIf="ocObj.Customer.CustEmailID !== undefined && ocObj.Customer.CustEmailID !== ''">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-10">Email : {{ocObj.Customer.CustEmailID}}</div>
+                </div>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -168,7 +217,7 @@
           </div>
           <div class="row col-md-12">
             <div class="col-md-6">
-              <div class="row col-md-12">
+              <div *ngIf="ocObj.typeOfSale == 'Branch Sale'" class="row col-sm-12">
                 <!-- <hr> -->
                 <div>
                   <h5><b>Customer Details</b></h5>
@@ -193,9 +242,9 @@
                   </div>
                 </div>
                 <!-- <div class="row col-sm-12" *ngIf="ocObj.Customer.zip !== undefined && ocObj.Customer.zip !== ''">
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
-                </div> -->
+                      <div class="col-sm-2"></div>
+                      <div class="col-sm-10">{{ocObj.Customer.zip}}</div>
+                    </div> -->
                 <div class="row col-sm-12"
                   *ngIf="ocObj.Customer.country !== undefined && ocObj.Customer.country !== ''">
                   <div class="col-sm-2"></div>
