@@ -12,8 +12,9 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ModalModule } from 'ngx-bootstrap';
 import { ConfirmationAlertComponent } from './_components/confirmation-alert/confirmation-alert.component';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AddMasterDataComponent } from './_components/add-master-data/add-master-data.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    ConfirmationAlertComponent
+    ConfirmationAlertComponent,
+    AddMasterDataComponent
   ],
   imports: [
     CommonModule,
@@ -51,11 +53,12 @@ import {MatDialogModule} from '@angular/material/dialog';
     FooterComponent,
     SidebarComponent,
     MatAutocompleteModule,
+    AddMasterDataComponent,
     ModalModule,
     MatDividerModule,
     MatDialogModule
   ],
   providers: [],
-  entryComponents: [ConfirmationAlertComponent]
+  entryComponents: [ConfirmationAlertComponent, AddMasterDataComponent]
 })
 export class SharedModule { }

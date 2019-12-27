@@ -24,6 +24,18 @@ const routes: Routes = [{
       loadChildren: './dashboard2/dashboard2.module#Dashboard2Module',
     },
     {
+      path: 'product',
+      loadChildren: './product/product.module#ProductModule',
+    },
+    {
+      path: 'spare',
+      loadChildren: './spare/spare.module#SpareModule',
+    },
+    {
+      path: 'sub-assembly',
+      loadChildren: './sub-assembly/sub-assembly.module#SubAssemblyModule',
+    },
+    {
       path: '',
       redirectTo: 'oc-list',
       pathMatch: 'full',

@@ -96,4 +96,31 @@ export class DashboardService {
   downloadDocument(obj) {
     return this.apiService.apiCaller('get', 'ocDocument/downlaod/' + obj, '', true);
   }
+  createProduct(obj) {
+    return this.apiService.apiCaller('post', 'products/create', obj);
+  }
+  createSpare(obj) {
+    return this.apiService.apiCaller('post', 'spare/create', obj);
+  }
+  createSubAssembly(obj) {
+    return this.apiService.apiCaller('post', 'subAssembly/create', obj);
+  }
+  updateProduct(obj) {
+    return this.apiService.apiCaller('post', 'products/create', obj);
+  }
+  updateSpare(obj) {
+    return this.apiService.apiCaller('post', 'spare/create', obj);
+  }
+  updateSubAssembly(obj) {
+    return this.apiService.apiCaller('post', 'subAssembly/create', obj);
+  }
+  deleteProduct(obj) {
+    return this.apiService.apiCaller('post', 'products/create', obj);
+  }
+  deleteSpare(obj) {
+    return this.apiService.apiCaller('post', 'spare/create', obj);
+  }
+  deleteSubAssembly(obj) {
+    return this.apiService.apiCaller('post', 'subAssembly/create', obj);
+  }
 }

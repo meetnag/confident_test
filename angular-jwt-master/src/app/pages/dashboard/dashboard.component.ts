@@ -273,7 +273,7 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     }
 }
 @Component({
-    selector: 'app-custom-renderer',
+    selector: 'app-custom-renderer-view',
     template: `<span class="font-medium-1 mr-2" style="cursor:pointer;color:blue" (click)="onViewOc()">{{value}}</span>`
 })
 export class CustomRendererViewComponent implements OnInit {

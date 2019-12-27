@@ -35,14 +35,14 @@
         <div class="row" *ngIf="currentUser.userRole !== 'Branch/Dealer'">
           <div class="col-md-2 col-sm-2">
             <label for="directsale">
-              <input id="directsale" value='direct' type="radio" name="Direct" (change)="onTypeOfSaleChange()"
+              <input id="directsale" value='Direct Sale' type="radio" name="Direct" (change)="onTypeOfSaleChange()"
                 [(ngModel)]="typeOfSale">
               Direct Sales
             </label>
           </div>
           <div class="col-md-2 col-sm-2">
             <label for="branchsale">
-              <input id="branchsale" value='branch' type="radio" name="Branch" (change)="onTypeOfSaleChange()"
+              <input id="branchsale" value='Branch Sale' type="radio" name="Branch" (change)="onTypeOfSaleChange()"
                 [(ngModel)]="typeOfSale">
               Branch Sales
             </label>
