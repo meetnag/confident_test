@@ -56,7 +56,7 @@ export class SpareComponent implements OnInit {
   getSpareList() {
     this.dashboardService.getSpareList().subscribe(res => {
       if (res.status === "success" && res.data) {
-        this.SpareList = res.data["SpareList"];
+        this.SpareList = res.data["spareList"];
         this.source.load(this.SpareList);
       } else {
         this.toasterService.error(res.message);

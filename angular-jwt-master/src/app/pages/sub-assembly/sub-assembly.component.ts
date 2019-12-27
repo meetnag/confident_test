@@ -56,7 +56,7 @@ export class SubAssemblyComponent implements OnInit {
   getSubAssemblyList() {
     this.dashboardService.getSubAssemblyList().subscribe(res => {
       if (res.status === "success" && res.data) {
-        this.SubAssemblyList = res.data["SubAssemblyList"];
+        this.SubAssemblyList = res.data["subAssemblyList"];
         this.source.load(this.SubAssemblyList);
       } else {
         this.toasterService.error(res.message);
