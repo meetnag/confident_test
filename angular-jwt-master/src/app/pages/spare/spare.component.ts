@@ -8,7 +8,7 @@ import { AddMasterDataComponent } from '@app/shared/_components/add-master-data/
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/shared/_services';
 import { ConfirmationAlertComponent } from '@app/shared/_components/confirmation-alert/confirmation-alert.component';
-
+declare var $: any;
 @Component({
   selector: 'app-spare',
   templateUrl: './spare.component.html',

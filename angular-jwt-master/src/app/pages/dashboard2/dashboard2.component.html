@@ -5,6 +5,18 @@
         <h3 class="panel-hd">Dashboard</h3>
       </div>
       <div class="panel-body" id="panel-list">
+        <div class="row">
+          <div class="form-group col-md-8 col-sm-8">
+            <label class="col-sm-2 control-label">Branch</label>
+            <div class="col-sm-4">
+              <select name="ocBranch" [(ngModel)]="selectedBranch" class="form-control"
+                (change)="onBranchChange($event.target.value)" required name="branchname">
+                <option value="">Select Branch</option>
+                <option *ngFor="let branch of branchList" [value]="branch._id">{{branch.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
