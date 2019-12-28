@@ -326,7 +326,7 @@ router.post('/',ocListController.getByRoleName);
         * @apiParam {String} roleName to get OC List. (Should pass as a body parameter.- required)
         * @apiParam {String} Priority to filter OC List. (Should pass as a body parameter. - optional)
         * @apiParam {String} branchId for branch group user. (Should pass as a body parameter. - if branch user then required otherwise optional)
-        * 
+        * @apiParam {String} typeOfSale to filter OC List. (Should pass as a body parameter. - optional) 
         * @apiSuccessExample {json} Success-Response:
         *{
         "status": "success",
@@ -368,6 +368,8 @@ router.post('/',ocListController.getByRoleName);
                     "_id":"String",
                     "name":"String",
                     "city":"String",
+                    "zip":"String",
+                    "landlineNumber":"String",
                     "contactNumber":"String"
                 },
                 "BranchID":{
