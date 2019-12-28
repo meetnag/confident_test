@@ -12,9 +12,19 @@ getAll: function(req, res, next) {
    }
 });
  },
+
+ updateById: function(req, res, next) {
+  
+  productModel.findByIdAndUpdate(req.body.productId,{name:req.body.name , code : req.body.code}, function(err, movieInfo){
+  if(err)
+      next(err);
+    else {
+      res.json({status:"success", message: "Product updated successfully!!!", data:null});
+    }
+    });
+ },
+
  create: function(req, res, next) {
-  // let moviesList = [];
-  // console.log(req.body)
   let productData = req.body
   productModel.create( productData, function (err, result) {
     if (err)

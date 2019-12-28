@@ -92,6 +92,9 @@ SpareIDs :[
         }
     }
 ],
+invDateByBranch:{
+    type: Date
+},
 Customer :{
         _id:{
             type:String
@@ -116,6 +119,9 @@ Customer :{
         },
         zip:{
             type:String,
+        },
+        landlineNumber:{
+            type:String ,
         },
         country:{
             type:String,

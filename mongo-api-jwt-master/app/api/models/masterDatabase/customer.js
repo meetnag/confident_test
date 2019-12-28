@@ -24,6 +24,9 @@ const customerSchema = new Schema({
  zip:{
      type:Number,
  },
+ landlineNumber:{
+    type:String ,
+},
  country:{
      type:String,
  },
