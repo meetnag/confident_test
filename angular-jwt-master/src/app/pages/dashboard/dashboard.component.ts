@@ -154,9 +154,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 roleName: this.currentUser.userRole
             };
         }
-        // if(this.typeOfSale != ''){
-        //     body.typeOfSale = this.typeOfSale;
-        // }
+        if (this.typeOfSale != '') {
+            body.typeOfSale = this.typeOfSale;
+        }
+        if (this.selectedBranch != '') {
+            body.branchId = this.selectedBranch;
+        }
         if (this.currentUser.userRole === 'Branch/Dealer') {
             body.branchId = this.currentUser.user.branchId;
         }
