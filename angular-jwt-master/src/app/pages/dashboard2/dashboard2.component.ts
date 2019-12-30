@@ -141,10 +141,10 @@ export class Dashboard2Component implements OnInit {
   onBranchChange() {
     this.getOcList();
   }
-  onToDateChanged() {
+  onToDateChanged(event) {
 
   }
-  onFromDateChanged() {
+  onFromDateChanged(event) {
 
   }
 }
