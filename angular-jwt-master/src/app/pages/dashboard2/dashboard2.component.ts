@@ -5,6 +5,7 @@ import { OcModel } from '@app/shared/_models/oc-model';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/shared/_services';
+import { IMyDpOptions } from 'mydatepicker';
 
 @Component({
   selector: 'app-dashboard2',
@@ -16,6 +17,14 @@ export class Dashboard2Component implements OnInit {
   branchList: any = [];
   ocList: OcModel[] = [];
   dateFormat = 'yyyy-MM-dd';
+  dateFormatP = "yyyy-mm-dd";
+  selectedBranch = '';
+  color = 'primary';
+  mode = 'determinate';
+  totalDispatched = 80;
+  installationCompleted = 20;
+  installationPending = 33;
+  backlogsOrder = 45;
   source: LocalDataSource = new LocalDataSource();
   currentUser$: Subscription;
   currentUser: any;
@@ -50,6 +59,12 @@ export class Dashboard2Component implements OnInit {
     }
   };
   userRole: any;
+  fromDate;
+  toDate;
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: this.dateFormatP,
+  };
   constructor(private dashboardService: DashboardService, private datePipe: DatePipe, private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -63,13 +78,17 @@ export class Dashboard2Component implements OnInit {
     const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
       this.loadScript('../assets/jquery-swap.js');
-      this.dateFormat = 'dd/MM/yyyy'
+      this.dateFormat = 'dd/MM/yyyy';
+      this.dateFormatP = 'dd/mm/yyyy';
     }
+    this.fromDate = this.getFormattedDate(new Date());
+    this.toDate = this.getFormattedDate(new Date());
     this.getOcList();
     this.getBranch();
   }
   public loadScript(url: string) {
-    this.dateFormat = 'dd/MM/yyyy'
+    this.dateFormat = 'dd/MM/yyyy';
+    this.dateFormatP = 'dd/mm/yyyy';
     const body = <HTMLDivElement>document.body;
     const script = document.createElement('script');
     script.innerHTML = '';
@@ -85,11 +104,33 @@ export class Dashboard2Component implements OnInit {
       }
     });
   }
-  getOcList() {
-    let body;
-    if (this.currentUser.userRole === 'Branch/Dealer') {
-      body.branchId = this.currentUser.user.branchId;
+  getFormattedDate(dateToFormat) {
+    let date = new Date(dateToFormat);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return {
+      date: {
+        year: year,
+        month: month,
+        day: day
+      },
+      formatted: year + '-' + month + '-' + day
     }
+  }
+  getOcList() {
+    let body = {};
+    if (this.selectedBranch != '') {
+      body['branchId'] = this.selectedBranch;
+    }
+    body['fromDate'] = this.fromDate.formatted;
+    body['toDate'] = this.toDate.formatted;
+    console.log('fromdate', this.fromDate);
+    console.log('todate', this.toDate);
+    if (this.currentUser.userRole === 'Branch/Dealer') {
+      body['branchId'] = this.currentUser.user.branchId;
+    }
+    console.log('body', body);
     this.dashboardService.getOcList(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
@@ -99,5 +140,11 @@ export class Dashboard2Component implements OnInit {
   }
   onBranchChange() {
     this.getOcList();
+  }
+  onToDateChanged() {
+
+  }
+  onFromDateChanged() {
+
   }
 }

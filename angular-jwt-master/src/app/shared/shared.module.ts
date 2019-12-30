@@ -15,6 +15,8 @@ import { ConfirmationAlertComponent } from './_components/confirmation-alert/con
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddMasterDataComponent } from './_components/add-master-data/add-master-data.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -33,12 +35,14 @@ import { AddMasterDataComponent } from './_components/add-master-data/add-master
     Ng2SmartTableModule,
     QRCodeModule,
     NgSelectModule,
+    MatCardModule,
     ModalModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     MyDatePickerModule,
     MatAutocompleteModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     RouterModule,
@@ -56,7 +60,9 @@ import { AddMasterDataComponent } from './_components/add-master-data/add-master
     AddMasterDataComponent,
     ModalModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   entryComponents: [ConfirmationAlertComponent, AddMasterDataComponent]
