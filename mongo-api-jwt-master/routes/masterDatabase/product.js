@@ -25,6 +25,32 @@ router.post('/create', productController.create);
         "data": null
         }
         */
+
+router.post('/update', productController.updateById);
+/**
+        * @api {post} products/update update product
+        * @apiVersion 0.0.1
+        * @apiGroup masterDatabase
+        *
+        * @apiParam {String} productId objectId of product .(id should be pass as a body Parameter - required)
+        * @apiParam {String} name name of product .(name should be pass as a body Parameter - required)
+        * @apiParam {String} code code of product .(code should be pass as a body Parameter - required)
+        * 
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "Product updated successfully!!!",
+        "data": null
+        *}
+        *
+        @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "Something looks wrong",
+        "data": errorObject
+        }
+        */
 router.get('/', productController.getAll);
 /**
         * @api {get} products/ get product list

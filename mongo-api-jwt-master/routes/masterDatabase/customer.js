@@ -21,6 +21,7 @@ router.get('/', customerController.getAll);
                                 "city":"string",
                                 "state":"string",
                                 "zip":"int",
+                                "landline":"String"
                                 "country":"string"
                         }
                 ]

@@ -25,6 +25,32 @@ router.post('/create', spareController.create);
         "data": null
         }
         */
+       
+router.post('/update', spareController.updateById);
+      /**
+              * @api {post} spare/update update spare
+              * @apiVersion 0.0.1
+              * @apiGroup masterDatabase
+              *
+              * @apiParam {String} spareId objectId of spare .(id should be pass as a body Parameter - required)
+              * @apiParam {String} name name of spare .(name should be pass as a body Parameter - required)
+              * @apiParam {String} code code of spare .(code should be pass as a body Parameter - required)
+              * 
+              * @apiSuccessExample {json} Success-Response:
+              *{
+              "status": "success",
+              "message": "spare updated successfully!!!",
+              "data": null
+              *}
+              *
+              @apiErrorExample {json} Error-Response:
+              *
+              * {
+              "status": "error",
+              "message": "Something looks wrong",
+              "data": errorObject
+              }
+              */
 router.get('/', spareController.getAll);
 /**
         * @api {get} spare/ get spare list

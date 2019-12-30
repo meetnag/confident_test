@@ -12,6 +12,16 @@ getAll: function(req, res, next) {
    }
 });
  },
+ updateById: function(req, res, next) {
+  
+  subAssemblyModel.findByIdAndUpdate(req.body.subAssemblyId,{name:req.body.name , code : req.body.code}, function(err, subAssemblyInfo){
+  if(err)
+      next(err);
+    else {
+      res.json({status:"success", message: "subAssembly updated successfully!!!", data:null});
+    }
+    });
+ },
  create: function(req, res, next) {
   // let moviesList = [];
   // console.log(req.body)

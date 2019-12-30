@@ -12,6 +12,7 @@ const branchList= require('./routes/masterDatabase/branch') ;
 const priorityList= require('./routes/masterDatabase/priority') ;
 const customerTypeList= require('./routes/masterDatabase/customerType') ;
 const countryList= require('./routes/masterDatabase/country') ;
+const dashboard= require('./routes/dashboard') ;
 
 const stateList= require('./routes/masterDatabase/state') ;
 const spareList= require('./routes/masterDatabase/spare') ;
@@ -69,7 +70,9 @@ app.use('/users', users);
 // private route
 app.use('/movies', movies);
 app.use('/userRole',userRole);
-app.use('/ocList', ocList);
+app.use('/ocList', validateUser, ocList);
+
+app.use('/dashboard', dashboard);
 app.use('/scanOcList',scanOcNumber);
 app.use('/branch',branchList);
 app.use('/customer',customerList);
