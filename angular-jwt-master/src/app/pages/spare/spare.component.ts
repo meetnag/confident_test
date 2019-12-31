@@ -88,6 +88,22 @@ export class SpareComponent implements OnInit {
       }
     });
   }
+  onSearch(query: string) {
+    if (query != '') {
+      this.source.setFilter([
+        {
+          field: 'name',
+          search: query
+        },
+        {
+          field: 'code',
+          search: query
+        },
+      ], false);
+    } else {
+      this.source = new LocalDataSource(this.SpareList);
+    }
+  }
 }
 @Component({
   selector: 'app-custom-renderer',
@@ -132,7 +148,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result.flag) {
         console.log('reult', result);
-        this.dashboardService.updateSpare(result.obj).subscribe(res => {
+        let body = result.obj;
+        body['spareId'] = this.value;
+        this.dashboardService.updateSpare(body).subscribe(res => {
           if (res.status === 'success') {
             this.save.emit(true);
             this.toasterService.success(res.message);
@@ -143,7 +161,6 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   onDelete() {
     const dialogRef = this.dialog.open(ConfirmationAlertComponent, {
       panelClass: 'app-dialog',

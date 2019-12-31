@@ -89,6 +89,22 @@ export class ProductComponent implements OnInit {
       }
     });
   }
+  onSearch(query: string) {
+    if (query != '') {
+      this.source.setFilter([
+        {
+          field: 'name',
+          search: query
+        },
+        {
+          field: 'code',
+          search: query
+        },
+      ], false);
+    } else {
+      this.source = new LocalDataSource(this.productList);
+    }
+  }
 }
 @Component({
   selector: 'app-custom-renderer',
@@ -133,7 +149,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result.flag) {
         console.log('reult', result);
-        this.dashboardService.updateProduct(result.obj).subscribe(res => {
+        let body = result.obj;
+        body['productId'] = this.value;
+        this.dashboardService.updateProduct(body).subscribe(res => {
           if (res.status === 'success') {
             this.save.emit(true);
             this.toasterService.success(res.message);

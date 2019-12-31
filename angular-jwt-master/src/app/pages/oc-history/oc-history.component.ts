@@ -143,6 +143,12 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
       this.source.load(this.ocList)
     }
   }
+  onResetFilter() {
+    this.selectedBranch = '';
+    this.typeOfSale = '';
+    this.priority = 'all';
+    this.getOcList();
+  }
 }
 @Component({
   selector: 'app-custom-renderer',

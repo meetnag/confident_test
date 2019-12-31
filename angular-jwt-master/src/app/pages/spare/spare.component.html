@@ -6,6 +6,9 @@
       </div>
       <div class="panel-body" id="panel-list">
         <div class="row">
+          <div class="col-md-3">
+            <input #search type="text" placeholder="Search..." (keyup)="onSearch(search.value)" />
+          </div>
           <button type="button" class="btn btn-primary btn-asset float-right" (click)="onAddSpare()">Generate New
             Spares
           </button>

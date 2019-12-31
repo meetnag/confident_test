@@ -173,6 +173,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onAddOc() {
         this.router.navigate(['/pages/oc-list/add-oc']);
     }
+    onResetFilter() {
+        this.selectedBranch = '';
+        this.typeOfSale = '';
+        this.priority = 'all';
+        this.getOcList();
+    }
 }
 @Component({
     selector: 'app-custom-renderer',

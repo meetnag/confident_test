@@ -106,21 +106,21 @@ export class DashboardService {
     return this.apiService.apiCaller('post', 'subAssembly/create', obj);
   }
   updateProduct(obj) {
-    return this.apiService.apiCaller('post', 'products/create', obj);
+    return this.apiService.apiCaller('post', 'products/update', obj);
   }
   updateSpare(obj) {
-    return this.apiService.apiCaller('post', 'spare/create', obj);
+    return this.apiService.apiCaller('post', 'spare/update', obj);
   }
   updateSubAssembly(obj) {
-    return this.apiService.apiCaller('post', 'subAssembly/create', obj);
+    return this.apiService.apiCaller('post', 'subAssembly/update', obj);
   }
   deleteProduct(obj) {
-    return this.apiService.apiCaller('post', 'products/create', obj);
+    return this.apiService.apiCaller('post', 'products/delete/' + obj);
   }
   deleteSpare(obj) {
-    return this.apiService.apiCaller('post', 'spare/create', obj);
+    return this.apiService.apiCaller('post', 'spare/delete/' + obj);
   }
   deleteSubAssembly(obj) {
-    return this.apiService.apiCaller('post', 'subAssembly/create', obj);
+    return this.apiService.apiCaller('post', 'subAssembly/delete/' + obj);
   }
 }

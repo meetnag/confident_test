@@ -88,6 +88,22 @@ export class SubAssemblyComponent implements OnInit {
       }
     });
   }
+  onSearch(query: string) {
+    if (query != '') {
+      this.source.setFilter([
+        {
+          field: 'name',
+          search: query
+        },
+        {
+          field: 'code',
+          search: query
+        },
+      ], false);
+    } else {
+      this.source = new LocalDataSource(this.SubAssemblyList);
+    }
+  }
 }
 @Component({
   selector: 'app-custom-renderer',
@@ -132,7 +148,9 @@ export class CustomRendererComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result.flag) {
         console.log('reult', result);
-        this.dashboardService.updateSubAssembly(result.obj).subscribe(res => {
+        let body = result.obj;
+        body['subAssemblyId'] = this.value;
+        this.dashboardService.updateSubAssembly(body).subscribe(res => {
           if (res.status === 'success') {
             this.save.emit(true);
             this.toasterService.success(res.message);
