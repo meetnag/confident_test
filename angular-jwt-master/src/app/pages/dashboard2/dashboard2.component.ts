@@ -32,8 +32,22 @@ export class Dashboard2Component implements OnInit {
     actions: false,
     columns: {
       OCNumber: {
-        title: 'OC Number',
+        title: 'Order No.',
         filter: false
+      },
+      typeOfSale: {
+        title: 'Sale',
+        filter: false
+      },
+      BranchID: {
+        title: 'Branch',
+        filter: false,
+        valuePrepareFunction: (value) => { return value.name }
+      },
+      Status: {
+        title: 'Status',
+        filter: false,
+        valuePrepareFunction: (value) => { return value.name }
       },
       OCDate: {
         title: 'OC Date',
@@ -47,10 +61,29 @@ export class Dashboard2Component implements OnInit {
           }
         }
       },
-      Status: {
-        title: 'Status',
+      _id: {
+        title: 'Month',
         filter: false,
-        valuePrepareFunction: (value) => { return value.name }
+        valuePrepareFunction: (_id, row) => {
+          if (row.OCDate) {
+            var raw = new Date(row.OCDate);
+            if (raw) {
+              return this.datePipe.transform(raw, 'MMM');
+            }
+          }
+        }
+      },
+      Priority: {
+        title: 'Year',
+        filter: false,
+        valuePrepareFunction: (_id, row) => {
+          if (row.OCDate) {
+            var raw = new Date(row.OCDate);
+            if (raw) {
+              return this.datePipe.transform(raw, 'yyyy');
+            }
+          }
+        }
       },
     },
     pager: {
@@ -81,7 +114,8 @@ export class Dashboard2Component implements OnInit {
       this.dateFormat = 'dd/MM/yyyy';
       this.dateFormatP = 'dd/mm/yyyy';
     }
-    this.fromDate = this.getFormattedDate(new Date());
+    var d = new Date();
+    this.fromDate = this.getFormattedDate(d.setDate(d.getDate() - 30));
     this.toDate = this.getFormattedDate(new Date());
     this.getOcList();
     this.getBranch();
@@ -123,15 +157,19 @@ export class Dashboard2Component implements OnInit {
     if (this.selectedBranch != '') {
       body['branchId'] = this.selectedBranch;
     }
-    body['fromDate'] = this.fromDate.formatted;
-    body['toDate'] = this.toDate.formatted;
+    if (this.fromDate) {
+      body['fromDate'] = this.fromDate.formatted;
+    }
+    if (this.toDate) {
+      body['toDate'] = this.toDate.formatted;
+    }
     console.log('fromdate', this.fromDate);
     console.log('todate', this.toDate);
     if (this.currentUser.userRole === 'Branch/Dealer') {
       body['branchId'] = this.currentUser.user.branchId;
     }
     console.log('body', body);
-    this.dashboardService.getOcList(body).subscribe(data => {
+    this.dashboardService.getDashboardOcList(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
         this.source.load(this.ocList);
@@ -142,9 +180,18 @@ export class Dashboard2Component implements OnInit {
     this.getOcList();
   }
   onToDateChanged(event) {
-
+    console.log('toDate', event)
+    this.toDate.date = event.date;
+    this.toDate.formatted = event.formatted;
+    this.getOcList();
   }
   onFromDateChanged(event) {
+    console.log('fromDate', event)
+    this.fromDate.date = event.date;
+    this.fromDate.formatted = event.formatted;
+    this.getOcList();
+  }
+  onExport() {
 
   }
 }

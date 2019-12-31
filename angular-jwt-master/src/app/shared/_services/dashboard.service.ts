@@ -71,6 +71,9 @@ export class DashboardService {
   getOcList(obj) {
     return this.apiService.apiCaller('post', 'ocList/', obj);
   }
+  getDashboardOcList(obj) {
+    return this.apiService.apiCaller('post', 'dashboard/', obj);
+  }
   getOcArchives(obj) {
     return this.apiService.apiCaller('post', 'ocList/getOCArchieves', obj);
   }
