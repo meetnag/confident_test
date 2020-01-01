@@ -3,7 +3,7 @@ module.exports = {
 
 getAll: function(req, res, next) {
   // let moviesList = [];
-  subAssemblyModel.find({}, function(err, subAssemblyList){
+  subAssemblyModel.find({}, null, { sort: { "name": 1 }}, function(err, subAssemblyList){
    if (err){
     next(err);
    } else{

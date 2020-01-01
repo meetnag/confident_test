@@ -3,7 +3,7 @@ module.exports = {
 
 getAll: function(req, res, next) {
   let moviesList = [];
-  productModel.find({}, function(err, productList){
+  productModel.find({}, null, { sort: { "name": 1 } }, function(err, productList){
    if (err){
     next(err);
    } else{
