@@ -81,4 +81,28 @@ router.get('/', subAssemblyController.getAll);
         */
 //        router.post('/p', subAssemblyController.create);
 
+              
+router.post('/deleteById/:subAssemblyId', subAssemblyController.deleteById);
+/**
+        * @api {post} subAssembly/ delete subAssembly 
+        * @apiVersion 0.0.1
+        * @apiGroup masterDatabase
+        *
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "subAssembly deleted successfully!!!",
+        "data": null
+        *}
+        *
+        @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "Something looks wrong",
+        "data": errorObject
+        }
+        */
+
+
 module.exports = router;

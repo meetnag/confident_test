@@ -80,4 +80,28 @@ router.get('/', productController.getAll);
         "data": null
         }
         */
+
+        
+router.post('/deleteById/:productId', productController.deleteById);
+/**
+        * @api {post} products/ delete product 
+        * @apiVersion 0.0.1
+        * @apiGroup masterDatabase
+        *
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "Product deleted successfully!!!",
+        "data": null
+        *}
+        *
+        @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "Something looks wrong",
+        "data": errorObject
+        }
+        */
+
 module.exports = router;

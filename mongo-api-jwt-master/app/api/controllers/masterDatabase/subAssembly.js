@@ -27,12 +27,27 @@ getAll: function(req, res, next) {
   // console.log(req.body)
   let subAssemblyData = req.body
   subAssemblyModel.create( subAssemblyData, function (err, result) {
-    if (err)
-     res.json({status:"error",message:"Something is wrong",data:err})
+    if (err){
+      if(err.code == 11000)
+        res.json({status:"error",message:"Duplicate Entry",data:err})
+      else
+        res.json({status:"error",message:"Something is wrong",data:err})
+    }
+     
     else
      res.json({status: "success", message: "New subAssembly added successfully!!!", data: null});
     
   });
 
+ },
+
+ deleteById: function(req, res, next) {
+  subAssemblyModel.findByIdAndRemove(req.params.subAssemblyId, function(err, subAssemblyList){
+   if(err)
+    next(err);
+   else {
+    res.json({status:"success", message: "subAssembly deleted successfully!!!", data:null});
+   }
+  });
  },
 }

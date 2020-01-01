@@ -81,4 +81,28 @@ router.get('/', spareController.getAll);
         }
         */
 
+              
+router.post('/deleteById/:spareId', spareController.deleteById);
+/**
+        * @api {post} spare/ delete spare 
+        * @apiVersion 0.0.1
+        * @apiGroup masterDatabase
+        *
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "Spare deleted successfully!!!",
+        "data": null
+        *}
+        *
+        @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "Something looks wrong",
+        "data": errorObject
+        }
+        */
+
+
 module.exports = router;

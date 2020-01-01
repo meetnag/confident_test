@@ -27,12 +27,25 @@ getAll: function(req, res, next) {
  create: function(req, res, next) {
   let productData = req.body
   productModel.create( productData, function (err, result) {
-    if (err)
-     res.json({status:"error",message:"Something is wrong",data:err})
+    if (err){
+      if(err.code == 11000)
+        res.json({status:"error",message:"Duplicate Entry",data:err})
+      else
+        res.json({status:"error",message:"Something is wrong",data:err})
+    }
     else
-     res.json({status: "success", message: "New Product added successfully!!!", data: null});
+      res.json({status: "success", message: "New Product added successfully!!!", data: null});
     
   });
 
+ },
+ deleteById: function(req, res, next) {
+  productModel.findByIdAndRemove(req.params.productId, function(err, productList){
+   if(err)
+    next(err);
+   else {
+    res.json({status:"success", message: "Product deleted successfully!!!", data:null});
+   }
+  });
  },
 }
