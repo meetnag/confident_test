@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnInit() {
         const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
         if (isIEOrEdge) {
-            this.loadScript('../assets/jquery-swap.js');
+            this.loadScript('../../../assets/jquery-swap.js');
             this.dateFormat = 'dd/MM/yyyy'
         }
         this.getOcList();

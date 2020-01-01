@@ -94,7 +94,7 @@ export class AddEditOcComponent implements OnInit, OnDestroy {
       window.navigator.userAgent
     );
     if (isIEOrEdge) {
-      this.loadScript("../assets/jquery-swap.js");
+      this.loadScript("../../../../assets/jquery-swap.js");
       this.dateFormatP = "dd/mm/yyyy";
       this.dateFormat = "dd/MM/yyyy";
     }

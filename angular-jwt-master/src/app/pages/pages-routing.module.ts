@@ -36,6 +36,10 @@ const routes: Routes = [{
       loadChildren: './sub-assembly/sub-assembly.module#SubAssemblyModule',
     },
     {
+      path: 'oc-search',
+      loadChildren: './oc-search/oc-search.module#OcSearchModule',
+    },
+    {
       path: '',
       redirectTo: 'oc-list',
       pathMatch: 'full',

@@ -13,7 +13,6 @@ import { AuthenticationService } from "@app/shared/_services";
 import { DatePipe } from "@angular/common";
 import { environment } from "@environments/environment";
 import { IMyDpOptions } from "mydatepicker";
-
 @Component({
   selector: "app-add-edit-oc-labels",
   templateUrl: "./add-edit-oc-labels.component.html",
@@ -94,7 +93,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
       window.navigator.userAgent
     );
     if (isIEOrEdge) {
-      this.loadScript("../assets/jquery-swap.js");
+      this.loadScript("../../../../assets/jquery-swap.js");
       this.dateFormat = "dd/MM/yyyy";
       this.dateFormatP = "dd/mm/yyyy";
     }
