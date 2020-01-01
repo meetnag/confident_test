@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/shared/_services';
 import { IMyDpOptions } from 'mydatepicker';
+import { EChartOption } from 'echarts';
 
 @Component({
   selector: 'app-dashboard2',
@@ -97,6 +98,112 @@ export class Dashboard2Component implements OnInit {
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: this.dateFormatP,
+  };
+  chartOption: EChartOption = {
+    title: {
+      text: 'Orders In Progress',
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'bar'
+    }]
+  }
+  seriesLabel = {
+    normal: {
+      show: true,
+      textBorderColor: '#333',
+      textBorderWidth: 2
+    }
+  }
+  multibarchartOption: EChartOption = {
+    title: {
+      text: 'Installation Schedule & Complete at Branch',
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    legend: {
+      top: 20,
+      bottom: 20,
+      data: ['Total Order', 'Installation Complete', 'Installation Scheduled']
+    },
+    xAxis: {
+      type: 'value',
+      name: 'OCs',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+      type: 'category',
+      inverse: true,
+      data: ['Sunny', 'Cloudy', 'Showers'],
+    },
+    series: [
+      {
+        name: 'Total Order',
+        type: 'bar',
+        data: [165, 170, 30],
+        label: this.seriesLabel,
+      },
+      {
+        name: 'Installation Complete',
+        type: 'bar',
+        label: this.seriesLabel,
+        data: [150, 105, 110]
+      },
+      {
+        name: 'Installation Scheduled',
+        type: 'bar',
+        label: this.seriesLabel,
+        data: [220, 82, 63]
+      }
+    ]
+  }
+  piechartOption: EChartOption = {
+    title: {
+      text: 'Priority OCs',
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: "{b} : {c} ({d}%)"
+    },
+    legend: {
+      orient: 'horizontal',
+      right: 10,
+      top: 20,
+      bottom: 20,
+      data: ['high', 'medium', 'low'],
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '60%'],
+        data: [{ 'name': 'high', 'value': 820 }, { 'name': 'medium', 'value': 920 }, { 'name': 'low', 'value': 956 }],
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
   };
   constructor(private dashboardService: DashboardService, private datePipe: DatePipe, private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {

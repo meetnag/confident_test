@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddMasterDataComponent } from './_components/add-master-data/add-master-data.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatAutocompleteModule,
     MatDividerModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxEchartsModule
   ],
   exports: [
     RouterModule,
@@ -62,7 +64,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDividerModule,
     MatDialogModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxEchartsModule
   ],
   providers: [],
   entryComponents: [ConfirmationAlertComponent, AddMasterDataComponent]

@@ -123,9 +123,12 @@ export class OcHistoryComponent implements OnInit, OnDestroy {
     if (this.currentUser.userRole === 'Branch/Dealer') {
       body.branchId = this.currentUser.user.branchId;
     }
-    // if(this.typeOfSale != ''){
-    //     body.typeOfSale = this.typeOfSale;
-    // }
+    if (this.selectedBranch != '') {
+      body.branchId = this.selectedBranch;
+    }
+    if (this.typeOfSale != '') {
+      body.typeOfSale = this.typeOfSale;
+    }
     this.dashboardService.getOcArchives(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
