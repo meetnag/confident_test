@@ -913,17 +913,46 @@ module.exports = {
    getClosedOCs: function (req, res, next) {
       let roleName = req.body.roleName;
       let branchId = req.body.branchId;
+      let typeOfSale = req.body.typeOfSale 
+      let ocListModelQuery = {}
+      let PriorityName = req.body.Priority
 
-      if (req.body.Priority) {
+      if (PriorityName) {
          if (roleName == "Branch/Dealer") {
-            ocListModel.find({ "Priority.name": req.body.Priority, "Status.name": "Closed", "BranchID._id": branchId }, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
+            if(typeOfSale){
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "Priority.name": req.body.Priority,
+                  "typeOfSale":typeOfSale,
+                  "BranchID._id" : branchId,
+               }
+            }else{
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "Priority.name": req.body.Priority,
+                  "BranchID._id" : branchId,
+               }
+            }
+            ocListModel.find(ocListModelQuery, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
                if (err)
                   next(err)
                else
                   res.json({ status: "success", message: "OC List fetched!!!", data: { ocList: ocList } });
             })
          } else {
-            ocListModel.find({ "Priority.name": req.body.Priority, "Status.name": "Closed" }, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
+            if(typeOfSale){
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "Priority.name": req.body.Priority,
+                  "typeOfSale":typeOfSale,
+               }
+            }else{
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "Priority.name": req.body.Priority,
+               }
+            }
+            ocListModel.find(ocListModelQuery, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
                if (err)
                   next(err)
                else
@@ -934,7 +963,19 @@ module.exports = {
       }
       else {
          if (roleName == "Branch/Dealer") {
-            ocListModel.find({ "Status.name": "Closed", "BranchID._id": branchId }, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
+            if(typeOfSale){
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "typeOfSale":typeOfSale,
+                  "BranchID._id" : branchId,
+               }
+            }else{
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "BranchID._id" : branchId,
+               }
+            }
+            ocListModel.find(ocListModelQuery, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
                if (err)
                   next(err)
                else
@@ -942,7 +983,17 @@ module.exports = {
 
             })
          } else {
-            ocListModel.find({ "Status.name": "Closed" }, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
+            if(typeOfSale){
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+                  "typeOfSale":typeOfSale,
+               }
+            }else{
+               ocListModelQuery = {
+                  "Status.name" : "Closed", 
+               }
+            }
+            ocListModel.find(ocListModelQuery, null, { sort: { "UpdatedDate": -1 } }, function (err, ocList) {
                if (err)
                   next(err)
                else
