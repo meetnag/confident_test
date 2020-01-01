@@ -169,7 +169,7 @@ module.exports = {
                      ocListModelQuery["Status.name"] = {
                   
                         $in:[
-                           "Installation scheduled",
+                           "Installation Scheduled",
                            "In Progress - Branch/Dealer",
                         ],
                      
