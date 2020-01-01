@@ -179,6 +179,7 @@ export class Dashboard2Component implements OnInit {
       body['branchId'] = this.currentUser.user.branchId;
     }
     console.log('body', body);
+    body['roleName'] = this.userRole;
     this.dashboardService.getDashboardOcList(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
