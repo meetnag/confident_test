@@ -22,10 +22,9 @@ export class Dashboard2Component implements OnInit {
   selectedBranch = '';
   color = 'primary';
   mode = 'determinate';
-  totalDispatched = 80;
-  installationCompleted = 20;
-  installationPending = 33;
-  backlogsOrder = 45;
+  totalDispatched = 0;
+  installationCompleted = 0;
+  installationPending = 0;
   source: LocalDataSource = new LocalDataSource();
   currentUser$: Subscription;
   currentUser: any;
@@ -279,6 +278,9 @@ export class Dashboard2Component implements OnInit {
     this.dashboardService.getDashboardOcList(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
+        this.totalDispatched = data.data.totalCount ? data.data.totalCount : 0;
+        this.installationCompleted = data.data.compeletedAndClosedCount ? data.data.compeletedAndClosedCount : 0;
+        this.installationPending = data.data.pendingCount ? data.data.pendingCount : 0;
         this.source.load(this.ocList);
       }
     });
