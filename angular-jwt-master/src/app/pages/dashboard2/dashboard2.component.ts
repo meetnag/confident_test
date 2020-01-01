@@ -98,28 +98,7 @@ export class Dashboard2Component implements OnInit {
     // other options...
     dateFormat: this.dateFormatP,
   };
-  chartOption: EChartOption = {
-    title: {
-      text: 'Orders In Progress',
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
-    },
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [{
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
-      type: 'bar'
-    }]
-  }
+  chartOption: any = {}
   seriesLabel = {
     normal: {
       show: true,
@@ -127,83 +106,8 @@ export class Dashboard2Component implements OnInit {
       textBorderWidth: 2
     }
   }
-  multibarchartOption: EChartOption = {
-    title: {
-      text: 'Installation Schedule & Complete at Branch',
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
-    },
-    legend: {
-      top: 20,
-      bottom: 20,
-      data: ['Total Order', 'Installation Complete', 'Installation Scheduled']
-    },
-    xAxis: {
-      type: 'value',
-      name: 'OCs',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-      type: 'category',
-      inverse: true,
-      data: ['Sunny', 'Cloudy', 'Showers'],
-    },
-    series: [
-      {
-        name: 'Total Order',
-        type: 'bar',
-        data: [165, 170, 30],
-        label: this.seriesLabel,
-      },
-      {
-        name: 'Installation Complete',
-        type: 'bar',
-        label: this.seriesLabel,
-        data: [150, 105, 110]
-      },
-      {
-        name: 'Installation Scheduled',
-        type: 'bar',
-        label: this.seriesLabel,
-        data: [220, 82, 63]
-      }
-    ]
-  }
-  piechartOption: EChartOption = {
-    title: {
-      text: 'Priority OCs',
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: "{b} : {c} ({d}%)"
-    },
-    legend: {
-      orient: 'horizontal',
-      right: 10,
-      top: 20,
-      bottom: 20,
-      data: ['high', 'medium', 'low'],
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: '55%',
-        center: ['50%', '60%'],
-        data: [{ 'name': 'high', 'value': 820 }, { 'name': 'medium', 'value': 920 }, { 'name': 'low', 'value': 956 }],
-        itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
-  };
+  multibarchartOption: any = {};
+  piechartOption: any = {};
   constructor(private dashboardService: DashboardService, private datePipe: DatePipe, private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -282,6 +186,15 @@ export class Dashboard2Component implements OnInit {
         this.installationCompleted = data.data.compeletedAndClosedCount ? data.data.compeletedAndClosedCount : 0;
         this.installationPending = data.data.pendingCount ? data.data.pendingCount : 0;
         this.source.load(this.ocList);
+        if (data.data.barChart) {
+          this.chartOption = this.setBarOptions(data.data.barChart);
+        }
+        if (data.data.priortyArray) {
+          this.piechartOption = this.setPieOptions(data.data.priortyArray);
+        }
+        if (data.data.multipleCharts) {
+          this.multibarchartOption = this.setMultiBarChartOptions(data.data.multipleCharts);
+        }
       }
     });
   }
@@ -302,5 +215,111 @@ export class Dashboard2Component implements OnInit {
   }
   onExport() {
 
+  }
+  setBarOptions(data) {
+    return {
+      title: {
+        text: 'Orders In Progress',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: data.branchArray
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: data.OcListCountArray,
+        type: 'bar'
+      }]
+    }
+  }
+  setPieOptions(data) {
+    return {
+      title: {
+        text: 'Priority OCs',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{b} : {c} ({d}%)"
+      },
+      legend: {
+        orient: 'horizontal',
+        right: 10,
+        top: 20,
+        bottom: 20,
+        data: ['HIGH', 'MEDIUM', 'LOW'],
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          data: data,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    }
+  }
+  setMultiBarChartOptions(data) {
+    return {
+      title: {
+        text: 'Installation Schedule & Complete at Branch',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        top: 20,
+        bottom: 20,
+        data: ['Total Order', 'Installation Complete', 'Installation Scheduled']
+      },
+      xAxis: {
+        type: 'value',
+        name: 'OCs',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'category',
+        inverse: true,
+        data: data.multipleBranchArray,
+      },
+      series: [
+        {
+          name: 'Total Order',
+          type: 'bar',
+          data: data.multipleTotalOcCountArray,
+          label: this.seriesLabel,
+        },
+        {
+          name: 'Installation Complete',
+          type: 'bar',
+          label: this.seriesLabel,
+          data: data.multipleClosedOcCountArray
+        },
+        {
+          name: 'Installation Scheduled',
+          type: 'bar',
+          label: this.seriesLabel,
+          data: data.multiplePendingOcCountArray
+        }
+      ]
+
+    }
   }
 }
