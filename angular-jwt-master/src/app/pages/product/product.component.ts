@@ -16,7 +16,7 @@ declare var $: any;
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   source: LocalDataSource = new LocalDataSource();
   settings = {
     actions: false,
@@ -48,8 +48,35 @@ export class ProductComponent implements OnInit {
       perPage: 25
     }
   };
+  nonEditablesettings = {
+    actions: false,
+    columns: {
+      name: {
+        title: 'Name',
+        filter: false
+      },
+      code: {
+        title: 'Code',
+        filter: false,
+      },
+    },
+    pager: {
+      display: true,
+      perPage: 25
+    }
+  };
   productList: Product[] = [];
-  constructor(private dashboardService: DashboardService, public dialog: MatDialog, private toasterService: ToastrService) { }
+  currentUser$: Subscription;
+  currentUser: any;
+  userRole = '';
+  constructor(private dashboardService: DashboardService, private authenticationService: AuthenticationService, public dialog: MatDialog, private toasterService: ToastrService) {
+    this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
+      if (data != null) {
+        this.currentUser = data;
+        this.userRole = this.currentUser.userRole;
+      }
+    })
+  }
 
   ngOnInit() {
     this.getProductList();
@@ -104,6 +131,9 @@ export class ProductComponent implements OnInit {
     } else {
       this.source = new LocalDataSource(this.productList);
     }
+  }
+  ngOnDestroy() {
+    this.currentUser$.unsubscribe();
   }
 }
 @Component({

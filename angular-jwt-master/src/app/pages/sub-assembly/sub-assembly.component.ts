@@ -14,7 +14,7 @@ declare var $: any;
   templateUrl: './sub-assembly.component.html',
   styleUrls: ['./sub-assembly.component.css']
 })
-export class SubAssemblyComponent implements OnInit {
+export class SubAssemblyComponent implements OnInit, OnDestroy {
 
   source: LocalDataSource = new LocalDataSource();
   settings = {
@@ -47,9 +47,38 @@ export class SubAssemblyComponent implements OnInit {
       perPage: 25
     }
   };
+  nonEditablesettings = {
+    actions: false,
+    columns: {
+      name: {
+        title: 'Name',
+        filter: false
+      },
+      code: {
+        title: 'Code',
+        filter: false,
+      },
+    },
+    pager: {
+      display: true,
+      perPage: 25
+    }
+  };
+  currentUser$: Subscription;
+  currentUser: any;
+  userRole = '';
   SubAssemblyList: SubAssembly[] = [];
-  constructor(private dashboardService: DashboardService, public dialog: MatDialog, private toasterService: ToastrService) { }
-
+  constructor(private dashboardService: DashboardService, private authenticationService: AuthenticationService, public dialog: MatDialog, private toasterService: ToastrService) {
+    this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
+      if (data != null) {
+        this.currentUser = data;
+        this.userRole = this.currentUser.userRole;
+      }
+    })
+  }
+  ngOnDestroy() {
+    this.currentUser$.unsubscribe();
+  }
   ngOnInit() {
     this.getSubAssemblyList();
   }

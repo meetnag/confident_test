@@ -14,7 +14,7 @@ declare var $: any;
   templateUrl: './spare.component.html',
   styleUrls: ['./spare.component.css']
 })
-export class SpareComponent implements OnInit {
+export class SpareComponent implements OnInit, OnDestroy {
 
   source: LocalDataSource = new LocalDataSource();
   settings = {
@@ -47,11 +47,41 @@ export class SpareComponent implements OnInit {
       perPage: 25
     }
   };
+  nonEditablesettings = {
+    actions: false,
+    columns: {
+      name: {
+        title: 'Name',
+        filter: false
+      },
+      code: {
+        title: 'Code',
+        filter: false,
+      },
+    },
+    pager: {
+      display: true,
+      perPage: 25
+    }
+  };
   SpareList: Spare[] = [];
-  constructor(private dashboardService: DashboardService, public dialog: MatDialog, private toasterService: ToastrService) { }
+  currentUser$: Subscription;
+  currentUser: any;
+  userRole = '';
+  constructor(private dashboardService: DashboardService, private authenticationService: AuthenticationService, public dialog: MatDialog, private toasterService: ToastrService) {
+    this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
+      if (data != null) {
+        this.currentUser = data;
+        this.userRole = this.currentUser.userRole;
+      }
+    })
+  }
 
   ngOnInit() {
     this.getSpareList();
+  }
+  ngOnDestroy() {
+    this.currentUser$.unsubscribe();
   }
   getSpareList() {
     this.dashboardService.getSpareList().subscribe(res => {
