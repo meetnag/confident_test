@@ -30,6 +30,11 @@ th {
   }
 }
 @media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+@media print {
 
   .col-md-1,
   .col-md-2,

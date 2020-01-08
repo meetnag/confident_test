@@ -41,6 +41,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 filter: false,
                 valuePrepareFunction: (value) => { return value.name }
             },
+            BranchID: {
+                title: 'Branch Name',
+                filter: false,
+                valuePrepareFunction: (value) => { return value.name }
+            },
+            Installation: {
+                title: 'Invoice Number',
+                filter: false,
+                valuePrepareFunction: (value) => { return value.invoiceNumber }
+            },
             _id: {
                 title: 'Actions',
                 type: 'custom',
