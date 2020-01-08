@@ -1151,7 +1151,7 @@ module.exports = {
       
       ocListModel.find(searchQuery, function(err, result){
          if (err) { return def.reject(err); }
-            res.json(result)
+         res.json({ status: "success", message: "List Found Successfully!!!", data: {"ocList":result} });
          });
 
    },
