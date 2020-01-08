@@ -12,7 +12,7 @@
               <label class="col-sm-5 control-label">OC Number</label>
               <div class="col-sm-7">
                 <input type="text" name="numb" (change)="onOcNumberChange()" placeholder="OC Number"
-                  [(ngModel)]="searchOcNo" class="form-control">
+                  [(ngModel)]="OCNumber" class="form-control">
               </div>
             </div>
 
@@ -20,14 +20,14 @@
               <label class="col-sm-5 control-label">Invoice Number</label>
               <div class="col-sm-7">
                 <input type="text" name="invNumb" (change)="onInvNumberChange()" placeholder="Invoice Number"
-                  [(ngModel)]="searchInvoiceNo" class="form-control">
+                  [(ngModel)]="invoiceNumber" class="form-control">
               </div>
             </div>
             <div class="row">
               <label class="col-sm-5 control-label">Doctor Name</label>
               <div class="col-sm-7">
-                <input type="text" name="name" (change)="onNameChange()" placeholder="Doctor Name"
-                  [(ngModel)]="searchName" class="form-control">
+                <input type="text" name="name" (change)="onNameChange()" placeholder="Doctor Name" [(ngModel)]="docName"
+                  class="form-control">
               </div>
             </div>
           </div>
@@ -36,14 +36,14 @@
               <label class="col-sm-5 control-label">Customer LandLine Number</label>
               <div class="col-sm-7">
                 <input type="text" name="landline" (change)="onLandlineChange()" placeholder="Customer LandLine Number"
-                  [(ngModel)]="searchLandLineNo" class="form-control">
+                  [(ngModel)]="customerLandLineNumber" class="form-control">
               </div>
             </div>
             <div class="row">
               <label class="col-sm-5 control-label">Customer Mobile Number</label>
               <div class="col-sm-7">
                 <input type="text" name="mobile" (change)="onMobileChange()" placeholder="Customer Mobile Number"
-                  [(ngModel)]="searchMobileNo" class="form-control">
+                  [(ngModel)]="customerMobileNumber" class="form-control">
               </div>
             </div>
             <div class="row">

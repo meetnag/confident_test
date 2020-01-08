@@ -78,11 +78,11 @@ export class OcSearchComponent implements OnInit, OnDestroy {
       perPage: 25
     }
   };
-  searchOcNo = '';
-  searchInvoiceNo = '';
-  searchName = '';
-  searchMobileNo = '';
-  searchLandLineNo = '';
+  OCNumber = '';
+  invoiceNumber = '';
+  docName = '';
+  customerLandLineNumber = '';
+  customerMobileNumber = '';
   constructor(private router: Router, private dashboardService: DashboardService, private datePipe: DatePipe,
     private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
@@ -115,12 +115,18 @@ export class OcSearchComponent implements OnInit, OnDestroy {
     this.currentUser$.unsubscribe();
   }
   getOcList() {
-    let body = {};
+    let body = {
+      'OCNumber': this.OCNumber,
+      'invoiceNumber': this.invoiceNumber,
+      'docName': this.docName,
+      'customerMobileNumber': this.customerMobileNumber,
+      'customerLandLineNumber': this.customerLandLineNumber
+    };
     body['roleName'] = this.userRole;
     if (this.currentUser.userRole === 'Branch/Dealer') {
       body['branchId'] = this.currentUser.user.branchId;
     }
-    this.dashboardService.getOcList(body).subscribe(data => {
+    this.dashboardService.getOcSearchList(body).subscribe(data => {
       if (data.status === 'success') {
         this.ocList = data.data.ocList;
         this.source.load(this.ocList);
@@ -128,15 +134,15 @@ export class OcSearchComponent implements OnInit, OnDestroy {
     });
   }
   onResetFilter() {
-    this.searchOcNo = '';
-    this.searchInvoiceNo = '';
-    this.searchName = '';
-    this.searchMobileNo = '';
-    this.searchLandLineNo = '';
+    this.OCNumber = '';
+    this.invoiceNumber = '';
+    this.docName = '';
+    this.customerMobileNumber = '';
+    this.customerLandLineNumber = '';
     this.getOcList();
   }
   onSearch() {
-
+    this.getOcList();
   }
   onInvNumberChange() {
 
