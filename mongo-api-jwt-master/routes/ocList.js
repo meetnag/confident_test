@@ -462,4 +462,6 @@ router.post('/updateByOCId',ocListController.updateOC);
         }
         */
 
+       router.post('/ocSearch', ocListController.ocSearch);
+
 module.exports = router;

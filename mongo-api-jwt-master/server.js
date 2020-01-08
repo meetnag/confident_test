@@ -70,7 +70,7 @@ app.use('/users', users);
 // private route
 app.use('/movies', movies);
 app.use('/userRole',userRole);
-app.use('/ocList', validateUser, ocList);
+app.use('/ocList', ocList);
 
 app.use('/dashboard', dashboard);
 app.use('/scanOcList',scanOcNumber);

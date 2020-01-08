@@ -1110,4 +1110,50 @@ module.exports = {
       })
 
    },
+
+   ocSearch:function (req, res, next) {
+
+      let roleName = req.body.roleName;
+      let branchId = req.body.branchId;
+      let OCNumber = req.body.OCNumber;
+      let invNumber = req.body.invoiceNumber;
+      let docName = req.body.docName;
+      let customerLandLineNumber = req.body.customerLandLineNumber;
+      let customerMobileNumber = req.body.customerMobileNumber;
+      
+      let searchQuery = {
+         "OCNumber":req.body.OCNumber,
+         "Installation.invoiceNumber":req.body.invoiceNumber,
+         "Customer.contactNumber":customerMobileNumber,
+         "Customer.landlineNumber":customerLandLineNumber,
+         "Customer.name": {'$regex': `${docName}`, '$options': 'i'}
+      }
+      
+      if (!OCNumber)
+         delete searchQuery.OCNumber;
+      if(!invNumber)
+         delete searchQuery["Installation.invoiceNumber"];
+      if(!docName)   
+         delete searchQuery["Customer.name"];
+      if(!customerMobileNumber)
+         delete searchQuery["Customer.contactNumber"];
+      if(!customerLandLineNumber)
+         delete searchQuery["Customer.landlineNumber"];
+      if(!customerLandLineNumber && !customerMobileNumber && !docName)
+         delete searchQuery.Customer;
+
+      delete searchQuery.roleName;
+
+      if (roleName =="Branch/Dealer"){  
+         searchQuery["BranchID._id"]  = branchId; 
+         
+      }
+      
+      ocListModel.find(searchQuery, function(err, result){
+         if (err) { return def.reject(err); }
+            res.json(result)
+         });
+
+   },
+
 }

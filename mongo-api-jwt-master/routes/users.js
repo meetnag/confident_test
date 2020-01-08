@@ -6,6 +6,33 @@ const userController = require('../app/api/controllers/users');
 
 router.get('/', userController.getAll);
 
+router.post('/update', userController.update);
+/**
+        * @api {post} users/register register
+        * @apiVersion 0.0.1
+        * @apiGroup user
+        *
+        * @apiParam {String} name name to update.(name id should be pass as a body parameter - required)
+        * @apiParam {String} password Password to update.(password  should be pass as a body parameter - required)
+        * @apiParam {String} email email to update.(Email should be pass as a body parameter - required)
+        * @apiParam {String} RoleId to update.(role Id should be pass as a body parameter - required)
+        * @apiParam {String} branchId to updater.(Branch Id should be pass as a body parameter - required only if branch user)
+        * 
+        * @apiSuccessExample {json} Success-Response:
+        *{
+        "status": "success",
+        "message": "User Updated successfully!!!",
+        "data": null
+        *}
+        *
+        @apiErrorExample {json} Error-Response:
+        *
+        * {
+        "status": "error",
+        "message": "User Not Found",
+        "data": null
+        }
+        */
 router.post('/register', userController.create);
 /**
         * @api {post} users/register register
@@ -16,7 +43,7 @@ router.post('/register', userController.create);
         * @apiParam {String} password Password for login.(password  should be pass as a body parameter - required)
         * @apiParam {String} email email to register.(Email should be pass as a body parameter - required)
         * @apiParam {String} RoleId to assign role to user.(role Id should be pass as a body parameter - required)
-        * @apiParam {String} branchId to assign role to user.(Branch Id should be pass as a body parameter - required only if branch user)
+        * @apiParam {String} branchId to assign branch to user.(Branch Id should be pass as a body parameter - required only if branch user)
         * 
         * @apiSuccessExample {json} Success-Response:
         *{

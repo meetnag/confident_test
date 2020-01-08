@@ -92,7 +92,7 @@ SpareIDs :[
         }
     }
 ],
-invDateByBranch:{
+InvDateByBranch:{
     type: Date
 },
 Customer :{
@@ -167,23 +167,23 @@ CreatedDate :{
 },
 UpdatedDate:{
     type:Date,
-trim : true,
+    trim : true,
 },
 Installation:{
     installationDate:{
         type:Date,
-trim : true,
+        trim : true,
     },
     installationComplete :{
         type:Boolean,
     },
     installationCompleteDate:{
         type:Date,
-trim : true,
+        trim : true,
     },
     invoiceDate:{
         type:Date,
-trim : true,
+        trim : true,
         
     },
     installationTechnician:{
