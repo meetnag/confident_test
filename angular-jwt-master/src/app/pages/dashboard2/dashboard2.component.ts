@@ -108,6 +108,10 @@ export class Dashboard2Component implements OnInit {
   }
   multibarchartOption: any = {};
   piechartOption: any = {};
+  branchArray: any[] = [];
+  totalCount: any[] = [];
+  pendingCount: any[] = [];
+  closedCount: any[] = [];
   constructor(private dashboardService: DashboardService, private datePipe: DatePipe, private authenticationService: AuthenticationService) {
     this.currentUser$ = this.authenticationService.currentUserSubject.subscribe(data => {
       if (data != null) {
@@ -194,11 +198,91 @@ export class Dashboard2Component implements OnInit {
           this.piechartOption = this.setPieOptions(data.data.priortyArray);
         }
         if (data.data.multipleCharts) {
+          this.getMultichartData(data.data.multipleCharts);
+
           this.multibarchartOption = this.setMultiBarChartOptions(data.data.multipleCharts);
         }
       }
     });
   }
+  getMultichartData(data) {
+    console.log('data', data)
+    this.branchArray = [];
+    this.totalCount = [];
+    this.pendingCount = [];
+    this.closedCount = [];
+    if (data) {
+      if (data.Total && data.Total.branchName && data.Total.branchName.length) {
+        this.branchArray = data.Total.branchName;
+      }
+      if (data.pending && data.pending.branchName && data.pending.branchName.length) {
+        if (this.branchArray.length) {
+          data.pending.branchName.forEach(ele => {
+            let i = this.branchArray.findIndex(i => i == ele);
+            if (i == -1) {
+              this.branchArray.push(ele);
+            }
+          })
+        }
+      }
+      if (data.Closed && data.Closed.branchName && data.Closed.branchName.length) {
+        if (this.branchArray.length) {
+          data.Closed.branchName.forEach(ele => {
+            let i = this.branchArray.findIndex(i => i == ele);
+            if (i == -1) {
+              this.branchArray.push(ele);
+            }
+          })
+        }
+      }
+      if (this.branchArray) {
+        if (data.Total && data.Total.branchName && data.Total.branchName.length) {
+          this.branchArray.forEach(ele => {
+            let i = data.Total.branchName.findIndex(i => i == ele);
+            if (i > -1) {
+              this.totalCount.push(data.Total.TotalOcCountArray[i])
+            } else {
+              this.totalCount.push(0);
+            }
+          })
+        } else {
+          this.branchArray.forEach(ele => {
+            this.totalCount.push(0);
+          })
+        }
+        if (data.pending && data.pending.branchName && data.pending.branchName.length) {
+          this.branchArray.forEach(ele => {
+            let i = data.pending.branchName.findIndex(i => i == ele);
+            if (i > -1) {
+              this.pendingCount.push(data.pending.PendingOcCountArray[i])
+            } else {
+              this.pendingCount.push(0);
+            }
+          })
+        } else {
+          this.branchArray.forEach(ele => {
+            this.pendingCount.push(0);
+          })
+        }
+        if (data.Closed && data.Closed.branchName && data.Closed.branchName.length) {
+          this.branchArray.forEach(ele => {
+            let i = data.Closed.branchName.findIndex(i => i == ele);
+            if (i > -1) {
+              this.closedCount.push(data.Closed.ClosedOcCountArray[i])
+            } else {
+              this.closedCount.push(0);
+            }
+          })
+        } else {
+          this.branchArray.forEach(ele => {
+            this.closedCount.push(0);
+          })
+        }
+      }
+      console.log('branch', this.branchArray)
+    }
+  }
+
   onBranchChange() {
     this.getOcList();
   }
@@ -298,26 +382,30 @@ export class Dashboard2Component implements OnInit {
       yAxis: {
         type: 'category',
         inverse: true,
-        data: data.multipleBranchArray,
+        // data: data.multipleBranchArray,
+        data: this.branchArray
       },
       series: [
         {
           name: 'Total Order',
           type: 'bar',
-          data: data.multipleTotalOcCountArray,
+          data: this.totalCount,
+          // data: data.multipleTotalOcCountArray,
           label: this.seriesLabel,
         },
         {
           name: 'Installation Complete',
           type: 'bar',
           label: this.seriesLabel,
-          data: data.multipleClosedOcCountArray
+          data: this.closedCount,
+          // data: data.multipleClosedOcCountArray
         },
         {
           name: 'Installation Scheduled',
           type: 'bar',
           label: this.seriesLabel,
-          data: data.multiplePendingOcCountArray
+          data: this.pendingCount,
+          // data: data.multiplePendingOcCountArray
         }
       ]
 
