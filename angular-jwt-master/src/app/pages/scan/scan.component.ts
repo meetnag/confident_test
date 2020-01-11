@@ -42,8 +42,12 @@ export class ScanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    // console.log(this.id)/
+    let eleId = this.route.snapshot.paramMap.get('id');
+    let splitEle = eleId.split(':');
+    if (splitEle.length) {
+      this.id = splitEle[0];
+    }
+    console.log(this.id)
 
     if (this.id == 0) {
       this.searchOcNo = '';

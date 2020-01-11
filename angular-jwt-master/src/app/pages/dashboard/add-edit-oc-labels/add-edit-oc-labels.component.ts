@@ -79,7 +79,7 @@ export class AddEditOcLabelsComponent implements OnInit, OnDestroy {
             // let obj = { 'name': ele.name, 'code': this.ocObj.OCNumber + ele.srno + ele.ID };
             let obj = {
               name: ele.name,
-              code: environment.domainUrl + "scan/" + this.ocObj.OCNumber + ele.srno
+              code: environment.domainUrl + "scan/" + this.ocObj.OCNumber + ':' + ele.srno
             };
             this.scanList.push(obj);
           });

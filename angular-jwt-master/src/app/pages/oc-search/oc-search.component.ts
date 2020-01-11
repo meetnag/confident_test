@@ -144,19 +144,4 @@ export class OcSearchComponent implements OnInit, OnDestroy {
   onSearch() {
     this.getOcList();
   }
-  onInvNumberChange() {
-
-  }
-  onOcNumberChange() {
-
-  }
-  onNameChange() {
-
-  }
-  onLandlineChange() {
-
-  }
-  onMobileChange() {
-
-  }
 }

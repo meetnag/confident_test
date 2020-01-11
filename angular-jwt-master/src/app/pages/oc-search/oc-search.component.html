@@ -11,23 +11,23 @@
             <div class="row">
               <label class="col-sm-5 control-label">OC Number</label>
               <div class="col-sm-7">
-                <input type="text" name="numb" (change)="onOcNumberChange()" placeholder="OC Number"
-                  [(ngModel)]="OCNumber" class="form-control">
+                <input type="text" name="numb" (keyup.enter)="onSearch()" placeholder="OC Number" [(ngModel)]="OCNumber"
+                  class="form-control">
               </div>
             </div>
 
             <div class="row">
               <label class="col-sm-5 control-label">Invoice Number</label>
               <div class="col-sm-7">
-                <input type="text" name="invNumb" (change)="onInvNumberChange()" placeholder="Invoice Number"
+                <input type="text" name="invNumb" (keyup.enter)="onSearch()" placeholder="Invoice Number"
                   [(ngModel)]="invoiceNumber" class="form-control">
               </div>
             </div>
             <div class="row">
               <label class="col-sm-5 control-label">Doctor Name</label>
               <div class="col-sm-7">
-                <input type="text" name="name" (change)="onNameChange()" placeholder="Doctor Name" [(ngModel)]="docName"
-                  class="form-control">
+                <input type="text" name="name" (keyup.enter)="onSearch()" placeholder="Doctor Name"
+                  [(ngModel)]="docName" class="form-control">
               </div>
             </div>
           </div>
@@ -35,14 +35,14 @@
             <div class="row">
               <label class="col-sm-5 control-label">Customer LandLine Number</label>
               <div class="col-sm-7">
-                <input type="text" name="landline" (change)="onLandlineChange()" placeholder="Customer LandLine Number"
+                <input type="text" name="landline" (keyup.enter)="onSearch()" placeholder="Customer LandLine Number"
                   [(ngModel)]="customerLandLineNumber" class="form-control">
               </div>
             </div>
             <div class="row">
               <label class="col-sm-5 control-label">Customer Mobile Number</label>
               <div class="col-sm-7">
-                <input type="text" name="mobile" (change)="onMobileChange()" placeholder="Customer Mobile Number"
+                <input type="text" name="mobile" (keyup.enter)="onSearch()" placeholder="Customer Mobile Number"
                   [(ngModel)]="customerMobileNumber" class="form-control">
               </div>
             </div>
