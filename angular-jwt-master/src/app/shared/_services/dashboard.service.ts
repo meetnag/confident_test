@@ -121,12 +121,12 @@ export class DashboardService {
     return this.apiService.apiCaller('post', 'subAssembly/update', obj);
   }
   deleteProduct(obj) {
-    return this.apiService.apiCaller('post', 'products/delete/' + obj);
+    return this.apiService.apiCaller('post', 'products/deleteById/' + obj);
   }
   deleteSpare(obj) {
-    return this.apiService.apiCaller('post', 'spare/delete/' + obj);
+    return this.apiService.apiCaller('post', 'spare/deleteById/' + obj);
   }
   deleteSubAssembly(obj) {
-    return this.apiService.apiCaller('post', 'subAssembly/delete/' + obj);
+    return this.apiService.apiCaller('post', 'subAssembly/deleteById/' + obj);
   }
 }
