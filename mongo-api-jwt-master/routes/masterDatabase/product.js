@@ -84,7 +84,7 @@ router.get('/', productController.getAll);
         
 router.post('/deleteById/:productId', productController.deleteById);
 /**
-        * @api {post} products/ delete product 
+        * @api {post} products/deleteById delete product 
         * @apiVersion 0.0.1
         * @apiGroup masterDatabase
         *

@@ -1015,7 +1015,7 @@ module.exports = {
       let flag = 1;
       let documentCounter = "No";
       
-      ocListModel.findOne({ OCNumber: req.body.OCNumber }, function (err, result) {
+      ocListModel.findById(req.body._id, function (err, result) {
          if (result) {
             // console.log(result.docAttachedCounter)
             docAttachedCounter = result.docAttachedCounter
